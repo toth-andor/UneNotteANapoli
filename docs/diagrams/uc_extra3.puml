@@ -1,0 +1,20 @@
+@startuml
+skinparam style strictuml
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+participant "a : Attachment" as A
+
+== Eszközcsere ==
+T -> SP : changeAttachment(newA)
+activate SP
+    note right: Lecseréli a belső Attachment referenciát
+SP --> T
+deactivate SP
+
+== Feltöltés ==
+T -> A : refill()
+activate A
+    note right: saltLevel vagy fuelLevel visszaállítása
+A --> T
+deactivate A
+@enduml

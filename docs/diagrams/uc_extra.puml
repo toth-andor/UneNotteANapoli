@@ -1,0 +1,29 @@
+@startuml
+skinparam style strictuml
+participant "g : Game" as G
+participant "v : Vehicle" as V
+participant "l : Lane" as L
+
+G -> G : gameTick()
+activate G
+    note right: Időjárás frissítése és járművek léptetése
+    loop minden járműre
+        G -> V : nextTurn()
+        activate V
+            V -> V : checkMobility()
+            note right: Ellenőrzi az isImmobilized állapotot\nés csökkenti az immobilizationTime-ot
+            
+            alt ha mobilis
+                V -> L : acceptVehicle(V)
+                activate L
+                L --> V : success
+                deactivate L
+                
+                V -> V : interactWithRoad()
+                note right: (Lásd 2. diagram)
+            end
+        V --> G
+        deactivate V
+    end
+deactivate G
+@enduml

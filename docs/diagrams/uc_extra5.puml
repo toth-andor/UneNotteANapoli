@@ -1,0 +1,11 @@
+@startuml
+skinparam style strictuml
+actor "Játékos" as J
+participant "g : Game" as G
+
+J -> G : saveProgress()
+activate G
+    note right: MapModel és Vehicle lista állapotának\nperzisztens tárolása
+G --> J
+deactivate G
+@enduml

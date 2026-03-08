@@ -1,0 +1,11 @@
+@startuml
+skinparam style strictuml
+participant "rnd : Randomizator" as R
+participant "v : Vehicle" as V
+
+R -> V : setImmobilized(true, duration)
+activate V
+    note right: isImmobilized = true\nimmobilizationTime = duration
+V --> R
+deactivate V
+@enduml
