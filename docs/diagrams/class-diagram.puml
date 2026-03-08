@@ -21,18 +21,21 @@ abstract PlayerVehicle {
 class Bus {
   - stop1: Junction
   - stop2: Junction
+  + interactWithRoad()
 }
 
 class SnowPlow {
   + changeAttachment(new: Attachment)
   + buyAttachment()
   + refillAttachment()
+  + interactWithRoad()
 }
 
 class Car {
   - home: Junction
   - work: Junction
   + nextTrun()
+  + interactWithRoad()
 }
 
 abstract Attachment {
