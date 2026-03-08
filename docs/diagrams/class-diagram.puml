@@ -4,9 +4,12 @@
 abstract Vehicle {
   # currentLane: Lane
   # isImmobilized: bool
+  # immobilizationTime: int
 
   + nextTurn()
   + interactWithRoad()
+  + setImmobilized()
+  + checkMobility()
 }
 
 abstract PlayerVehicle {
@@ -20,6 +23,7 @@ class Bus {
 }
 
 class SnowPlow {
+  + changeAttachment(new: Attachment)
 }
 
 class Car {
