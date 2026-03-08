@@ -15,6 +15,7 @@ abstract Vehicle {
 abstract PlayerVehicle {
     - income: int
     - updateIncome()
+    + nextTrun()
 }
 
 class Bus {
@@ -31,6 +32,7 @@ class SnowPlow {
 class Car {
   - home: Junction
   - work: Junction
+  + nextTrun()
 }
 
 abstract Attachment {
