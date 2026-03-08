@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+
+actor "Játékos" as J
+participant "g : Game" as G
+participant "m : MapModel" as M
+participant "v : Vehicle" as V
+
+J -> G : saveProgress()
+activate G
+    G -> M : getMapState()
+    activate M
+    M --> G
+    deactivate M
+    
+    loop minden járműre
+        G -> V : getVehicleData()
+        activate V
+        V --> G
+        deactivate V
+    end
+    
+    note over G: Adatok kiírása a mentési fájlba
+G --> J
+deactivate G
+@enduml

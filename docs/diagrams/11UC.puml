@@ -1,0 +1,18 @@
+@startuml
+skinparam style strictuml
+
+participant "c : Car" as C
+participant "l : Lane" as L
+
+C -> L : interactWithRoad()
+activate L
+    L -> L : incrementIcingCounter()
+    activate L
+    deactivate L
+    alt icingCounter > limit
+        L -> L : setIcy(true)
+        note right: isIcy = true
+    end
+L --> C
+deactivate L
+@enduml

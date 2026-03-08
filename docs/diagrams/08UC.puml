@@ -1,0 +1,23 @@
+@startuml
+skinparam style strictuml
+
+participant "g : Game" as G
+participant "m : MapModel" as M
+participant "r : Road" as R
+participant "l : Lane" as L
+
+note over G: Új kör kezdődik
+G -> M : updateWeather()
+activate M
+    M -> R : processSnowfall()
+    activate R
+        R -> L : increaseSnowLevel()
+        activate L
+        note right of L: snowLevel növelése
+        L --> R
+        deactivate L
+    R --> M
+    deactivate R
+M --> G
+deactivate M
+@enduml

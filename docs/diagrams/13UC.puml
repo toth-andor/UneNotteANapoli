@@ -1,0 +1,18 @@
+@startuml
+skinparam style strictuml
+
+participant "rnd : Randomizator" as R
+participant "c1 : Car" as C1
+participant "c2 : Car" as C2
+
+R -> C1 : triggerCollision()
+activate C1
+C1 --> R
+deactivate C1
+
+R -> C2 : triggerCollision()
+activate C2
+C2 --> R
+deactivate C2
+note over C1, C2: Mindkét autó elakad a jeges úton
+@enduml

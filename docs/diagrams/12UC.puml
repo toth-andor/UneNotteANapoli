@@ -1,0 +1,25 @@
+@startuml
+skinparam style strictuml
+
+participant "rnd : Randomizator" as R
+participant "v : Vehicle" as V
+participant "l : Lane" as L
+
+R -> V : triggerCollision()
+activate V
+    V -> L : isIcy()
+    activate L
+    L --> V : true
+    deactivate L
+    
+    note over V: Ütközés történik
+    V -> V : setImmobilized(true)
+    note right: isImmobilized = true
+    
+    V -> L : setAvailable(false)
+    activate L
+    L --> V
+    deactivate L
+V --> R
+deactivate V
+@enduml

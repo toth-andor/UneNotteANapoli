@@ -1,0 +1,17 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+participant "d : Dragon" as D
+
+T -> SP : refillFuel()
+activate SP
+    SP -> D : refill()
+    activate D
+    note right of D: fuelLevel = max
+    D --> SP
+    deactivate D
+SP --> T
+deactivate SP
+@enduml
