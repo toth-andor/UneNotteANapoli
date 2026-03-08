@@ -1,0 +1,18 @@
+@startuml
+skinparam style strictuml
+
+participant "rnd : Randomizator" as R
+participant "c : Car" as C
+participant "b : Bus" as B
+
+R -> C : triggerCollision()
+activate C
+C --> R
+deactivate C
+
+R -> B : triggerCollision()
+activate B
+    B -> B : setImmobilized(true)
+B --> R
+deactivate B
+@enduml
