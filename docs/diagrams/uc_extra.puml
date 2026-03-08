@@ -8,22 +8,26 @@ G -> G : gameTick()
 activate G
     note right: Időjárás frissítése és járművek léptetése
     loop minden járműre
-        G -> V : nextTurn()
+        G -> V : checkMobility() 
+        note right: Ha éppen letelt a immbility timer, vagy nem volt immobilized akkor a jármű mozoghat
         activate V
-            V -> V : checkMobility()
-            note right: Ellenőrzi az isImmobilized állapotot\nés csökkenti az immobilizationTime-ot
-            
-            alt ha mobilis
+        V -> G : true
+        deactivate V
+
+        alt ha mobilis
+            G -> V : nextTurn()
+            activate V
                 V -> L : acceptVehicle(V)
                 activate L
-                L --> V : success
+                L --> V : success 
+                note right: Ha a sáv járható
                 deactivate L
                 
                 V -> V : interactWithRoad()
-                note right: (Lásd 2. diagram)
-            end
-        V --> G
-        deactivate V
+                note right: Takarítás, hó jéggé tömörítés stb
+            deactivate V
+            V --> G
+        end
     end
 deactivate G
 @enduml

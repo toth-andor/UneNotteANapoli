@@ -5,7 +5,7 @@ actor "Takarító" as T
 participant "sp : SnowPlow" as SP
 participant "a : Attachment" as A
 
-T -> SP : performMaintenance()
+T -> SP : refillAttachment()
 activate SP
     SP -> A : refill()
     activate A

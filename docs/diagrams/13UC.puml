@@ -1,18 +1,26 @@
 @startuml
 skinparam style strictuml
 
-participant "rnd : Randomizator" as R
-participant "c1 : Car" as C1
-participant "c2 : Car" as C2
+participant "l : Lane" as L
+participant "v1 : Vehicle" as V1
+participant "v2 : Vehicle" as V2
 
-R -> C1 : triggerCollision()
-activate C1
-C1 --> R
-deactivate C1
+activate L
+V1 -> L: acceptVehicle(self)
+note right: Ha van már jármű a sávban és jeges az út valamekkora esélyel ütköznek
 
-R -> C2 : triggerCollision()
-activate C2
-C2 --> R
-deactivate C2
-note over C1, C2: Mindkét autó elakad a jeges úton
+alt isIcy() && rng.shouldCollide == true
+
+    L -> V1 : setImmobilized(true)
+    activate V1
+    V1 --> L
+    deactivate V1
+
+    L -> V2 : setImmobilized(true)
+    activate V2
+    V2 --> L
+    deactivate V2
+    note over V1, V2: Mindkét jármű elakad az ütközés következtében
+end
+deactivate L
 @enduml

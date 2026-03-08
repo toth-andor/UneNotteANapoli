@@ -24,6 +24,8 @@ class Bus {
 
 class SnowPlow {
   + changeAttachment(new: Attachment)
+  + buyAttachment()
+  + refillAttachment()
 }
 
 class Car {
@@ -55,6 +57,7 @@ class SaltVomitter {
 class Road {
   - end1: Junction
   - end2: Junction
+  + snowFall()
 }
 
 class Lane {
@@ -63,12 +66,15 @@ class Lane {
   - isAvalable: bool
   - isIcy: bool
   + acceptVehicle(v: Vehicle)
+  + snowFall()
   
 }
 
 class Junction
 
-class MapModel
+class MapModel {
+  + snowFall()
+}
 
 class Game {
   - saveProgress()
