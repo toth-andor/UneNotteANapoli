@@ -1,0 +1,17 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+participant "sv : SaltVomitter" as SV
+
+T -> SP : refillSalt()
+activate SP
+    SP -> SV : refill()
+    activate SV
+    note right of SV: saltLevel = max
+    SV --> SP
+    deactivate SV
+SP --> T
+deactivate SP
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+participant "l : Lane" as L
+participant "a : Attachment" as A
+
+T -> SP : nextTurn()
+activate SP
+
+    SP -> L : acceptVehicle(SP)
+    activate L
+    L --> SP : true (vagy false, ha járhatatlan)
+    deactivate L
+    
+    note over SP: Ha a belépés sikeres volt
+    
+    SP -> SP : interactWithRoad()
+    activate SP
+        SP -> A : cleanLane(l)
+        activate A
+        note right of A: Módosítja a l.snowLevel vagy l.isIcy értékét
+        A --> SP
+        deactivate A
+    deactivate SP
+    
+    SP -> SP : updateIncome(reward)
+    note right: A megtisztított útszakasz után [cite: 170]
+
+deactivate SP
+@enduml

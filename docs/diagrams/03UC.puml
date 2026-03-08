@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "g : Game" as G
+participant "sp : SnowPlow" as SP
+
+T -> G : buyAttachment(attachmentType)
+activate G
+    G -> SP : updateIncome(-price)
+    activate SP
+    note right of SP: Levonja az árat az income-ból
+    SP --> G
+    deactivate SP
+    
+    create participant "newA : Attachment" as NA
+    G -> NA : <<create>>
+    
+    G -> SP : changeAttachment(newA)
+    activate SP
+    SP --> G
+    deactivate SP
+    
+G --> T
+deactivate G
+@enduml
