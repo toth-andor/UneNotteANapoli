@@ -1,0 +1,58 @@
+# 3 visszajelzések
+- A hó akkor is esik ha nem lépnek a játékosok
+  - Tehát gyakorlatilag nem lehet lépés órát használni
+- Kellenek interfészek, több kisebb, amivel a control layer irányítja a modellt
+- Nem a modell dolga, hogy hogyan kapja meg a guit a buszokat
+  - Majd a vezérő példányosít
+- Az autó vagy az út tudja, hogy célba ért az autó?s (szerintem itt jók vagyunk)
+- Ki tudja, hogy vége a játéknak (lehetőleg sehonnal), inkább a kontroll tudja!
+- Eredmény hírdetés a kontroll, nem a model (final score nincs a modellben)
+- Játékos mint (mennyi pénz milyen sznű ruha ilyesmi oké)
+- Játékos mint mit csinál, merre menjünk a kontrollba való
+- Út és híd között külonbség? --- Nincs
+- Nincs alagútunk!! --- Kéne
+- Ha két végpont van, tudjuk-e melyik a cél és melyik a kiindulás
+  - Miért nem két asszociáció van, ha két megkülönböztetett példány van? --- Kéne
+    - Ezt hagyjuk a faszba
+- Attribútumokba és asszociációkba ne tegyük ugyanazt az információt
+- Inkább asszociáció és nem attribútum
+- Usertől nem kérdezünk vissza, a medellnek meg van mondva, hogy mit csinál, legfeljebb a view kérdez vissza, azt kezeli a kontroller, a modellnek csak parancs megy, amit vagy végrehajt vagy nems.
+- Hogy esik a hó és hova, inkább a kontrollba való, nem a modellbe
+- Használati esetek végigzongorázhatók-e
+- Lista szekvencia diagramhoz esetekhez
+  - Konstruktorok hívása (ahol nem triviális, ha érdekes akkor viszont igen)
+    - nálunk főként a map-model
+  - Autó/busz mozgás o
+    - simán mozog
+    - jégen csúszik
+    - sávot vált
+    - havon megy
+    - ütközés?
+    - kereszteződés?
+  - Hókotró
+    - Néhány a fentiek közül
+    - Fejcsere
+    - takarítás
+      - söpör fúj,
+      - hány
+      - ...
+      - jégtörés ahol nincs (mi történik?) (legyen leírva ahogy semmi történik ilyenko)
+  - Környezet
+    - havazás
+    - só hatása (ez nekünk nagyon hiányzik)
+  - Vásárlás
+    - fej, fogyóanyag, hókotró
+    - it is elég hiányosak vagyunk
+- Modell belső működése érdekel, osztályoké nem
+- Absztrakt osztály az objektum katalógusban nagy no-no.
+- Iterfész arra kell, hogy a modell kívülről elérhető legyen
+  - tehát a kontroller és a modell között legyenek jól definiált interfészek
+- Asszociáció navigálhatósága
+  - Aki feleém navigál azt nem írom bele az asszociációimba
+- Egy akciónak (letakarítottuk a sávot) ennek lehet mellékhatósa, ezt ki hívja? a kontroller vagy maga az akció?|
+- Kilépés a sávból nincs nálunk csak belépés
+- State tervezési minta 
+  - sávnak a vannak állapot független tulajdonságai
+  - Van egy bastract osztály ami a sávállapotot jelzi
+    - ennek leszármazottai implementálják a az állapot függő metódusokat
+  - ahsonló ehhez a Strategy tervezési minta
