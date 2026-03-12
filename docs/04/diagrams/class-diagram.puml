@@ -15,7 +15,7 @@ abstract Vehicle {
 abstract PlayerVehicle {
     - income: int
     - updateIncome()
-    + nextTrun()
+    + nextTrunTunr()
 }
 
 class Bus {
@@ -43,7 +43,7 @@ abstract Attachment {
 
   + refill()
   + cleanLane()
-  
+
 }
 
 class Dragon {
@@ -72,18 +72,18 @@ class Lane {
   - isIcy: bool
   + acceptVehicle(v: Vehicle)
   + snowFall()
-  
+
 }
 
 class Junction
 
 
-Road "4"*--o "1" Lane 
+Road "4"*--o "1" Lane
 
 
 
 PlayerVehicle --|> Vehicle
-Bus ..|> PlayerVehicle 
+Bus ..|> PlayerVehicle
 SnowPlow ..|> PlayerVehicle
 Car ..|> Vehicle
 
@@ -106,4 +106,3 @@ Car "2" o-- Junction
 
 
 @enduml
-
