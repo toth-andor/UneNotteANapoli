@@ -5,8 +5,8 @@ on:
     branches:
       - master
     paths:
-      - 'master/**.puml'
-      - 'master/**.plantuml'
+      - 'docs/**.puml'
+      - 'docs/**.plantuml'
 
   workflow_dispatch:  # manual trigger via GitHub UI
 
