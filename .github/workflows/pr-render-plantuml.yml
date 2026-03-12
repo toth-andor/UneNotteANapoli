@@ -1,0 +1,73 @@
+name: PR PlantUML Commenter
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**.puml'
+      - 'docs/**.plantuml'
+
+jobs:
+  comment-diagrams:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write  # Required to post comments on the PR
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to diff against base branch
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download PlantUML jar
+        run: curl -L -o plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2024.7/plantuml-1.2024.7.jar
+
+      - name: Generate PlantUML URLs and Comment Content
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Fetch the branch we are merging into
+          git fetch origin ${{ github.base_ref }}
+          
+          # Ensure git doesn't escape non-ASCII characters or spaces in filenames
+          git config core.quotePath false
+          
+          # Find all modified/added puml files in the PR
+          FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD | grep -E '\.puml$|\.plantuml$' || true)
+
+          if [ -z "$FILES" ]; then
+            echo "No PlantUML files modified in this PR." > pr_comment.md
+            exit 0
+          fi
+
+          echo "### 📊 PlantUML Diagrams (Preview)" > pr_comment.md
+          echo "*(Dynamically rendered for this Pull Request)*" >> pr_comment.md
+          echo "" >> pr_comment.md
+
+          # Using while read -r is safer for filenames that might contain spaces
+          echo "$FILES" | while IFS= read -r file; do
+            # Only process if the file string isn't empty and the file currently exists
+            if [ -n "$file" ] && [ -f "$file" ]; then
+              # Compute the exact encoding using the official PlantUML engine
+              ENCODED=$(java -jar plantuml.jar -computeurl "$file")
+              URL="https://www.plantuml.com/plantuml/svg/${ENCODED}"
+              
+              echo "<details open><summary><code>$file</code></summary>" >> pr_comment.md
+              echo "" >> pr_comment.md
+              echo "![$file]($URL)" >> pr_comment.md
+              echo "" >> pr_comment.md
+              echo "</details>" >> pr_comment.md
+              echo "" >> pr_comment.md
+            fi
+          done
+
+      - name: Post/Update PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: plantuml-diagrams
+          path: pr_comment.md
