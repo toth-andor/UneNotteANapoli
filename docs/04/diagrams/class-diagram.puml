@@ -1,51 +1,36 @@
 @startuml class-diagram
-
-
 abstract Vehicle {
   # currentLane: Lane
-  # isImmobilized: bool
-  # immobilizationTime: int
-
+  # timeOutStart: int
   + nextTurn()
-  + interactWithRoad()
+  + interactWithLane(l: Lane)
   + setImmobilized()
   + checkMobility()
 }
-
-abstract PlayerVehicle {
-    - income: int
-    - updateIncome()
-    + nextTrun()
-}
-
 class Bus {
   - stop1: Junction
   - stop2: Junction
-  + interactWithRoad()
+  + interactWithLane(l: Lane)
 }
-
 class SnowPlow {
   + changeAttachment(new: Attachment)
   + buyAttachment()
   + refillAttachment()
-  + interactWithRoad()
+  + interactWithLane(l: Lane)
+  + nextTurn()
+  + crash(timestamp: int)
 }
-
 class Car {
   - home: Junction
   - work: Junction
-  + nextTrun()
-  + interactWithRoad()
+  + nextTurn()
+  + interactWithLane(l: Lane)
 }
-
 abstract Attachment {
   # price: int
-
   + refill()
   + cleanLane()
-  
 }
-
 class Dragon {
   - fuelLevel
   + refill()
@@ -57,53 +42,67 @@ class SaltVomitter {
   - saltLevel
   + refill()
 }
-
-
 class Road {
   - end1: Junction
   - end2: Junction
   + snowFall()
 }
-
 class Lane {
   - snowLevel: int
   - icingCounter: int
-  - isAvalable: bool
+  - isAvailable: bool
   - isIcy: bool
   + acceptVehicle(v: Vehicle)
   + snowFall()
-  
 }
-
 class Junction
-
-
-Road "4"*--o "1" Lane 
-
-
-
-PlayerVehicle --|> Vehicle
-Bus ..|> PlayerVehicle 
-SnowPlow ..|> PlayerVehicle
-Car ..|> Vehicle
-
+class Player {
+  - balance: int
+  + addIncome(amount: int)
+  + getScore(): int
+}
+abstract class Commuter {
+  + turnAround()
+  + nextTurn()
+}
+interface IControllable {
+  + gotoLane(l: Lane, timestamp: int): bool
+  + crash(timestamp: int)
+  + interactWithLane(l: Lane)
+}
+interface ISnowPlow {
+  + buyAttachment(a: Attachment): bool
+  + changeAttachment(a: Attachment): bool
+  + refillAttachment()
+}
+interface IRouteHandler {
+  + turnAround()
+}
+interface IScoreOwner {
+  + getScore(): int
+}
+Road "4"*--o "1" Lane
 Dragon --|> Attachment
 Sweeper --|> Attachment
 VomitingHead --|> Attachment
 IceBreaker --|> Attachment
 SaltVomitter --|> Attachment
-
-SnowPlow "1"*-- Attachment
-
-
 Road "2" o--o Junction
-
 Vehicle "1" o--o Lane
-
 Bus "2" o-- Junction
 Car "2" o-- Junction
-
-
-
+Vehicle ..|> IControllable
+SnowPlow --|> Vehicle
+SnowPlow ..|> ISnowPlow
+SnowPlow ..|> IScoreOwner
+Commuter --|> Vehicle
+Commuter ..|> IRouteHandler
+Bus --|> Commuter
+Bus ..|> IScoreOwner
+Car --|> Commuter
+Player ..|> IScoreOwner
+Player "1" *-- "0..*" Vehicle : controls
+Player "1" *-- "0..*" Attachment : inventory
+SnowPlow "1" o-- "0..*" Attachment : available_tools
+SnowPlow "1" o-- "1" Attachment : active_tool
 @enduml
-
