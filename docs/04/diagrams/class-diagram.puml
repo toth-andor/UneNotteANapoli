@@ -5,25 +5,21 @@ abstract Vehicle {
   + nextTurn()
   + interactWithLane(l: Lane)
   + setImmobilized()
-  + checkMobility()
 }
 class Bus {
-  - stop1: Junction
-  - stop2: Junction
+  - balance: int
   + interactWithLane(l: Lane)
+  + addIncome(amount: int)
+  + getScore(): int
 }
 class SnowPlow {
   + changeAttachment(new: Attachment)
   + buyAttachment()
   + refillAttachment()
   + interactWithLane(l: Lane)
-  + nextTurn()
   + crash(timestamp: int)
 }
 class Car {
-  - home: Junction
-  - work: Junction
-  + nextTurn()
   + interactWithLane(l: Lane)
 }
 abstract Attachment {
@@ -43,8 +39,6 @@ class SaltVomitter {
   + refill()
 }
 class Road {
-  - end1: Junction
-  - end2: Junction
   + snowFall()
 }
 class Lane {
@@ -56,14 +50,13 @@ class Lane {
   + snowFall()
 }
 class Junction
-class Player {
+class Cleaner {
   - balance: int
   + addIncome(amount: int)
   + getScore(): int
 }
 abstract class Commuter {
   + turnAround()
-  + nextTurn()
 }
 interface IControllable {
   + gotoLane(l: Lane, timestamp: int): bool
@@ -81,7 +74,8 @@ interface IRouteHandler {
 interface IScoreOwner {
   + getScore(): int
 }
-Road "4"*--o "1" Lane
+
+Road "4" *-- "1" Lane
 Dragon --|> Attachment
 Sweeper --|> Attachment
 VomitingHead --|> Attachment
@@ -89,20 +83,20 @@ IceBreaker --|> Attachment
 SaltVomitter --|> Attachment
 Road "2" o--o Junction
 Vehicle "1" o--o Lane
-Bus "2" o-- Junction
-Car "2" o-- Junction
+Commuter "1" o-- "1" Road : destination1
+Commuter "1" o-- "1" Road : destination2
 Vehicle ..|> IControllable
 SnowPlow --|> Vehicle
 SnowPlow ..|> ISnowPlow
-SnowPlow ..|> IScoreOwner
 Commuter --|> Vehicle
 Commuter ..|> IRouteHandler
 Bus --|> Commuter
 Bus ..|> IScoreOwner
 Car --|> Commuter
-Player ..|> IScoreOwner
-Player "1" *-- "0..*" Vehicle : controls
-Player "1" *-- "0..*" Attachment : inventory
+Cleaner ..|> IScoreOwner
+Cleaner "1" *-- "0..*" Vehicle : controls
+Cleaner "1" *-- "0..*" Attachment : inventory
 SnowPlow "1" o-- "0..*" Attachment : available_tools
 SnowPlow "1" o-- "1" Attachment : active_tool
+SnowPlow "1" --> "1" Cleaner : reportsIncomeTo
 @enduml
