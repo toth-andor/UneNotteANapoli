@@ -1,0 +1,1 @@
+Szekvencia diagramok ide
