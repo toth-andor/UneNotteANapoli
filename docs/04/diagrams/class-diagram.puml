@@ -77,11 +77,6 @@ class Lane {
 
 class Junction
 
-class Game {
-  - saveProgress()
-  + gameTick()
-}
-
 
 Road "4"*--o "1" Lane 
 
@@ -102,9 +97,6 @@ SnowPlow "1"*-- Attachment
 
 
 Road "2" o--o Junction
-
-Game "1"*-- MapModel
-Game *-- Vehicle
 
 Vehicle "1" o--o Lane
 
