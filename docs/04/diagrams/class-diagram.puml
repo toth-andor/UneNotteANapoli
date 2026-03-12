@@ -18,6 +18,7 @@ abstract PlayerVehicle {
     + nextTrunTunr()
 }
 
+
 class Bus {
   - stop1: Junction
   - stop2: Junction
