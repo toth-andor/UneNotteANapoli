@@ -1,15 +1,15 @@
 @startuml
-actor "Idő / Rendszer" as E
+actor "Rendszer" as S
 participant "r: Road" as R
 participant "l: Lane" as L
 participant "v1: Vehicle" as V1
 participant "v2: Vehicle" as V2
 
-E -> R : snowFall()
+S -> R : snowFall()
 activate R
     R -> L : snowFall()
     activate L
-        note right: l.snowLevel növekszik
+        note right: snowLevel++
     deactivate L
 deactivate R
 
@@ -19,7 +19,8 @@ activate L
         L -> V1 : setImmobilized()
         L -> V2 : setImmobilized()
         L -> L : isAvailable = false
+        note right: A sáv lezárul (isAvailable = false)
     end
-    L --> V1 : return
+    L --> V1 : returnCode
 deactivate L
-@enduml
+@endumls

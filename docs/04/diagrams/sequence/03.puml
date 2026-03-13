@@ -3,6 +3,17 @@ actor "Takarító" as T
 participant "p: SnowPlow" as P
 participant "a: Attachment" as A
 
+T -> P : buyAttachment()
+activate P
+    alt income >= attachmentPrice
+        P -> P : income -= attachmentPrice
+      
+        P --> T : true
+    else nincs elég pénz
+        P --> T : false
+    end
+deactivate P
+
 T -> P : changeAttachment(new)
 activate P
     create "new: Attachment" as NA
@@ -12,10 +23,5 @@ deactivate P
 T -> P : refillAttachment()
 activate P
     P -> A : refill()
-deactivate P
-
-T -> P : buyAttachment()
-activate P
-    note right: Az income attribútum csökken
 deactivate P
 @enduml
