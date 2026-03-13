@@ -13,8 +13,8 @@ class Bus {
   + getScore(): int
 }
 class SnowPlow {
-  + changeAttachment(new: Attachment)
-  + buyAttachment()
+  + changeAttachment(a: Attachment): bool
+  + buyAttachment(new: Attachment): bool
   + refillAttachment()
   + interactWithLane(l: Lane)
   + crash(timestamp: int)
@@ -97,5 +97,5 @@ Cleaner ..|> IScoreOwner
 Cleaner "1" *-- "1..*" SnowPlow : controls
 SnowPlow "1" o-- "1..*" Attachment : owned_tools
 SnowPlow "1" o-- "1" Attachment : active_tool
-SnowPlow "1" --> "1" Cleaner : reportsIncomeTo
+SnowPlow "1" --> "1" Cleaner : owner
 @enduml
