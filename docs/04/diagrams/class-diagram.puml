@@ -94,9 +94,8 @@ Bus --|> Commuter
 Bus ..|> IScoreOwner
 Car --|> Commuter
 Cleaner ..|> IScoreOwner
-Cleaner "1" *-- "0..*" Vehicle : controls
-Cleaner "1" *-- "0..*" Attachment : inventory
-SnowPlow "1" o-- "0..*" Attachment : available_tools
+Cleaner "1" *-- "1..*" SnowPlow : controls
+SnowPlow "1" o-- "1..*" Attachment : owned_tools
 SnowPlow "1" o-- "1" Attachment : active_tool
 SnowPlow "1" --> "1" Cleaner : reportsIncomeTo
 @enduml
