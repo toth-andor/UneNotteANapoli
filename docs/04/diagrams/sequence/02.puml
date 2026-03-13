@@ -1,0 +1,24 @@
+@startuml
+participant "v: Car / Bus" as V
+participant "current: Lane" as L
+participant "state: LaneState" as S
+
+V -> V : interactWithRoad()
+activate V
+    V -> L : getState()
+    activate L
+    L --> V : state
+    deactivate L
+    
+    V -> S : processInteraction(v)
+    activate S
+        alt Havas/Jeges az út
+            S -> V : setImmobilized(duration)
+            activate V
+                V -> V : isImmobilized = true
+                V -> V : immobilizationTime = duration
+            deactivate V
+        end
+    deactivate S
+deactivate V
+@enduml

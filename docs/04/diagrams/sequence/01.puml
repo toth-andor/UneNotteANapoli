@@ -1,0 +1,22 @@
+@startuml
+actor "Takarító" as T
+participant "p: SnowPlow" as P
+participant "head: Attachment" as A
+participant "current: Lane" as L
+
+T -> P : interactWithRoad()
+activate P
+    P -> A : cleanLane(current)
+    activate A
+        A -> L : getSnowLevel()
+        L --> A : amount
+        
+        alt Van elég üzemanyag/só
+            A -> L : removeSnow(amount)
+            A -> P : updateIncome(amount)
+        else Kifogyott
+            A --> P : effectless
+        end
+    deactivate A
+deactivate P
+@enduml
