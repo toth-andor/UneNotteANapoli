@@ -1,24 +1,24 @@
 @startuml
-participant "v: Car / Bus" as V
-participant "current: Lane" as L
-participant "state: LaneState" as S
+actor "Takarító" as T
+participant "p: SnowPlow" as P
+participant "a: Attachment" as A
+participant "l: Lane" as L
 
-V -> V : interactWithRoad()
-activate V
-    V -> L : getState()
-    activate L
-    L --> V : state
-    deactivate L
-    
-    V -> S : processInteraction(v)
-    activate S
-        alt Havas/Jeges az út
-            S -> V : setImmobilized(duration)
-            activate V
-                V -> V : isImmobilized = true
-                V -> V : immobilizationTime = duration
-            deactivate V
+T -> P : interactWithRoad()
+activate P
+    P -> A : cleanLane()
+    activate A
+        alt Söprő / Hányó fej
+            A -> L : snowLevel = 0
+        else Jégtörő fej
+            A -> L : isIcy = false
+        else Sárkány / Sószóró
+            A -> L : snowLevel = 0
+            A -> L : isIcy = false
         end
-    deactivate S
-deactivate V
+        A --> P : success
+    deactivate A
+    
+    P -> P : updateIncome()
+deactivate P
 @enduml

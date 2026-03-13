@@ -1,29 +1,21 @@
 @startuml
-actor "Rendszer / Játékos" as A
-participant "v: Vehicle" as V
-participant "currentLane: Lane" as L1
-participant "targetLane: Lane" as L2
+actor "Takarító" as T
+participant "p: SnowPlow" as P
+participant "a: Attachment" as A
 
-A -> V : nextTurn()
-activate V
-    V -> V : checkMobility()
-    note right: Ellenőrzi, hogy letelt-e a várakozási idő 
-    
-    alt isImmobilized == false
-        V -> L1 : getNextLane()
-        activate L1
-        L1 --> V : targetLane
-        deactivate L1
-        
-        V -> L2 : acceptVehicle(v)
-        activate L2
-            L2 --> V : success / failure
-        deactivate L2
-        
-        alt Sikeres belépés
-            V -> V : updatePosition()
-            V -> V : interactWithRoad()
-        end
-    end
-deactivate V
+T -> P : changeAttachment(new)
+activate P
+    create "new: Attachment" as NA
+    P -> NA : <<create>>
+deactivate P
+
+T -> P : refillAttachment()
+activate P
+    P -> A : refill()
+deactivate P
+
+T -> P : buyAttachment()
+activate P
+    note right: Az income attribútum csökken
+deactivate P
 @enduml
