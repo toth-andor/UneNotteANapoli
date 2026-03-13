@@ -24,19 +24,27 @@ class Car {
 }
 abstract Attachment {
   # price: int
-  + refill()
-  + cleanLane()
+  + cleanLane(l: Lane, timestamp: int): bool
+  + getPrice(): int
+  + refill(budget: int): int
 }
 class Dragon {
-  - fuelLevel
-  + refill()
+  - priceOfFuel: int
+  + cleanLane(l: Lane, timestamp: int): bool
+  + refill(budget: int): int
 }
 class Sweeper
 class VomitingHead
 class IceBreaker
 class SaltVomitter {
-  - saltLevel
-  + refill()
+  - priceOfFuel: int
+  + cleanLane(l: Lane, timestamp: int): bool
+  + refill(budget: int): int
+}
+interface IAttachment {
+  + cleanLane(l: Lane, timestamp: int): bool
+  + getPrice(): int
+  + refill(budget: int): int
 }
 class Road {
   + snowFall()
@@ -81,6 +89,7 @@ Sweeper --|> Attachment
 VomitingHead --|> Attachment
 IceBreaker --|> Attachment
 SaltVomitter --|> Attachment
+Attachment ..|> IAttachment
 Road "2" o--o Junction
 Vehicle "1" o--o Lane
 Commuter "1" o-- "1" Road : destination1
