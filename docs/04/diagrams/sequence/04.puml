@@ -1,26 +1,49 @@
 @startuml
-actor "Rendszer" as S
-participant "r: Road" as R
-participant "l: Lane" as L
-participant "v1: Vehicle" as V1
-participant "v2: Vehicle" as V2
+actor "Autó / Busz Vezető" as T
+actor "Idő / Rendszer" as E
+participant "v_new: Vehicle" as V
+participant "l: OutdoorLane" as L
+participant "s: IcyState" as S
+participant "v_old: Vehicle" as VO
 
-S -> R : snowFall()
-activate R
-    R -> L : snowFall()
+' --- hóesős szakasz ---
+group Havazás (külön folyamat)
+    E -> L : snowFall()
     activate L
-        note right: snowLevel++
+        L -> S : handleSnow(l, amount)
     deactivate L
-deactivate R
+end
 
-V1 -> L : acceptVehicle(v1)
-activate L
-    alt isIcy == true ÉS l.currentVehicle != null
-        L -> V1 : setImmobilized()
-        L -> V2 : setImmobilized()
-        L -> L : isAvailable = false
-        note right: A sáv lezárul (isAvailable = false)
-    end
-    L --> V1 : returnCode
-deactivate L
-@endumls
+' --- mozgós+ütközős szakasz ---
+group Következő kör / Mozgás
+    T -> V : nextTurn()
+    activate V
+        V -> L : acceptVehicle(v_new)
+        activate L
+            L -> S : handleTraffic(l, v_new)
+            activate S
+                
+                alt IcyState: Csúszás veszélye
+                    
+                    loop minden v_old a sávban (l.getVehicles())
+                        
+                        opt véletlenszerű ütközés bekövetkezik
+                            S -> V : crash(timestamp)
+                            S -> VO : crash(timestamp)
+                            S -> L : isAvailable = false
+                            note right: Ütközésnél a sáv járhatatlanná válik
+                            
+                        
+                            return crash_occurred
+                        end
+                        
+                    end
+                end
+                
+                S --> L : success
+            deactivate S
+            L --> V : ret
+        deactivate L
+    deactivate V
+end
+@enduml
