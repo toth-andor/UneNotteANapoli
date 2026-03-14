@@ -1,0 +1,27 @@
+'A BUSZOK MOZGASA A KET DESTINATION KOZOTT
+
+@startuml
+actor "Buszvezető" as B
+participant "v: Bus" as V
+participant "j: Junction" as J
+
+B -> V : nextTurn()
+activate V
+    V -> V : checkDestination(j)
+    
+    alt megérkezett a végállomásra (destination1 vagy destination2)
+        
+        V -> V : turnAround()
+        activate V
+            note right: megcseréli a jelenlegi célját a másikra
+        deactivate V
+        
+        V -> V : addIncome(reward)
+        note right: a sikeres fordulóért járó fizetség
+        
+    else Még nem érte el a végét
+    end
+    
+    V --> B : turn_finished
+deactivate V
+@enduml

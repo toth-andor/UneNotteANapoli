@@ -1,0 +1,45 @@
+'AZ ALAGUTAK MUKODESET BEMUTATO SZEKVENCIA DIAGRAM
+
+@startuml
+actor "Takarító" as T
+participant "p: SnowPlow" as P
+participant "l: TunnelLane" as L
+participant "r: Road" as R
+
+note over L: Az alagút immunis a környezeti hatásokra, sem a hó nem hat rá, sem a takaritás
+
+group Hóesés (Rendszeresemény)
+    [-> R : snowFall()
+    activate R
+        R -> L : snowFall()
+        activate L
+            note right: az alagútban nem esik a hó
+            L --> R
+        deactivate L
+    deactivate R
+end
+
+group Takarítási kísérlet
+    T -> P : interactWithLane(l)
+    activate P
+        P -> L : cleanWithHead(active_tool)
+        activate L
+            note right: nincs mit takarítani
+            L --> P
+        deactivate L
+        P --> T
+    deactivate P
+end
+
+group Jármű áthaladása
+    T -> P : gotoLane(l, timestamp)
+    activate P
+        P -> L : acceptVehicle(p)
+        activate L
+            note right: nincs hó/jég ami akadályt okozna
+            L --> P : true
+        deactivate L
+        P --> T
+    deactivate P
+end
+@enduml

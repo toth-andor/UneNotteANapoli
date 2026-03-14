@@ -1,0 +1,32 @@
+@startuml
+actor "Idő / Rendszer" as E
+participant "l: OutdoorLane" as L
+participant "s: SaltedState" as S
+
+E -> L : nextTurn(currentTimestamp)
+activate L
+    L -> S : handleTimeStep(l, currentTimestamp)
+    activate S
+        
+        note right: Ellenőrizzük: currentTimestamp - saltedTimestamp > limit
+        
+        alt A só hatása lejárt
+            
+            alt Jelenleg esik a hó (snowLevel > 0)
+                
+                S -> SaltyState ** : <<create>>
+                S -> L : setState(SS)
+            else Az út száraz
+                S -> DryState ** : <<create>>
+                S -> L : setState(DS)
+            end
+            
+            S --> L : state changed
+        else A só még aktív
+            S --> L : no change
+        end
+        
+    deactivate S
+    L --> E
+deactivate L
+@enduml
