@@ -1,0 +1,38 @@
+'SAVVALTAS, UTVONALKERESES
+
+@startuml
+actor "Vezető" as T
+participant "v: Vehicle" as V
+participant "j: Junction" as J
+participant "nextL: Lane" as L
+
+T -> V : nextTurn()
+activate V
+    
+    note right: a jármű a sáv végére ért
+    
+    V -> J : getNextLane(destination)
+    activate J
+        note right: a csomópont megkeresi a cél felé vezető következő sávot
+        J --> V : nextL
+    deactivate J
+    
+    alt talált érvényes útvonalat
+        V -> L : pushVehicle(v, timestamp)
+        activate L
+            L --> V : success
+        deactivate L
+        
+        alt sikeres sávváltás
+            V -> V : currentLane = nextL
+        else a sáv tele van vagy lezárt
+            note right: A jármű várakozik a csomópontban
+        end
+        
+    else nincs járható út a cél felé
+        note right: Újratervezés vagy várakozés
+    end
+
+    V --> T
+deactivate V
+@enduml
