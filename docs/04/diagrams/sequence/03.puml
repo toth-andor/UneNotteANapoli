@@ -1,27 +1,48 @@
 @startuml
 actor "Takarító" as T
 participant "p: SnowPlow" as P
+participant "owner: Cleaner" as C
 participant "a: Attachment" as A
 
-T -> P : buyAttachment()
-activate P
-    alt income >= attachmentPrice
-        P -> P : income -= attachmentPrice
-      
-        P --> T : true
-    else nincs elég pénz
-        P --> T : false
-    end
-deactivate P
+note over P, C: A SnowPlow ismeri a gazdáját (owner)
 
-T -> P : changeAttachment(new)
-activate P
-    create "new: Attachment" as NA
-    P -> NA : <<create>>
-deactivate P
+group buyAttachment(newAttr)
+    T -> P : buyAttachment(newAttr)
+    activate P
+        P -> newAttr : p = getPrice()
+        P -> C : b = getScore()
+        alt b >= p
+            P -> C : addIncome(-p)
+            P -> P : owned_tools.add(newAttr)
+            P --> T : true
+        else nincs elég pénz
+            P --> T : false
+        end
+    deactivate P
+end
 
-T -> P : refillAttachment()
-activate P
-    P -> A : refill()
-deactivate P
+group changeAttachment(target)
+    T -> P : changeAttachment(target)
+    activate P
+        alt target szerepel az owned_tools listában
+            P -> P : active_tool = target
+            P --> T : true
+        else nincs meg a fej
+            P --> T : false
+        end
+    deactivate P
+end
+
+group refillAttachment()
+    T -> P : refillAttachment()
+    activate P
+        P -> C : b = getScore()
+        P -> A : newB = refill(b)
+        activate A
+            
+        deactivate A
+        P -> C : addIncome(newB - b)
+        note right: A különbséget (költséget) vonjuk le
+    deactivate P
+end
 @enduml
