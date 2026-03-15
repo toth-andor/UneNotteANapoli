@@ -1,3 +1,5 @@
+'SOS UTAK VALTOZASA, ALLAPOTAIK, ILYESMI
+
 @startuml
 actor "Idő / Rendszer" as E
 participant "l: OutdoorLane" as L
@@ -8,13 +10,13 @@ activate L
     L -> S : handleTimeStep(l, currentTimestamp)
     activate S
         
-        note right: Ellenőrizzük: currentTimestamp - saltedTimestamp > limit
+        note right: ellenőrizzük: currentTimestamp - saltedTimestamp > limit
         
         alt A só hatása lejárt
             
             alt Jelenleg esik a hó (snowLevel > 0)
                 
-                S -> SaltyState ** : <<create>>
+                S -> SnowyState ** : <<create>>
                 S -> L : setState(SS)
             else Az út száraz
                 S -> DryState ** : <<create>>
