@@ -1,6 +1,5 @@
 @startuml class-diagram
 abstract Vehicle {
-  # currentLane: Lane
   # timeOutStart: int
   + nextTurn()
   + interactWithLane(l: Lane)
@@ -49,14 +48,48 @@ interface IAttachment {
 class Road {
   + snowFall()
 }
-class Lane {
-  - snowLevel: int
-  - icingCounter: int
-  - isAvailable: bool
-  - isIcy: bool
-  + acceptVehicle(v: Vehicle)
-  + snowFall()
+
+interface ILane {
+  + pushVehicle(v: Vehicle, timestamp: int)
+  + popVehicle(v: Vehicle)
+  + snowFall(snow: int)
+  + cleanWithHead(head: Attachment)
 }
+
+abstract Lane {
+  + pushVehicle(v: Vehicle, timestamp: int)
+  + popVehicle(v: Vehicle)
+  {abstract} + snowFall(snow: int)
+  {abstract} + cleanWithHead(head: Attachment)
+}
+
+class OutdoorLane {
+  - currentState: LaneState
+  + snowFall(snow: int)
+  + cleanWithHead(head: Attachment)
+  + setState(s: LaneState)
+  + interactWithLane(v: Vehicle)
+}
+
+class TunnelLane {
+  + snowFall(snow: int)
+  + cleanWithHead(head: Attachment)
+}
+
+' --- State Pattern for OutdoorLane ---
+
+abstract LaneState {
+  {abstract} + handleSnow(lane: OutdoorLane, amount: int): LaneState
+  {abstract} + handleCleaning(lane: OutdoorLane, head: Attachment): LaneState
+  {abstract} + handleTraffic(lane: OutdoorLane, v: Vehicle)
+}
+
+class DryState
+class SnowyState
+class IcyState
+class SaltedState
+class CrashedState
+
 class Junction
 class Cleaner {
   - balance: int
@@ -83,6 +116,21 @@ interface IScoreOwner {
   + getScore(): int
 }
 
+ILane <|.. Lane
+Lane <|-- OutdoorLane
+Lane <|-- TunnelLane
+
+LaneState <|-- DryState
+LaneState <|-- SnowyState
+LaneState <|-- IcyState
+LaneState <|-- SaltedState
+LaneState <|-- CrashedState
+
+OutdoorLane *-- LaneState
+
+Lane "n" --> "1" Junction : source
+Lane "n" --> "1" Junction : destination
+
 Road "4" *-- "1" Lane
 Dragon --|> Attachment
 Sweeper --|> Attachment
@@ -91,7 +139,7 @@ IceBreaker --|> Attachment
 SaltVomitter --|> Attachment
 Attachment ..|> IAttachment
 Road "2" o--o Junction
-Vehicle "1" o--o Lane
+Vehicle  o-- ILane : currentLane
 Commuter "1" o-- "1" Road : destination1
 Commuter "1" o-- "1" Road : destination2
 Vehicle ..|> IControllable
