@@ -1,9 +1,7 @@
 @startuml class-diagram
 abstract Vehicle {
   # timeOutStart: int
-  + nextTurn()
-  + interactWithLane(l: Lane)
-  + setImmobilized()
+  + gotoLane(l: Lane, timestamp: int): bool
 }
 class Bus {
   - balance: int
