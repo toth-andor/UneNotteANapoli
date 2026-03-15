@@ -20,17 +20,17 @@ activate V
     alt talált érvényes útvonalat
         V -> L : pushVehicle(v, timestamp)
         activate L
-            L --> V : success
+            L --> V : success (bool)
         deactivate L
         
-        alt sikeres sávváltás
+        alt success == true
             V -> V : currentLane = nextL
-        else a sáv tele van vagy lezárt
-            note right: A jármű várakozik a csomópontban
+        else success == false (baleset van a sávon)
+            note right: A sáv lezárva baleset miatt
         end
         
     else nincs járható út a cél felé
-        note right: Újratervezés vagy várakozés
+        note right: Újratervezés vagy várakozás
     end
 
     V --> T
