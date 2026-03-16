@@ -52,17 +52,6 @@ class TunnelLane {
 
 ' --- State Pattern for OutdoorLane ---
 
-abstract LaneState {
-  {abstract} + handleSnow(lane: OutdoorLane, amount: int): LaneState
-  {abstract} + handleCleaning(lane: OutdoorLane, head: Attachment): LaneState
-  {abstract} + handleTraffic(lane: OutdoorLane, v: Vehicle)
-}
-
-class DryState
-class SnowyState
-class IcyState
-class SaltedState
-class CrashedState
 
 class Junction
 class Cleaner {
@@ -94,13 +83,7 @@ ILane <|.. Lane
 Lane <|-- OutdoorLane
 Lane <|-- TunnelLane
 
-LaneState <|-- DryState
-LaneState <|-- SnowyState
-LaneState <|-- IcyState
-LaneState <|-- SaltedState
-LaneState <|-- CrashedState
 
-OutdoorLane *-- LaneState
 
 Lane "n" --> "1" Junction : source
 Lane "n" --> "1" Junction : destination
