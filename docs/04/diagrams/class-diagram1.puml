@@ -39,10 +39,10 @@ abstract Lane {
 
 class OutdoorLane {
   - currentState: LaneState
+  - saltedTimestamp: int
   + snowFall(snow: int)
   + cleanWithHead(head: Attachment)
   + setState(s: LaneState)
-  + interactWithLane(v: Vehicle)
 }
 
 class TunnelLane {
