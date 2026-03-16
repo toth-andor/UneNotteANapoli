@@ -347,7 +347,6 @@ esetleges mozgásképtelenség kezdetét. Maga az osztály nem példányosíthat
 IControllable
 
 **Attribútumok**
-- `currentLane: Lane` — az a sáv, amelyen a jármű jelenleg tartózkodik
 - `timeOutStart: int` — az ütközés bekövetkezésének időpillanata; ebből számítható,
   hogy mikor válik ismét mozgásképessé a jármű
 
@@ -355,10 +354,6 @@ IControllable
 - `bool gotoLane(Lane l, int timestamp)`: Megpróbálja befogadtatni a járművet `l`
   sávval a `pushVehicle` meghívásán keresztül. Sikeres esetben frissíti a
   `currentLane` értékét és meghívja az `interactWithLane`-t.
-- `void crash(int timestamp)`: Beállítja a `timeOutStart` értékét az ütközés
-  pillanatára. A `SnowPlow` felüldefiniálja üres implementációval.
-- `void interactWithLane(Lane l)`: Leszármazottakban felül van definiálva a konkrét
-  kölcsönhatás megvalósításához.
 
 **Asszociációk**
 - `currentLane (1 ↔ 1)`: A jármű és az aktuális sáv kölcsönös asszociációja; a `Lane`
