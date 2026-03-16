@@ -36,35 +36,6 @@ class SnowPlow {
 }
 
 
-abstract LaneState {
-  {abstract} + handleSnow(lane: OutdoorLane, amount: int): LaneState
-  {abstract} + handleCleaning(lane: OutdoorLane, head: Attachment): LaneState
-  {abstract} + handleTraffic(lane: OutdoorLane, v: Vehicle)
-}
-
-class DryState
-class SnowyState
-class IcyState
-class SaltedState
-class CrashedState
-
-class OutdoorLane {
-  - currentState: LaneState
-  + snowFall(snow: int)
-  + cleanWithHead(head: Attachment)
-  + setState(s: LaneState)
-  + interactWithLane(v: Vehicle)
-}
-
-
-LaneState <|-- DryState
-LaneState <|-- SnowyState
-LaneState <|-- IcyState
-LaneState <|-- SaltedState
-LaneState <|-- CrashedState
-
-OutdoorLane *-- LaneState
-
 Dragon --|> Attachment
 Sweeper --|> Attachment
 VomitingHead --|> Attachment
