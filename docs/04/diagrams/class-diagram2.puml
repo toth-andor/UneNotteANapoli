@@ -1,0 +1,47 @@
+
+abstract Attachment {
+  # price: int
+  + cleanLane(l: Lane, timestamp: int): bool
+  + getPrice(): int
+  + refill(budget: int): int
+}
+
+interface IAttachment {
+  + cleanLane(l: Lane, timestamp: int): bool
+  + getPrice(): int
+  + refill(budget: int): int
+}
+
+class Dragon {
+  - priceOfFuel: int
+  + cleanLane(l: Lane, timestamp: int): bool
+  + refill(budget: int): int
+}
+class Sweeper
+class VomitingHead
+class IceBreaker
+class SaltVomitter {
+  - priceOfFuel: int
+  + cleanLane(l: Lane, timestamp: int): bool
+  + refill(budget: int): int
+}
+
+class SnowPlow {
+  + changeAttachment(a: Attachment): bool
+  + buyAttachment(new: Attachment): bool
+  + refillAttachment()
+  + interactWithLane(l: Lane)
+  + crash(timestamp: int)
+}
+
+
+Dragon --|> Attachment
+Sweeper --|> Attachment
+VomitingHead --|> Attachment
+IceBreaker --|> Attachment
+SaltVomitter --|> Attachment
+Attachment ..|> IAttachment
+
+
+SnowPlow "1" o-- "1..*" Attachment : owned_tools
+SnowPlow "1" o-- "1" Attachment : active_tool
