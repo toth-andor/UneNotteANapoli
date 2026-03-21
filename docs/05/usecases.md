@@ -156,10 +156,18 @@ xaélskdjf
 | Aktorok		| OutdoorLane, DryState, SnoweyState, SnowPlow, Sweeper, Road |
 | Forgatókönyv | **1.** Létrehozunk két OutdoorLane-t  egyiket SnoweyState-ben a másikat DryState és hozzáadjuk őket egy Road-hoz. **2.** A SnowPlow Sweeper fejjel interaktál a SnowyState-ben lévő sávval. **3.** Az interaktált sáv DryState-be, a szomszéd sáv SnoweyState-be kerül |
 
-### Use-case 19: Hókotró utat próbál takarítani kifogyott Dragon vagy SaltVomitter fejjel
+### Use-case 20: Hókotró utat próbál takarítani kifogyott Dragon vagy SaltVomitter fejjel
 
 | Use-case neve	| Hókotró interakció hányófejjel |
 |--- | ---|
 | Rövid leírás		| Hókotró utat próbál takarítani kifogyott Dragon vagy SaltVomitter fejjel, sikeretelenül |
 | Aktorok		| OutdoorLane, SnoweyState, SnowPlow, Dragon, SaltVomitter |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnoweyState-ben, egy SnowPlow-t üres Dragon vagy SaltVomitter fejjel **2.** A SnowPlow az aktív fejjel interaktál a SnowyState-ben lévő sávval. **3.** A sáv továbbra is SnoweyState-ben marad |
+
+### Use-case 21: Jeges út takarítása IceBreaker fejjel
+
+| Use-case neve	| Hókotró interakció hányófejjel |
+|--- | ---|
+| Rövid leírás		| Hókotró utat takarít IceBreaker fejjel |
+| Aktorok		| OutdoorLane, IcyState, SnoweyState, SnowPlow, IceBreaker |
+| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t IcyState-ben és egy SnowPlow-t IceBreaker fejjel **2.** A SnowPlow az aktív fejjel interaktál a IcyState-ben lévő sávval. **3.** A sáv SnoweyState állapotba kerül |
