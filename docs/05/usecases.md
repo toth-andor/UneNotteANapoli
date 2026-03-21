@@ -171,3 +171,11 @@ xaélskdjf
 | Rövid leírás		| Hókotró utat takarít IceBreaker fejjel |
 | Aktorok		| OutdoorLane, IcyState, SnoweyState, SnowPlow, IceBreaker |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t IcyState-ben és egy SnowPlow-t IceBreaker fejjel **2.** A SnowPlow az aktív fejjel interaktál a IcyState-ben lévő sávval. **3.** A sáv SnoweyState állapotba kerül |
+
+### Use-case 22: Hókotró hányófejjel takarít havas utat
+
+| Use-case neve	| Hókotró interakció hányófejjel |
+|--- | ---|
+| Rövid leírás		| Hókotró söprőfejjel takarít havas utat. |
+| Aktorok		| OutdoorLane, DryState, SnoweyState, SnowPlow, VomittingHead |
+| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t és egy SnowPlow-t VomittingHead fejjel **2.** A SnowPlow az aktív fejjel interaktál a SnowyState-ben lévő sávval. **3.** A sáv DryState-be kerül |
