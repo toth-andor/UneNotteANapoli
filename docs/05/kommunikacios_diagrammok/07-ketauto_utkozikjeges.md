@@ -1,15 +1,17 @@
 ```mermaid
 graph LR
-    S((Rendszer))
-    OL[<u>:OutdoorLane</u>]
-    IS[<u>:IcyState</u>]
+    SK((:Skeleton))
+    OL[<u>lane:OutdoorLane</u>]
+    IS[<u>icy:IcyState</u>]
     C1[<u>car1:Car</u>]
     C2[<u>car2:Car</u>]
 
-    S -- "1: rátesz(car1)" --> OL
-    S -- "2: rátesz(car2)" --> OL
-    OL -- "2.1: állapot_lekérdez()" --> IS
-    OL -- "2.2: ellenőriz_ütközés()" --> OL
-    OL -- "2.3: ütközik()" --> C1
-    OL -- "2.4: ütközik()" --> C2
+    SK -- "1: << create >>" --> OL
+    SK -- "2: << create >>" --> IS
+    SK -- "3: << create >>" --> C1
+    SK -- "4: << create >>" --> C2
+
+    SK -- "5: setState(icy)" --> OL
+    SK -- "6: addVehicle(car1)" --> OL
+    SK -- "7: addVehicle(car2)" --> OL
 ```
