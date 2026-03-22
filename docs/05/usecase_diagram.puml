@@ -1,0 +1,81 @@
+@startuml
+skinparam actorStyle stickman
+left to right direction
+
+actor "Tesztelő" as User
+
+package "Skeleton Keretrendszer" {
+    usecase "Teszteset indítása (Menü)" as MainUC
+    
+    usecase "UC1: Havazás folyamata" as UC1
+    usecase "UC9: Hó letaposása jéggé" as UC9
+    
+    usecase "UC2: Hóeltakarítás söpréssel" as UC2
+    usecase "UC3: Takarítás és egyenleg növekedés" as UC3
+    usecase "UC5: Hókotró fej vásárlása" as UC5
+    usecase "UC6: Hóeltakarítás jégtörővel (hatástalan)" as UC6
+    usecase "UC8: Hókotró fej újratöltése" as UC8
+    usecase "UC10: Hókotró fej csere" as UC10
+    usecase "UC12: Sószóró interakció" as UC12
+    usecase "UC13: Hóeltakarítás sószóróval" as UC13
+    usecase "UC15: Söprés hatása szomszédos sávra" as UC15
+    usecase "UC16: Takarítás üres fejjel (hatástalan)" as UC16
+    usecase "UC17: Jeges út takarítása jégtörővel" as UC17
+
+    
+    usecase "UC4: Busz megfordulása és pontszerzés" as UC4
+    usecase "UC7: Két autó ütközik jeges úton" as UC7
+    usecase "UC11: Autó interakció száraz úton" as UC11
+    usecase "UC14: Autó interakció sószórt úton" as UC14
+}
+
+
+User --> MainUC
+
+MainUC <.. UC1 : <<extend>>
+MainUC <.. UC2 : <<extend>>
+MainUC <.. UC3 : <<extend>>
+MainUC <.. UC4 : <<extend>>
+MainUC <.. UC5 : <<extend>>
+MainUC <.. UC6 : <<extend>>
+MainUC <.. UC7 : <<extend>>
+MainUC <.. UC8 : <<extend>>
+MainUC <.. UC9 : <<extend>>
+MainUC <.. UC10 : <<extend>>
+MainUC <.. UC11 : <<extend>>
+MainUC <.. UC12 : <<extend>>
+MainUC <.. UC13 : <<extend>>
+MainUC <.. UC14 : <<extend>>
+MainUC <.. UC15 : <<extend>>
+MainUC <.. UC16 : <<extend>>
+MainUC <.. UC17 : <<extend>>
+
+' Másodlagos aktorok
+actor "Tisztító" as Cleaner
+actor "Buszvezető" as Driver
+actor "Idő/kör" as System
+actor "Autó" as Car
+
+UC1 -- System
+UC9 -- System
+
+UC2 -- Cleaner
+UC3 -- Cleaner
+UC5 -- Cleaner
+UC6 -- Cleaner
+UC8 -- Cleaner
+UC10 -- Cleaner
+UC13 -- Cleaner
+UC15 -- Cleaner
+UC16 -- Cleaner
+UC17 -- Cleaner
+
+UC4 -- Driver
+UC9 -- Driver
+
+UC7 -- Car
+UC14 -- Car
+UC11 -- Car
+UC9 -- Car
+
+@enduml
