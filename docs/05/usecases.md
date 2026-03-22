@@ -10,29 +10,21 @@
 
 ### Use-case 2: Hóeltakarítás söpréssel
 
-| Use-case neve	| Hóeltakarítás söpréssel |
+| Use-case neve	| Hatásos általános takarítás: Hóeltakarítás söpréssel |
 |--- | ---|
 | Rövid leírás		| Egy hókotró söprőfejjel letakarítja a havat egy OutdoorLane-en. |
 | Aktorok		| Cleaner, OutdoorLane, SnowyState, DryState, SnowPlow, Sweeper |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow söprőfejjel letakarítja a havat, a sáv állapota DryState-re változik. |
 
-### Use-case 3: Jeges úton történő baleset
+### Use-case 3: Takarítás és ennek hatására egyenleg változása
 
-| Use-case neve	| Jeges úton történő baleset |
+| Use-case neve	| Takarítás és ennek hatására egyenleg változása |
 |--- | ---|
-| Rövid leírás		| Két autó ütközik egy jeges úton, a sáv állapota CrashedState-re változik. |
-| Aktorok		| OutdoorLane, IcyState, CrashedState, Car |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t IcyState-ben. **2.** Két Car ütközik a sávon, a sáv állapota CrashedState-re változik. |
+| Rövid leírás		| A takarító játékos a hókotrójával letakarít egy erre alkalmas állapotban lévő sávot, az egyenlege növekszik. |
+| Aktorok		| OutdoorLane, SnowySatate, SnowPlow, Sweeper, Cleaner |
+| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A Cleaner letakarítja az utat, ennek hatására az egyenlege növekszik.  |
 
-### Use-case 4: Hóeltakarítás sószóróval
-
-| Use-case neve	| Hóeltakarítás sószóróval |
-|--- | ---|
-| Rövid leírás		| Egy hókotró sószóró fejjel letakarítja a havat egy OutdoorLane-en. |
-| Aktorok		| Cleaner, OutdoorLane, SnowyState, SaltedState, SnowPlow, SaltVomitter |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow sószóró fejjel letakarítja a havat, a sáv állapota SaltedState-re változik. |
-
-### Use-case 5: Busz megfordulása és pontszerzés
+### Use-case 4: Busz megfordulása és pontszerzés
 
 | Use-case neve	| Busz megfordulása és pontszerzés |
 |--- | ---|
@@ -40,7 +32,7 @@
 | Aktorok		| Bus |
 | Forgatókönyv | **1.** Létrehozunk egy Bus-t úgy, hogy a `currentLane` megegyezzen az egyik végállomással. **2.** A busz megfordul, és pontot szerez. |
 
-### Use-case 6: Hókotró fej vásárlása
+### Use-case 5: Hókotró fej vásárlása
 
 | Use-case neve	| Hókotró fej vásárlása |
 |--- | ---|
@@ -48,15 +40,15 @@
 | Aktorok		| Cleaner, SnowPlow, Sweeper |
 | Forgatókönyv | **1.** Létrehozunk egy SnowPlow-t. **2.** A SnowPlow vásárol egy Sweeper fejet, és az egyenlege csökken. |
 
-### Use-case 7: Hóeltakarítás jégtörővel
+### Use-case 6: Hóeltakarítás jégtörővel
 
-| Use-case neve	| Hóeltakarítás jégtörővel |
+| Use-case neve	| Hatástalan takarítás: Hóeltakarítás jégtörővel |
 |--- | ---|
 | Rövid leírás		| Egy hókotró jégtörő fejjel letakarítja a havat egy OutdoorLane-en. |
 | Aktorok		| Cleaner, OutdoorLane, SnowyState, SnowPlow, IceBreaker |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow jégtörő fejjel letakarítja a havat, a sáv állapota változatlanul SnowyState marad. |
 
-### Use-case 8: Két autó ütközik jeges úton
+### Use-case 7: Két autó ütközik jeges úton
 
 | Use-case neve	| Két autó ütközik jeges úton |
 |--- | ---|
@@ -64,7 +56,7 @@
 | Aktorok		| OutdoorLane, IcyState, Car |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t IcyState-ben. **2.** Létrehozunk 2 Car-t. **3.** A két Car-t egymás után rátesszük az útra. **4.** A két autó egymásnak ütközik. |
 
-### Use-case 9: Hókotró fej újratöltése
+### Use-case 8: Hókotró fej újratöltése
 
 | Use-case neve	| Hókotró fej újratöltése |
 |--- | ---|
@@ -72,7 +64,7 @@
 | Aktorok		| Cleaner, Dragon/SaltVomitter, SnowPlow, Sweeper |
 | Forgatókönyv | **1.** Létrehozunk egy Cleaner-t és hozzá egy SnowPlow-t. **2.** A SnowPlow-t felszereljük egy Dragon/SaltVomitter fejjel. **3.** A SnowPlow újratölti a Dragon/SaltVomitter fejet, és a Cleaner egyenlege csökken. |
 
-### Use-case 10: Busz/Autó interakció hóval borított úton
+### Use-case 9: Busz/Autó interakció hóval borított úton
 
 | Use-case neve	| Busz/Autó interakció hóval borított úton |
 |--- | ---|
@@ -80,7 +72,7 @@
 | Aktorok		| OutdoorLane, SnowyState, IcyState, Bus, Car |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben és egy buszt/autót. **2.** A busz/autó interaktál a sávval ahányszor a jéggé taposáshoz kell, és letapossa a havat. **3.** A sáv IcyState-be kerül. |
 
-### Use-case 11: Hókotró fej csere
+### Use-case 10: Hókotró fej csere
 
 | Use-case neve	| Hókotró fej csere |
 |--- | ---|
@@ -88,23 +80,8 @@
 | Aktorok		| Cleaner, SnowPlow, Sweeper, IceBreaker |
 | Forgatókönyv | **1.** Létrehozunk egy SnowPlow-t úgy, hogy birtokoljon Sweeper és IceBreaker fejet. **2.** A SnowPlow cseréli a Sweeper fejét IceBreaker fejre. |
 
-### Use-case 12: Hóeltakarítás sárkányfejjel
 
-| Use-case neve	| Hóeltakarítás sárkányfejjel |
-|--- | ---|
-| Rövid leírás		| Egy hókotró sárkányfejjel letakarítja a havat egy OutdoorLane-en. |
-| Aktorok		| Cleaner, OutdoorLane, SnowyState, DryState, SnowPlow, Dragon |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow sárkányfejjel letakarítja a havat, a sáv állapota DryState-re változik. |
-
-### Use-case 13: Hóeltakarítás hányófejjel
-
-| Use-case neve	| Hóeltakarítás hányófejjel |
-|--- | ---|
-| Rövid leírás		| Egy hókotró hányófejjel letakarítja a havat egy OutdoorLane-en. |
-| Aktorok		| Cleaner, OutdoorLane, SnowyState, DryState, SnowPlow, VomitingHead |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow hányófejjel letakarítja a havat, a sáv állapota DryState-re változik. |
-
-### Use-case 14: Autó interakció száraz úton
+### Use-case 11: Autó interakció száraz úton
 
 | Use-case neve	| Autó interakció száraz úton |
 |--- | ---|
@@ -112,7 +89,7 @@
 | Aktorok		| OutdoorLane, DryState, Car |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t DryState-ben. **2.** Egy Car interaktál a sávon, és nem csúszik meg. |
 
-### Use-case 15: Hókotró interakció sószóró fejjel
+### Use-case 12: Hókotró interakció sószóró fejjel
 
 | Use-case neve	| Hókotró interakció sószóró fejjel |
 |--- | ---|
@@ -120,23 +97,16 @@
 | Aktorok		| Cleaner, OutdoorLane, DryState, SaltedState, SnowPlow, SaltVomitter |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t DryState-ben. **2.** A SnowPlow sószóró fejjel interaktál a sávon. **3.** A sáv SaltedState-be kerül. |
 
-### Use-case 16: Hóeltakarítás sószóró fejjel
+### Use-case 13: Hóeltakarítás sószóró fejjel
 
-| Use-case neve	| Hóeltakarítás sószóró fejjel |
+| Use-case neve	| Takarítás fogyóanyaggal: Hóeltakarítás sószóró fejjel |
 |--- | ---|
 | Rövid leírás		| Egy hókotró sószóró fejjel letakarítja a havat egy OutdoorLane-en. |
 | Aktorok		| Cleaner, OutdoorLane, SnowyState, SaltedState, SnowPlow, SaltVomitter |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow sószóró fejjel letakarítja a havat, a sáv állapota SaltedState-re változik. |
 
-### Use-case 17: Hóeltakarítás hányófejjel
 
-| Use-case neve	| Hóeltakarítás hányófejjel |
-|--- | ---|
-| Rövid leírás		| Egy hókotró hányófejjel letakarítja a havat egy OutdoorLane-en. |
-| Aktorok		| Cleaner, OutdoorLane, SnowyState, DryState, SnowPlow, VomitingHead |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben. **2.** A SnowPlow hányófejjel letakarítja a havat, a sáv állapota DryState-re változik. |
-
-### Use-case 18: Autó interakció sószórt úton
+### Use-case 14: Autó interakció sószórt úton
 
 | Use-case neve	| Autó interakció sószórt úton |
 |--- | ---|
@@ -144,23 +114,15 @@
 | Aktorok		| OutdoorLane, SaltedState, Car |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SaltedState-ben. **2.** Egy Car interaktál a sávon, és nem csúszik meg. |
 
-### Use-case 19: Busz interakció sószórt úton
+### Use-case 15: Hókotró söprőfejjel takarít havas utat
 
-| Use-case neve	| Busz interakció sószórt úton |
-|--- | ---|
-| Rövid leírás		| Egy busz interaktál egy sószórt úton, és nem csúszik meg. |
-| Aktorok		| OutdoorLane, SaltedState, Bus |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SaltedState-ben. **2.** Egy Bus interaktál a sávon, és nem csúszik meg. |
-
-### Use-case 20: Hókotró söprőfejjel takarít havas utat
-
-| Use-case neve	| Hókotró söprőfejjel takarít havas utat |
+| Use-case neve	| Söprőfej hatása szomszédos sávok esetén: Hókotró söprőfejjel takarít havas utat |
 |--- | ---|
 | Rövid leírás		| Hókotró söprőfejjel takarít havas utat. |
 | Aktorok		| Cleaner, OutdoorLane, DryState, SnowyState, SnowPlow, Sweeper, Road |
 | Forgatókönyv | **1.** Létrehozunk két OutdoorLane-t, egyiket SnowyState-ben, a másikat DryState-ben, és hozzáadjuk őket egy Road-hoz. **2.** A SnowPlow Sweeper fejjel interaktál a SnowyState-ben lévő sávval. **3.** Az interaktált sáv DryState-be, a szomszéd sáv SnowyState-be kerül. |
 
-### Use-case 21: Hókotró utat próbál takarítani kifogyott Dragon vagy SaltVomitter fejjel
+### Use-case 16: Hókotró utat próbál takarítani kifogyott Dragon vagy SaltVomitter fejjel
 
 | Use-case neve	| Hókotró utat próbál takarítani kifogyott Dragon vagy SaltVomitter fejjel |
 |--- | ---|
@@ -168,18 +130,10 @@
 | Aktorok		| Cleaner, OutdoorLane, SnowyState, SnowPlow, Dragon, SaltVomitter |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben, egy SnowPlow-t üres Dragon vagy SaltVomitter fejjel. **2.** A SnowPlow az aktív fejjel interaktál a SnowyState-ben lévő sávval. **3.** A sáv továbbra is SnowyState-ben marad. |
 
-### Use-case 22: Jeges út takarítása IceBreaker fejjel
+### Use-case 17: Jeges út takarítása IceBreaker fejjel
 
 | Use-case neve	| Jeges út takarítása IceBreaker fejjel |
 |--- | ---|
 | Rövid leírás		| Hókotró utat takarít IceBreaker fejjel. |
 | Aktorok		| Cleaner, OutdoorLane, IcyState, SnowyState, SnowPlow, IceBreaker |
 | Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t IcyState-ben és egy SnowPlow-t IceBreaker fejjel. **2.** A SnowPlow az aktív fejjel interaktál a IcyState-ben lévő sávval. **3.** A sáv SnowyState állapotba kerül. |
-
-### Use-case 23: Hókotró hányófejjel takarít havas utat
-
-| Use-case neve	| Hókotró hányófejjel takarít havas utat |
-|--- | ---|
-| Rövid leírás		| Hókotró hányófejjel takarít havas utat. |
-| Aktorok		| Cleaner, OutdoorLane, DryState, SnowyState, SnowPlow, VomittingHead |
-| Forgatókönyv | **1.** Létrehozunk egy OutdoorLane-t SnowyState-ben és egy SnowPlow-t VomittingHead fejjel. **2.** A SnowPlow az aktív fejjel interaktál a SnowyState-ben lévő sávval. **3.** A sáv DryState-be kerül. |
