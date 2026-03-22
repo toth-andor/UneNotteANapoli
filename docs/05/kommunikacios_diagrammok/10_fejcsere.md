@@ -1,12 +1,18 @@
 ```mermaid
 graph LR
-    C((:Cleaner))
-    SP[<u>:SnowPlow</u>]
-    SW[<u>:Sweeper</u>]
-    IB[<u>:IceBreaker</u>]
+    SK((:Skeleton))
+    CL[<u>cl:Cleaner</u>]
+    SP[<u>sp:SnowPlow</u>]
+    SW[<u>sw:Sweeper</u>]
+    IB[<u>ib:IceBreaker</u>]
 
-    C -- "1: fejet_cserél(IceBreaker)" --> SP
-    SP -- "1.1: deaktivál()" --> SW
-    SP -- "1.2: aktivál()" --> IB
-    SP -- "1.3: setAktívFej(IceBreaker)" --> SP
+    SK -- "1: << create >>" --> CL
+    SK -- "2: << create >>" --> SP
+    SK -- "3: << create >>" --> SW
+    SK -- "4: << create >>" --> IB
+
+    SK -- "5: setPlow(sp)" --> CL
+    SK -- "6: addAttachment(sw)" --> SP
+    SK -- "7: addAttachment(ib)" --> SP
+    SK -- "8: changeAttachment(sw)" --> SP
 ```
