@@ -1,13 +1,14 @@
 ```mermaid
 graph LR
-    V((:Bus/Car))
-    OL[<u>:OutdoorLane</u>]
-    SN[<u>:SnowyState</u>]
-    IC[<u>:IcyState</u>]
+    SK((:Skeleton))
+    OL[<u>lane:OutdoorLane</u>]
+    SN[<u>snowy:SnowyState</u>]
+    B[<u>bus:Bus</u>]
 
-    V -- "1: interaktál()" --> OL
-    OL -- "1.1: tapos()" --> SN
-    OL -. "1.2: <<megszüntet>>" .-> SN
-    OL -- "1.3: <<létrehoz>>" --> IC
-    OL -- "1.4: setState(IcyState)" --> OL
+    SK -- "1: << create >>" --> OL
+    SK -- "2: << create >>" --> SN
+    SK -- "3: << create >>" --> B
+
+    SK -- "4: setState(snowy)" --> OL
+    SK -- "5: addVehicle(bus)" --> OL
 ```
