@@ -1,10 +1,11 @@
 ```mermaid
 graph LR
-    A((Bus))
-    B[<u>:Bus</u>]
-    L[<u>currentLane:Lane</u>]
+    SK((:Skeleton))
+    B[<u>bus:Bus</u>]
+    L[<u>terminal:Lane</u>]
 
-    A -- "1: megfordul()" --> B
-    B -- "1.1: ellenőriz_végállomás()" --> L
-    B -- "1.2: növel_pontszám()" --> B
+    SK -- "1: << create >>" --> B
+    SK -- "2: << create >>" --> L
+    
+    SK -- "3: setCurrentLane(terminal)" --> B
 ```
