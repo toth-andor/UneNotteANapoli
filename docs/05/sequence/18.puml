@@ -1,0 +1,25 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "sys : Controller" as S
+participant "b : Bus" as B
+
+' A vezérlő jelzi a busznak, hogy megérkezett és forduljon meg
+S -> B : turnAround()
+activate B
+
+    ' Belső logika: a busz megcseréli a destination1 és destination2 attribútumait
+    note right of B: destination swap logic
+    
+    ' A busz meghívja a saját jövedelem-kezelő metódusát (addIncome)
+    ' Ez az osztálydiagramodon a Bus-nál szerepel
+    B -> B : addIncome(reward)
+    activate B
+        note right of B: balance += reward
+    deactivate B
+    
+    ' Visszajelzés a vezérlőnek a sikeres műveletről
+    B -->> S : 
+deactivate B
+@enduml

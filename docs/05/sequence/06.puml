@@ -1,0 +1,19 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "c : Cleaner" as C
+participant "p : SnowPlow" as P
+participant "sv : SaltVomitter" as S
+participant "lane : OutdoorLane" as L
+
+C -> P : interactWithLane(lane)
+activate P
+    P -> S : cleanLane(lane, currentTimestamp)
+    activate S
+        note right: A fej ellenőrzi a tartályt
+        S -->> P : false
+    deactivate S
+P -->> C : 
+deactivate P
+@enduml
