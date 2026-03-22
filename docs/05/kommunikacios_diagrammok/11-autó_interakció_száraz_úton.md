@@ -1,10 +1,14 @@
 ```mermaid
 graph LR
-    V((:Car))
-    OL[<u>:OutdoorLane</u>]
-    DS[<u>:DryState</u>]
+    SK((:Skeleton))
+    OL[<u>lane:OutdoorLane</u>]
+    DS[<u>dry:DryState</u>]
+    C[<u>car:Car</u>]
 
-    V -- "1: interaktál()" --> OL
-    OL -- "1.1: állapot_lekérdez()" --> DS
-    OL -- "1.2: nem_csúszik()" --> V
+    SK -- "1: << create >>" --> OL
+    SK -- "2: << create >>" --> DS
+    SK -- "3: << create >>" --> C
+
+    SK -- "4: setState(dry)" --> OL
+    SK -- "5: addVehicle(car)" --> OL
 ```
