@@ -1,10 +1,11 @@
 ```mermaid
 graph LR
-    C((:Cleaner))
-    SP[<u>:SnowPlow</u>]
-    SW[<u>:Sweeper</u>]
+    SK((:Skeleton))
+    CL[<u>cl:Cleaner</u>]
+    SP[<u>sp:SnowPlow</u>]
 
-    C -- "1: vásárol(Sweeper)" --> SP
-    SP -- "1.1: <<létrehoz>>" --> SW
-    SP -- "1.2: csökkent_egyenleg()" --> SP
+    SK -- "1: << create >>" --> CL
+    SK -- "2: << create >>" --> SP
+    
+    SK -- "3: setPlow(sp)" --> CL
 ```
