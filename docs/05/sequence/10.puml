@@ -1,0 +1,31 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "c : Cleaner" as C
+participant "p : SnowPlow" as P
+participant "sv : SaltVomitter" as S
+
+C -> P : refillAttachment()
+activate P
+    ' A hókotró megkérdezi a fejet, mennyibe kerül a töltés
+    ' A budget-et a Cleaner balance-a adja
+    P -> C : getScore()
+    activate C
+    C -->> P : currentBalance
+    deactivate C
+
+    P -> S : refill(currentBalance)
+    activate S
+        note right: A fej kiszámolja a tényleges költséget
+        S -->> P : actualCost
+    deactivate S
+    
+    ' A Cleaner egyenlegének módosítása a költséggel
+    P -> C : addIncome(-actualCost)
+    activate C
+    deactivate C
+    
+P -->> C : 
+deactivate P
+@enduml

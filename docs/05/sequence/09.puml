@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "c : Cleaner" as C
+participant "p : SnowPlow" as P
+participant "newS : Sweeper" as S
+
+C -> P : buyAttachment(newS)
+activate P
+    P -> S : getPrice()
+    activate S
+    S -->> P : price
+    deactivate S
+    
+    ' Pénz levonása
+    P -> C : addIncome(-price)
+    activate C
+    deactivate C
+    
+    ' Hozzáadás a listához
+    note right of P: p.owned_tools.add(newS)
+    
+P -->> C : true
+deactivate P
+@enduml

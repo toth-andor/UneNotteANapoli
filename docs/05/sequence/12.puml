@@ -1,0 +1,34 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "c1 : Car" as C1
+participant "c2 : Car" as C2
+participant "lane : OutdoorLane" as L
+participant "state : IcyState" as ST
+
+' A második autó próbál belépni vagy haladni
+C2 -> L : pushVehicle(c2, currentTimestamp)
+activate L
+    L -> ST : handleTraffic(lane, c2)
+    activate ST
+        note right: Az IcyState detektálja az ütközést c1-gyel
+        
+        ST -> C1 : setImmobilized()
+        activate C1
+        deactivate C1
+        
+        ST -> C2 : setImmobilized()
+        activate C2
+        deactivate C2
+        
+        create participant "crashed : CrashedState" as CS
+        ST -> CS : <<create>>
+        
+        ST -->> L : crashed
+    deactivate ST
+    
+    L -> L : setState(crashed)
+    L -->> C2 : success (false)
+deactivate L
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "v : Vehicle" as V
+participant "lane : OutdoorLane" as L
+participant "state : SnowyState" as ST
+
+V -> L : interactWithLane(v)
+activate L
+    L -> ST : handleTraffic(lane, v)
+    activate ST
+        note right: icingCounter növelése
+        
+        alt icingCounter >= threshold
+            create participant "icy : IcyState" as IS
+            ST -> IS : <<create>>
+            ST -->> L : icy
+        else még nem jegesedett le
+            ST -->> L : state (this)
+        end
+    deactivate ST
+    
+    opt ha az állapot megváltozott
+        L -> L : setState(icy)
+    end
+    
+    L -->> V : 
+deactivate L
+@enduml
