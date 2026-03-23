@@ -10,8 +10,9 @@ graph LR
     SK -- "2: << create >>" --> IS
     SK -- "3: << create >>" --> C1
     SK -- "4: << create >>" --> C2
+    SK -- "5: pushEntity(lane,'lane'), 6: pushEntity(icy,'icy'), 7: pushEntity(car1,'car1'), 8: pushEntity(car2,'car2')" --> SK
 
-    SK -- "5: setState(icy)" --> OL
-    SK -- "6: addVehicle(car1)" --> OL
-    SK -- "7: addVehicle(car2)" --> OL
+    SK -- "9: setState(icy)" --> OL
+    SK -- "10: addVehicle(car1)" --> OL
+    SK -- "11: addVehicle(car2)" --> OL
 ```
