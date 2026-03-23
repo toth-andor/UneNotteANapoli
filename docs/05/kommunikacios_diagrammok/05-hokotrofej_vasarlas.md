@@ -6,6 +6,7 @@ graph LR
 
     SK -- "1: << create >>" --> CL
     SK -- "2: << create >>" --> SP
+    SK -- "3: pushEntity(cl, 'cl'), 4: pushEntity(sp, 'sp')" --> SK
     
-    SK -- "3: setPlow(sp)" --> CL
+    SK -- "5: setPlow(sp)" --> CL
 ```
