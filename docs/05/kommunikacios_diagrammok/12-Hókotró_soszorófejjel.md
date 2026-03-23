@@ -12,9 +12,10 @@ graph LR
     SK -- "3: << create >>" --> SV
     SK -- "4: << create >>" --> OL
     SK -- "5: << create >>" --> DS
+    SK -- "6: pushEntity(cl,'cl'), 7: pushEntity(sp,'sp'), 8: pushEntity(sv,'sv'), 9: pushEntity(lane,'lane'), 10: pushEntity(dry,'dry')" --> SK
 
-    SK -- "6: setPlow(sp)" --> CL
-    SK -- "7: addAttachment(sv)" --> SP
-    SK -- "8: changeAttachment(sv)" --> SP
-    SK -- "9: setState(dry)" --> OL
+    SK -- "11: setPlow(sp)" --> CL
+    SK -- "12: addAttachment(sv)" --> SP
+    SK -- "13: changeAttachment(sv)" --> SP
+    SK -- "14: setState(dry)" --> OL
 ```
