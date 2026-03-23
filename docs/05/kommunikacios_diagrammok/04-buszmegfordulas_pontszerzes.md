@@ -6,6 +6,7 @@ graph LR
 
     SK -- "1: << create >>" --> B
     SK -- "2: << create >>" --> L
+    SK -- "3: pushEntity(bus, 'bus'), 4: pushEntity(terminal, 'terminal')" --> SK
     
-    SK -- "3: setCurrentLane(terminal)" --> B
+    SK -- "5: setCurrentLane(terminal)" --> B
 ```
