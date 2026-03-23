@@ -1,13 +1,22 @@
 ```mermaid
 graph LR
-    C((:Cleaner))
-    SP[<u>:SnowPlow</u>]
-    DSV[<u>:Dragon/SaltVomitter</u>]
-    OL[<u>:OutdoorLane</u>]
-    SN[<u>:SnowyState</u>]
+    SK((:Skeleton))
+    CL[<u>cl:Cleaner</u>]
+    SP[<u>sp:SnowPlow</u>]
+    DR[<u>dr:Dragon</u>]
+    OL[<u>lane:OutdoorLane</u>]
+    SN[<u>snowy:SnowyState</u>]
 
-    C -- "1: takarít()" --> SP
-    SP -- "1.1: használ_üres_fejjel()" --> DSV
-    SP -- "1.2: havat_eltakarít()" --> OL
-    OL -- "1.2.1: marad_állapot()" --> SN
+    SK -- "1: << create >>" --> CL
+    SK -- "2: << create >>" --> SP
+    SK -- "3: << create >>" --> DR
+    SK -- "4: << create >>" --> OL
+    SK -- "5: << create >>" --> SN
+
+    SK -- "6: pushEntity(cl,'cl'), 7: pushEntity(sp,'sp'), 8: pushEntity(dr,'dr'), 9: pushEntity(lane,'lane'), 10: pushEntity(snowy,'snowy')" --> SK
+
+    SK -- "11: setPlow(sp)" --> CL
+    SK -- "12: addAttachment(dr)" --> SP
+    SK -- "13: changeAttachment(dr)" --> SP
+    SK -- "14: setState(snowy)" --> OL
 ```
