@@ -8,8 +8,9 @@ graph LR
     SK -- "1: << create >>" --> CL
     SK -- "2: << create >>" --> SP
     SK -- "3: << create >>" --> DR
+    SK -- "4: pushEntity(cl,'cl'), 5: pushEntity(sp,'sp'), 6: pushEntity(dr,'dr')" --> SK
 
-    SK -- "4: setPlow(sp)" --> CL
-    SK -- "5: addAttachment(dr)" --> SP
-    SK -- "6: changeAttachment(dr)" --> SP
+    SK -- "7: setPlow(sp)" --> CL
+    SK -- "8: addAttachment(dr)" --> SP
+    SK -- "9: changeAttachment(dr)" --> SP
 ```
