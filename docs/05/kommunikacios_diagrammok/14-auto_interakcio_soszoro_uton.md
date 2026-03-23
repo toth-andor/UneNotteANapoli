@@ -1,10 +1,16 @@
 ```mermaid
 graph LR
-    V((:Car))
-    OL[<u>:OutdoorLane</u>]
-    SS[<u>:SaltedState</u>]
+    SK((:Skeleton))
+    OL[<u>lane:OutdoorLane</u>]
+    SS[<u>salted:SaltedState</u>]
+    C[<u>car:Car</u>]
 
-    V -- "1: interaktál()" --> OL
-    OL -- "1.1: állapot_lekérdez()" --> SS
-    OL -- "1.2: nem_csúszik()" --> V
+    SK -- "1: << create >>" --> OL
+    SK -- "2: << create >>" --> SS
+    SK -- "3: << create >>" --> C
+    
+    SK -- "4: pushEntity(lane,'lane'), 5: pushEntity(salted,'salted'), 6: pushEntity(car,'car')" --> SK
+
+    SK -- "7: setState(salted)" --> OL
+    SK -- "8: addVehicle(car)" --> OL
 ```
