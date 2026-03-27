@@ -124,4 +124,15 @@ public class OutdoorLane extends Lane {
     public void cleanWithVomittingHead() {
         currentState = currentState.cleanWithVomittingHead();
     }
+
+    /**
+     * Egy game tick elteltét jelzi a sávnak. Továbbítja az állapotnak,
+     * amely szükség esetén megváltoztatja azt (pl. só lejáratakor DryState-be vált).
+     *
+     * @param timestamp az aktuális idő
+     */
+    @Override
+    public void tick(int timestamp) {
+        currentState = currentState.tick(timestamp);
+    }
 }

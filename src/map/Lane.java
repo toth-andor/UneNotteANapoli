@@ -114,6 +114,14 @@ public abstract class Lane implements ILane {
     public abstract void cleanWithVomittingHead();
 
     /**
+     * Egy game tick elteltét jelzi a sávnak. A sáv továbbítja az állapotának,
+     * amely szükség esetén megváltoztatja azt (pl. só lejáratakor DryState-be vált).
+     *
+     * @param timestamp az aktuális idő
+     */
+    public abstract void tick(int timestamp);
+
+    /**
      * @return az az út, amelyhez ez a sáv tartozik
      */
     public Road getRoad() {

@@ -66,4 +66,12 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void cleanWithVomittingHead() {}
+
+    /**
+     * Alagútban a ticknek nincs hatása, az állapot nem változik.
+     *
+     * @param timestamp az aktuális idő
+     */
+    @Override
+    public void tick(int timestamp) {}
 }

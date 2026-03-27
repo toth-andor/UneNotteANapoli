@@ -33,15 +33,30 @@ public abstract class LaneState {
     public abstract void handleTraffic(Vehicle v);
 
     /**
-     * Sóhintő fej hatását alkalmazza a sávra. Alapértelmezetten SaltedState-be vált.
+     * A só hatásának időtartama tickekben.
+     */
+    static final int SALT_DURATION = 5;
+
+    /**
+     * Sózó fej hatását alkalmazza a sávra. Alapértelmezetten SaltedState-be vált,
+     * amelynek lejárati ideje timestamp + SALT_DURATION.
      *
      * @param timestamp a takarítás időbélyege
      * @return az új állapot sózás után
      */
     public LaneState cleanWithSaltVomitter(int timestamp) {
-        // TODO: megfellően inicializálni, hogy számon tudja tartani a só hatását még az is lehet,
-        // hogy ezt le kell vinni a specifikus LaneState szintre (szinte biztos, akkor viszont int abstrakt)
-        return new SaltedState();
+        return new SaltedState(timestamp + SALT_DURATION);
+    }
+
+    /**
+     * Egy game tick elteltét jelzi az állapotnak. Alapértelmezetten nincs hatás.
+     * A SaltedState felüldefiniálja, hogy lejárat esetén DryState-be váltson.
+     *
+     * @param timestamp az aktuális idő
+     * @return az új állapot a tick után
+     */
+    public LaneState tick(int timestamp) {
+        return this;
     }
 
     /**

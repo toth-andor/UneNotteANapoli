@@ -1,7 +1,6 @@
 package states;
 
 import Vehicle.Vehicle;
-import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
@@ -20,10 +19,6 @@ public class IcyState extends LaneState {
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
         return this; //jegesnel nem lehet jegesebb
-    }
-
-    public LaneState handleCleaning(OutdoorLane lane, Attachment head) {
-        return new DryState();
     }
 
     /**

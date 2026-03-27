@@ -1,15 +1,26 @@
 package states;
 
 import Vehicle.Vehicle;
-import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
  * A LaneState leszármazottja, a sózott sávállapotot reprezentálja.
  * A sávot megsózták, a forgalom akadálytalan. A só véd a jégképződés ellen,
- * de hóesés esetén a sáv havas lesz. A sózás időbélyegét az OutdoorLane tartja számon.
+ * de hóesés esetén a sáv havas lesz. Lejárat után automatikusan DryState-be vált.
  */
 public class SaltedState extends LaneState {
+
+    /**
+     * Az az időpont, amikor a só hatása lejár.
+     */
+    private final int expiresAt;
+
+    /**
+     * @param expiresAt az az időpont, amikor a só hatása lejár
+     */
+    public SaltedState(int expiresAt) {
+        this.expiresAt = expiresAt;
+    }
 
     /**
      * Sózott sávra hulló hó havas állapotot eredményez.
@@ -20,10 +31,6 @@ public class SaltedState extends LaneState {
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
          return new SnowyState();
-    }
-
-    public LaneState handleCleaning(OutdoorLane lane, Attachment head) {
-        return new DryState();
     }
 
     /**
@@ -61,5 +68,17 @@ public class SaltedState extends LaneState {
     @Override
     public LaneState cleanWithVomittingHead() {
         return new DryState();
+    }
+
+    /**
+     * Ha az aktuális idő elérte a lejárati időpontot, a sáv száraz lesz.
+     * Egyébként az állapot változatlan marad.
+     *
+     * @param timestamp az aktuális idő
+     * @return DryState ha lejárt, egyébként this
+     */
+    @Override
+    public LaneState tick(int timestamp) {
+        return timestamp >= expiresAt ? new DryState() : this;
     }
 }
