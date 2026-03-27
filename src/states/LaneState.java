@@ -1,7 +1,6 @@
 package states;
 
 import Vehicle.Vehicle;
-import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
