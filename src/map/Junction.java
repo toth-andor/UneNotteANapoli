@@ -1,4 +1,3 @@
 package map;
 
-public class Junction {
-}
+public class Junction {}
