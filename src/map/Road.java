@@ -54,6 +54,18 @@ public class Road {
     }
 
     /**
+     * Egy game tick elteltét jelzi az úthoz tartozó összes sávnak,
+     * hogy azok lejárt állapotukat (pl. só) frissíthessék.
+     *
+     * @param timestamp az aktuális idő
+     */
+    public void tick(int timestamp) {
+        for (Lane lane : lanes) {
+            lane.tick(timestamp);
+        }
+    }
+
+    /**
      * @return az út egyik végpontja
      */
     public Junction getEnd1() {
