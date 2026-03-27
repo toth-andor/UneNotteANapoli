@@ -3,19 +3,26 @@ package map;
 import Vehicle.Vehicle;
 import attachments.Attachment;
 import states.LaneState;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Lane implements ILane {
 
     private Road road;
-    private LaneState currentState;
+    protected LaneState currentState;
+    private List<Vehicle> vehicles;
+
+    public Lane() {
+        this.vehicles = new ArrayList<>();
+    }
 
     public boolean pushVehicle(Vehicle v, int timestamp) {
-        // TODO: implement
-        return false;
+        vehicles.add(v);
+        return true;
     }
 
     public void popVehicle(Vehicle v) {
-        // TODO: implement
+        vehicles.remove(v);
     }
 
     public abstract void snowFall(int snow);

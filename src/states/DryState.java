@@ -4,43 +4,62 @@ import Vehicle.Vehicle;
 import attachments.Attachment;
 import map.OutdoorLane;
 
+/**
+ * Száraz sávállapot: az út tiszta, nincs hó vagy jég.
+ * A forgalom akadálytalan. Hóesés hatására {@link SnowyState}-be vált.
+ */
 public class DryState extends LaneState {
 
+    /**
+     * Hóesés hatására a száraz sáv havas lesz.
+     *
+     * @param lane   az érintett kültéri sáv
+     * @param amount a lehullott hó mennyisége
+     * @return  SnowyState
+     */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-        // TODO: implement
-        return null;
+        return new SnowyState();
     }
 
     public LaneState handleCleaning(OutdoorLane lane, Attachment head) {
-        // TODO: implement
-        return null;
+        // szaraz uthoz nem kell takaritas
+        return this;
     }
 
-    public void handleTraffic(Vehicle v) {
-        // TODO: implement
-    }
+    /**
+     * Száraz sávon a forgalom akadálytalan, nincs hatás.
+     *
+     * @param v az áthaladó jármű
+     */
+    public void handleTraffic(Vehicle v) {}
 
+    /**
+     * Száraz sávon a seprűnek nincs hatása.
+     *
+     * @return {@code this}
+     */
     @Override
     public LaneState cleanWithSweeper() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithSweeper'"
-        );
+        return this;
     }
 
+    /**
+     * Száraz sávon a jégtörőnek nincs hatása.
+     *
+     * @return {@code this}
+     */
     @Override
     public LaneState cleanWithIceBreaker() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithIceBreaker'"
-        );
+        return this;
     }
 
+    /**
+     * Száraz sávon a VomittingHeadnek nincs hatása.
+     *
+     * @return {@code this}
+     */
     @Override
     public LaneState cleanWithVomittingHead() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithVomittingHead'"
-        );
+        return this;
     }
 }

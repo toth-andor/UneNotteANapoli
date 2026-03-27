@@ -8,4 +8,6 @@ public interface ILane {
     void popVehicle(Vehicle v);
     void snowFall(int snow);
     void cleanWithHead(Attachment head);
+
+    
 }

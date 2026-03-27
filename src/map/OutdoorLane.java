@@ -6,11 +6,11 @@ import states.LaneState;
 
 public class OutdoorLane extends Lane {
 
-    protected LaneState currentState;
     private int saltedTimestamp;
+    private LaneState currentState = new DryState();
 
     public void snowFall(int snow) {
-        // TODO: implement
+        currentState = currentState.handleSnow(this, snow);
     }
 
     public void cleanWithHead(Attachment head) {
@@ -18,7 +18,7 @@ public class OutdoorLane extends Lane {
     }
 
     public void setState(LaneState s) {
-        // TODO: implement
+        this.currentState = s;
     }
 
     @Override
@@ -28,31 +28,22 @@ public class OutdoorLane extends Lane {
 
     @Override
     public void cleanWithSaltVomitter(int timestamp) {
-        // TODO Auto-generated method stub
         currentState = currentState.cleanWithSaltVomitter(timestamp);
+        this.saltedTimestamp = timestamp;
     }
 
     @Override
     public void cleanWithSweeper() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithSweeper'"
-        );
+        currentState = currentState.cleanWithSweeper();
     }
 
     @Override
     public void cleanWithIceBreaker() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithIceBreaker'"
-        );
+        currentState = currentState.cleanWithIceBreaker();
     }
 
     @Override
     public void cleanWithVomittingHead() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithVomittingHead'"
-        );
+        currentState = currentState.cleanWithVomittingHead();
     }
 }

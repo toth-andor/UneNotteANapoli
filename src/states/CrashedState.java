@@ -4,43 +4,75 @@ import Vehicle.Vehicle;
 import attachments.Attachment;
 import map.OutdoorLane;
 
+/**
+ * Balesetes sávállapot: a sávon baleset történt, amely blokkolja a forgalmat.
+ * Egyetlen takarítóeszköz sem képes eltávolítani a balesetet — csak a Dragon
+ * (lángszóró) tudja megtisztítani a sávot közvetlenül {@link DryState}-be váltva.
+ */
 public class CrashedState extends LaneState {
 
+    /**
+     * Balesetes sávra hulló hó nem változtatja az állapotot.
+     *
+     * @param lane   az érintett kültéri sáv
+     * @param amount a lehullott hó mennyisége
+     * @return this
+     */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-        // TODO: implement
-        return null;
+        return this;
     }
 
     public LaneState handleCleaning(OutdoorLane lane, Attachment head) {
-        // TODO: implement
-        return null;
+        return this;
     }
 
+    /**
+     * A balesetes sávra érkező jármű kénytelen elhagyni a sávot.
+     *
+     * @param v az áthaladó jármű
+     */
     public void handleTraffic(Vehicle v) {
-        // TODO: implement
+        v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll
     }
 
+    /**
+     * Balesetet nem lehet sózással eltávolítani.
+     *
+     * @param timestamp a takarítás időbélyege
+     * @return  this
+     */
+    @Override
+    public LaneState cleanWithSaltVomitter(int timestamp) {
+        return this;
+    }
+
+    /**
+     * Seprű nem képes eltakarítani a balesetet.
+     *
+     * @return  this
+     */
     @Override
     public LaneState cleanWithSweeper() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithSweeper'"
-        );
+        return this;
     }
 
+    /**
+     * Jégtörő nem képes eltakarítani a balesetet.
+     *
+     * @return  this
+     */
     @Override
     public LaneState cleanWithIceBreaker() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithIceBreaker'"
-        );
+        return this;
     }
 
+    /**
+     * VomittingHead nem képes eltakarítani a balesetet.
+     *
+     * @return this
+     */
     @Override
     public LaneState cleanWithVomittingHead() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'cleanWithVomittingHead'"
-        );
+        return this;
     }
 }
