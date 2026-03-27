@@ -1,5 +1,8 @@
 package Vehicle;
 
+import map.Lane;
+import map.Road;
+
 /**
  * Egy buszvezető által irányított buszt reprezentál.
  * Két végállomás között közlekedik, és minden sikeres forduló után bevételt szerez.
@@ -16,6 +19,19 @@ public class Bus extends Commuter implements IScoreOwner {
      * Az eddig megszerzett bevétel.
      */
     private int balance;
+
+    /**
+     * Létrehoz egy új buszt.
+     *
+     * @param destination1 az első végállomás
+     * @param destination2 a második végállomás
+     * @param currentLane a busz kezdeti sáva
+     * @param balance az induláskor megadott kezdeti bevétel
+     */
+    public Bus(Road destination1, Road destination2, Lane currentLane, int balance) {
+        super(destination1, destination2, currentLane);
+        this.balance = balance;
+    }
 
     /**
      * Növeli a bevételt a megadott összeggel.

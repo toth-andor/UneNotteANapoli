@@ -17,6 +17,18 @@ public class Dragon extends Attachment {
     private int priceOfFuel;
 
     /**
+     * Létrehoz egy új sárkányfejet.
+     *
+     * @param price a fej vételára
+     * @param priceOfFuel a fogyóanyag utántöltés ára
+     */
+    public Dragon(int price, int priceOfFuel) {
+        super(price);
+        this.priceOfFuel = priceOfFuel;
+        this.fuelLevel = 0;
+    }
+
+    /**
      * Csak akkor hívja meg l cleanWithHead metódusát, ha van elegendő fogyóanyag.
      * Ha nincs, false-szal tér vissza és takarítás nem történik.
      *

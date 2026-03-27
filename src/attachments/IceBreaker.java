@@ -10,6 +10,15 @@ import map.Lane;
 public class IceBreaker extends Attachment {
 
     /**
+     * Létrehoz egy új jégtörő fejet.
+     *
+     * @param price a fej vételára
+     */
+    public IceBreaker(int price) {
+        super(price);
+    }
+
+    /**
      * Meghívja l cleanWithHead metódusát, amely a LaneState logikája alapján a jeget hóvá alakítja,
      * de nem távolítja el. Mindig true-val tér vissza, mivel fogyóanyagot nem igényel.
      *

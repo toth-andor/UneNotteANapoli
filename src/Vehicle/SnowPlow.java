@@ -37,6 +37,19 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
     Attachment currentTool;
 
     /**
+     * Létrehoz egy új hókotrót.
+     *
+     * @param owner a hókotrót irányító takarító
+     * @param currentLane a hókotró kezdeti sáva
+     */
+    public SnowPlow(Cleaner owner, Lane currentLane) {
+        super(currentLane);
+        this.owner = owner;
+        this.ownedTools = new ArrayList<>();
+        this.currentTool = null;
+    }
+
+    /**
      * Az a fejre vált, ha az szerepel az ownedTools listában.
      *
      * @param a az új fej

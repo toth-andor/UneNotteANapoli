@@ -16,6 +16,15 @@ public abstract class Attachment implements IAttachment {
     protected int price;
 
     /**
+     * Létrehoz egy új hókotró fejet.
+     *
+     * @param price a fej vételára
+     */
+    public Attachment(int price) {
+        this.price = price;
+    }
+
+    /**
      * Visszaadja a fej vételárát.
      *
      * @return a fej ára

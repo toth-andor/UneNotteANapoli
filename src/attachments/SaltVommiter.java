@@ -17,6 +17,18 @@ public class SaltVommiter extends Attachment {
     private int priceOfFuel;
 
     /**
+     * Létrehoz egy új sószóró fejet.
+     *
+     * @param price a fej vételára
+     * @param priceOfFuel a fogyóanyag utántöltés ára
+     */
+    public SaltVommiter(int price, int priceOfFuel) {
+        super(price);
+        this.priceOfFuel = priceOfFuel;
+        this.fuelLevel = 0;
+    }
+
+    /**
      * Csak akkor hívja meg l cleanWithHead metódusát, ha van elegendő só.
      * Ha nincs, false-szal tér vissza és takarítás nem történik.
      *

@@ -21,6 +21,19 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
     private Road destination2;
 
     /**
+     * Létrehoz egy új ingázót.
+     *
+     * @param destination1 az első végállomás
+     * @param destination2 a második végállomás
+     * @param currentLane az ingázó kezdeti sáva
+     */
+    public Commuter(Road destination1, Road destination2, Lane currentLane) {
+        super(currentLane);
+        this.destination1 = destination1;
+        this.destination2 = destination2;
+    }
+
+    /**
      * Frissíti a bevételt egy sikeres út után.
      * A konkrét implementáció az alosztályokban van meghatározva.
      */

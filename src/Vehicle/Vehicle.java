@@ -26,6 +26,16 @@ public abstract class Vehicle {
     protected Lane currentLane;
 
     /**
+     * Létrehoz egy új járművet.
+     *
+     * @param currentLane a jármű kezdeti sáva
+     */
+    public Vehicle(Lane currentLane) {
+        this.currentLane = currentLane;
+        this.timeOutStart = -1; // -1 jelzi, hogy nincs időzítés aktív
+    }
+
+    /**
      * Ha nem rég balesetezett a jármű, akkor egyből visszatér hamis értékkel
      * Megpróbálja befogadtatni a járművet a megadott sávval.
      * Sikeres esetben frissíti az aktuális sávot és meghívja az interactWithLane metódust.

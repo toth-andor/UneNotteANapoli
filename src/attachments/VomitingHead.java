@@ -10,6 +10,15 @@ import map.Lane;
 public class VomitingHead extends Attachment {
 
     /**
+     * Létrehoz egy új hányó fejet.
+     *
+     * @param price a fej vételára
+     */
+    public VomitingHead(int price) {
+		super(price);
+	}
+
+	/**
      * Meghívja l cleanWithHead metódusát. A LaneState logikája alapján az eltávolított hó és
      * feltört jég egyik sávra sem kerül át, hanem eltűnik. Feltöretlen jeget nem távolít el.
      * Mindig true-val tér vissza, mivel fogyóanyagot nem igényel.

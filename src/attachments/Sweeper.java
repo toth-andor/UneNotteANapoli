@@ -11,6 +11,15 @@ import map.Lane;
 public class Sweeper extends Attachment {
 
     /**
+     * Létrehoz egy új söprő fejet.
+     *
+     * @param price a fej vételára
+     */
+    public Sweeper(int price) {
+        super(price);
+    }
+
+    /**
      * Meghívja l cleanWithHead metódusát. A LaneState logikája alapján, ha létezik jobb oldali
      * szomszédos sáv és nem hídon történik a takarítás, a havat oda tolja; egyébként eltűnik.
      * Feltöretlen jeget nem távolít el. Mindig true-val tér vissza, mivel fogyóanyagot nem igényel.

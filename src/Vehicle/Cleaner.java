@@ -14,6 +14,15 @@ public class Cleaner implements IScoreOwner {
     private int balance;
 
     /**
+     * Létrehoz egy új takarítót.
+     *
+     * @param initialBalance a kezdeti pénzösszeg
+     */
+    public Cleaner(int initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    /**
      * Növeli a rendelkezésre álló pénzösszeget a megadott összeggel.
      * Megtisztított útszakasz után hívódik meg.
      *
