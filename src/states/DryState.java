@@ -5,8 +5,9 @@ import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
- * Száraz sávállapot: az út tiszta, nincs hó vagy jég.
- * A forgalom akadálytalan. Hóesés hatására {@link SnowyState}-be vált.
+ * A LaneState leszármazottja, a száraz sávállapotot reprezentálja.
+ * Az út tiszta, nincs hó vagy jég, a forgalom akadálytalan.
+ * Hóesés hatására SnowyState-be vált.
  */
 public class DryState extends LaneState {
 
@@ -15,7 +16,7 @@ public class DryState extends LaneState {
      *
      * @param lane   az érintett kültéri sáv
      * @param amount a lehullott hó mennyisége
-     * @return  SnowyState
+     * @return SnowyState
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
         return new SnowyState();
@@ -36,7 +37,7 @@ public class DryState extends LaneState {
     /**
      * Száraz sávon a seprűnek nincs hatása.
      *
-     * @return {@code this}
+     * @return this
      */
     @Override
     public LaneState cleanWithSweeper() {
@@ -46,7 +47,7 @@ public class DryState extends LaneState {
     /**
      * Száraz sávon a jégtörőnek nincs hatása.
      *
-     * @return {@code this}
+     * @return this
      */
     @Override
     public LaneState cleanWithIceBreaker() {
@@ -54,9 +55,9 @@ public class DryState extends LaneState {
     }
 
     /**
-     * Száraz sávon a VomittingHeadnek nincs hatása.
+     * Száraz sávon a hányófejnek nincs hatása.
      *
-     * @return {@code this}
+     * @return this
      */
     @Override
     public LaneState cleanWithVomittingHead() {

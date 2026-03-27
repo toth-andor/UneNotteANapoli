@@ -6,10 +6,9 @@ import states.DryState;
 import states.LaneState;
 
 /**
- * Kültéri sávot reprezentáló osztály — a {@link Lane} leszármazottja.
- * Itt zajlik a szimuláció zöme: számolja a hóréteget, kezeli a jegesedést,
- * és reagál a különböző takarítóeszközökre. Állapotát egy {@link LaneState}
- * példány írja le (State pattern).
+ * A Lane osztály leszármazottja, a kültéri sávokat valósítja meg.
+ * Itt zajlik a valódi szimuláció zöme: számolja a hóréteget, jegesedést, reagál a takarításra.
+ * Állapotát egy LaneState példány írja le (State pattern).
  */
 public class OutdoorLane extends Lane {
 
@@ -39,8 +38,8 @@ public class OutdoorLane extends Lane {
     }
 
     /**
-     * Hóesés hatását kezeli: az állapot meghatározza, hogy a hó hogyan változtatja
-     * meg a sáv állapotát (pl. szárazból havas lesz).
+     * A függvény hívásának hatására az adott sávon paraméterként átadott snow mennyiségű hó esik.
+     * Az állapot meghatározza, hogy a hó hogyan változtatja meg a sáv állapotát.
      *
      * @param snow a lehullott hó mennyisége
      */
@@ -50,9 +49,8 @@ public class OutdoorLane extends Lane {
     }
 
     /**
-     * A hókotró aktív fejének hatását alkalmazza a sávra.
-     * A fej saját {@code cleanLane} metódusa hívja meg a sáv típusspecifikus
-     * takarítási metódusát (pl. {@link #cleanWithSweeper()}).
+     * Hattatja a sávra a hókotró aktív fejét, az Attachment osztály cleanLane metódusának
+     * hatására hívódik.
      *
      * @param head az aktív fej
      */
@@ -62,7 +60,11 @@ public class OutdoorLane extends Lane {
     }
 
     /**
-     * {@inheritDoc}
+     * Ez a függvény kezeli a sáv állapotának és a rajta átmenő jármű interakcióját.
+     * A sáv meghívja a saját állapotának a handleTraffic függvényét.
+     *
+     * @param v         az áthaladó jármű
+     * @param timestamp az aktuális idő
      */
     @Override
     public void handleTraffic(Vehicle v, int timestamp) {
@@ -70,7 +72,7 @@ public class OutdoorLane extends Lane {
     }
 
     /**
-     * Beállítja a sáv állapotát a megadott {@link LaneState} példányra.
+     * A sáv állapotát a paraméterként kapott LaneState példányra állítja.
      *
      * @param s az új állapot
      */

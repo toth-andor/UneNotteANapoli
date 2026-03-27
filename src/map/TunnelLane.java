@@ -4,9 +4,9 @@ import Vehicle.Vehicle;
 import attachments.Attachment;
 
 /**
- * Alagúttal fedett sávot reprezentáló osztály — a {@link Lane} leszármazottja.
+ * A Lane osztály leszármazottja, az alagúttal fedett sávokat valósítja meg.
  * Az alagút védi a sávot a hóeséstől és a jegesedéstől, ezért a környezeti hatások
- * és takarítási műveletek itt nem értelmezhető üres implementációk.
+ * és takarítási műveletek nem értelmezhetők — minden metódus üres implementáció.
  */
 public class TunnelLane extends Lane {
 

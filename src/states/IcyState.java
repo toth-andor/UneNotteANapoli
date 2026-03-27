@@ -5,9 +5,9 @@ import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
- * Jeges sávállapot: a sáv felszíne jeges, a járművek megcsúsznak és balesetet szenvednek.
- * Jégtörő vagy VomittingHead hatására {@link DryState}-be vált.
- * Seprű nem tudja eltávolítani a jeget.
+ * A LaneState leszármazottja, a jeges sávállapotot reprezentálja.
+ * A sáv felszíne jeges, a járművek megcsúsznak és balesetet szenvednek.
+ * Jégtörő vagy hányófej hatására DryState-be vált; seprű nem tudja eltávolítani a jeget.
  */
 public class IcyState extends LaneState {
 
@@ -16,7 +16,7 @@ public class IcyState extends LaneState {
      *
      * @param lane   az érintett kültéri sáv
      * @param amount a lehullott hó mennyisége
-     * @return {@code this}
+     * @return this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
         return this; //jegesnel nem lehet jegesebb
@@ -38,7 +38,7 @@ public class IcyState extends LaneState {
     /**
      * Seprű nem képes eltávolítani a jeget, az állapot változatlan marad.
      *
-     * @return {@code this}
+     * @return this
      */
     @Override
     public LaneState cleanWithSweeper() {
@@ -48,7 +48,7 @@ public class IcyState extends LaneState {
     /**
      * Jégtörő eltávolítja a jeget a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithIceBreaker() {
@@ -56,9 +56,9 @@ public class IcyState extends LaneState {
     }
 
     /**
-     * VomittingHead eltávolítja a jeget a sávról.
+     * Hányófej eltávolítja a jeget a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithVomittingHead() {

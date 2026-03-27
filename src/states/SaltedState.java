@@ -5,9 +5,9 @@ import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
- * Sózott sávállapot: a sávot megsózták, a forgalom akadálytalan.
- * A só véd a jégképződés ellen, de hóesés esetén a sáv havas lesz.
- * A sózás időbélyegét az {@link map.OutdoorLane} tartja számon.
+ * A LaneState leszármazottja, a sózott sávállapotot reprezentálja.
+ * A sávot megsózták, a forgalom akadálytalan. A só véd a jégképződés ellen,
+ * de hóesés esetén a sáv havas lesz. A sózás időbélyegét az OutdoorLane tartja számon.
  */
 public class SaltedState extends LaneState {
 
@@ -16,7 +16,7 @@ public class SaltedState extends LaneState {
      *
      * @param lane   az érintett kültéri sáv
      * @param amount a lehullott hó mennyisége
-     * @return {@link SnowyState}
+     * @return SnowyState
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
          return new SnowyState();
@@ -36,7 +36,7 @@ public class SaltedState extends LaneState {
     /**
      * Seprű eltávolítja a sót és maradék szennyeződést a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithSweeper() {
@@ -46,7 +46,7 @@ public class SaltedState extends LaneState {
     /**
      * Sózott sávon nincs jég, a jégtörőnek nincs hatása.
      *
-     * @return {@code this}
+     * @return this
      */
     @Override
     public LaneState cleanWithIceBreaker() {
@@ -54,9 +54,9 @@ public class SaltedState extends LaneState {
     }
 
     /**
-     * VomittingHead eltávolítja a sót a sávról.
+     * Hányófej eltávolítja a sót a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithVomittingHead() {

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Az úthálózat egy csomópontját reprezentáló osztály, ahol sávok találkoznak.
- * Felelőssége a járművek útvonalának irányítása: a hozzá érkező járműveknek
- * megmutatja a céljuk felé vezető következő sávot. Ütközés nem fordulhat elő
- * benne, csak áthaladás.
+ * Az úthálózat navigációs pontja, csomópont, ahol a sávok találkoznak.
+ * Felelőssége a járművek útvonalának irányítása: a hozzá érkező autóknak és buszoknak
+ * megmutatja a céljuk felé vezető következő sávot. Ütközés nem fordulhat elő benne,
+ * csak áthaladás. Számon tartja a benne végződő utakat.
  */
 public class Junction {
 

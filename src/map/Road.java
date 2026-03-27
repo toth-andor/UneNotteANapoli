@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Több sávot összefogó útszakaszt reprezentáló osztály.
- * Egy út pontosan 4 sávból áll, és két {@link Junction} csomópontot köt össze.
- * A Commuter járművek ({@link Vehicle.Bus}, {@link Vehicle.Car}) célpontjaként szolgál,
- * és rajta keresztül egységesen lehet hóesést véghezvinni az összes sávon.
+ * Több sávot összefogó útszakaszt reprezentáló osztály, amely a környezeti eseményekért felel.
+ * Ez a végcélja a Commuter járműveknek (Bus, Car), valamint rajta keresztül egységesen
+ * lehet hóesést véghezvinni a hozzá tartozó Lane-eken.
+ * Számon tartja a hozzátartozó Lane-eket és az út két végén elhelyezkedő Junction-öket.
  */
 public class Road {
 
@@ -33,7 +33,7 @@ public class Road {
     }
 
     /**
-     * Hozzáad egy sávot az úthoz.
+     * Hozzáad egy sávot az úthoz és beállítja a sáv visszamutató referenciáját.
      *
      * @param lane a hozzáadandó sáv
      */
@@ -43,7 +43,7 @@ public class Road {
     }
 
     /**
-     * Megadott mennyiségű hót hullat az úthoz tartozó összes sávra.
+     * amount mennyiségű hóesés minden a Road-hoz tartozó sávra.
      *
      * @param amount a lehullott hó mennyisége
      */

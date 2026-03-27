@@ -4,8 +4,9 @@ import Vehicle.Vehicle;
 import map.OutdoorLane;
 
 /**
- * Havas sávállapot: a sávon hó van, a forgalom lassabb de nem akadályozott.
- * Seprű, jégtörő vagy VomittingHead hatására {@link DryState}-be vált.
+ * A LaneState leszármazottja, a havas sávállapotot reprezentálja.
+ * A sávon hó van, a forgalom lassabb de nem akadályozott.
+ * Seprű, jégtörő vagy hányófej hatására DryState-be vált.
  */
 public class SnowyState extends LaneState {
 
@@ -14,7 +15,7 @@ public class SnowyState extends LaneState {
      *
      * @param lane   az érintett kültéri sáv
      * @param amount a lehullott hó mennyisége
-     * @return {@code this}
+     * @return this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
         return this; // már havas, marad havas
@@ -32,7 +33,7 @@ public class SnowyState extends LaneState {
     /**
      * Seprű eltávolítja a havat a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithSweeper() {
@@ -42,7 +43,7 @@ public class SnowyState extends LaneState {
     /**
      * Jégtörő eltávolítja a havat a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithIceBreaker() {
@@ -50,9 +51,9 @@ public class SnowyState extends LaneState {
     }
 
     /**
-     * VomittingHead eltávolítja a havat a sávról.
+     * Hányófej eltávolítja a havat a sávról.
      *
-     * @return {@link DryState}
+     * @return DryState
      */
     @Override
     public LaneState cleanWithVomittingHead() {

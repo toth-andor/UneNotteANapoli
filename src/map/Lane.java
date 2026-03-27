@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Egy útszakaszon belül egy sávot reprezentáló absztrakt osztály.
- * A sávon tartózkodó járműveket és a sáv végpontjait tartja számon.
- * Nem példányosítható — leszármazottjai az {@link OutdoorLane} és a {@link TunnelLane}.
+ * Egy útszakaszon belül a sávokat reprezentáló absztrakt osztály.
+ * A sávok állapotát és a rajta közlekedő járműveket tartja számon.
+ * Nem példányosítható — leszármazottjai az OutdoorLane és a TunnelLane.
  */
 public abstract class Lane implements ILane {
 
@@ -37,8 +37,8 @@ public abstract class Lane implements ILane {
     }
 
     /**
-     * Regisztrálja a járművet a sávon. Alosztályokban felüldefiniálható,
-     * hogy a sáv állapotával is interakcióba lépjen.
+     * A paraméterként átadott jármű befogadásáért felel, regisztrálja a sávon.
+     * Alosztályokban felüldefiniálható, hogy a sáv állapotával is interakcióba lépjen.
      *
      * @param v         a befogadandó jármű
      * @param timestamp az aktuális idő
@@ -51,7 +51,7 @@ public abstract class Lane implements ILane {
     }
 
     /**
-     * Eltávolítja a járművet a sávról.
+     * A paraméterként átadott jármű eltávolításáért felel, kiregisztrálja a sávból.
      *
      * @param v az eltávolítandó jármű
      */
@@ -61,7 +61,7 @@ public abstract class Lane implements ILane {
     }
 
     /**
-     * Hóesés hatását kezeli a sávon.
+     * A függvény hívásának hatására az adott sávon paraméterként átadott snow mennyiségű hó esik.
      *
      * @param snow a lehullott hó mennyisége
      */
@@ -69,7 +69,8 @@ public abstract class Lane implements ILane {
     public abstract void snowFall(int snow);
 
     /**
-     * A hókotró aktív fejének hatását alkalmazza a sávra.
+     * Hattatja a sávra a hókotró aktív fejét, az Attachment osztály cleanLane metódusának
+     * hatására hívódik.
      *
      * @param head az aktív fej
      */
@@ -77,7 +78,7 @@ public abstract class Lane implements ILane {
     public abstract void cleanWithHead(Attachment head);
 
     /**
-     * A sávon áthaladó jármű és a sáv állapotának interakcióját kezeli.
+     * Ez a függvény kezeli a sáv állapotának és a rajta átmenő járműveknek az interakcióját.
      * Kültéri sávon a LaneState logikája fut le; alagútsávon nincs hatás.
      *
      * @param v         az áthaladó jármű

@@ -5,9 +5,10 @@ import attachments.Attachment;
 import map.OutdoorLane;
 
 /**
- * Balesetes sávállapot: a sávon baleset történt, amely blokkolja a forgalmat.
+ * A LaneState leszármazottja, a balesetes sávállapotot reprezentálja.
+ * A sávon baleset történt, amely blokkolja a forgalmat.
  * Egyetlen takarítóeszköz sem képes eltávolítani a balesetet — csak a Dragon
- * (lángszóró) tudja megtisztítani a sávot közvetlenül {@link DryState}-be váltva.
+ * (lángszóró) tudja megtisztítani a sávot, közvetlenül DryState-be váltva.
  */
 public class CrashedState extends LaneState {
 
@@ -39,7 +40,7 @@ public class CrashedState extends LaneState {
      * Balesetet nem lehet sózással eltávolítani.
      *
      * @param timestamp a takarítás időbélyege
-     * @return  this
+     * @return this
      */
     @Override
     public LaneState cleanWithSaltVomitter(int timestamp) {
@@ -49,7 +50,7 @@ public class CrashedState extends LaneState {
     /**
      * Seprű nem képes eltakarítani a balesetet.
      *
-     * @return  this
+     * @return this
      */
     @Override
     public LaneState cleanWithSweeper() {
@@ -59,7 +60,7 @@ public class CrashedState extends LaneState {
     /**
      * Jégtörő nem képes eltakarítani a balesetet.
      *
-     * @return  this
+     * @return this
      */
     @Override
     public LaneState cleanWithIceBreaker() {
@@ -67,7 +68,7 @@ public class CrashedState extends LaneState {
     }
 
     /**
-     * VomittingHead nem képes eltakarítani a balesetet.
+     * Hányófej nem képes eltakarítani a balesetet.
      *
      * @return this
      */
