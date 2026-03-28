@@ -187,13 +187,12 @@ public class OutdoorLane extends Lane {
 
     /**
      * Jégtörőfej hatása: az állapot dönt arról, hogy a jégtörés milyen új állapotot eredményez.
-     * Nullázza a hómennyiséget.
+     * A hómennyiség nem változik.
      */
     @Override
     public void cleanWithIceBreaker() {
         CallChainLogger.printCall(this, "cleanWithIceBreaker()");
         setState(currentState.cleanWithIceBreaker());
-        snowAmount = 0;
         CallChainLogger.printReturn(null);
     }
 
