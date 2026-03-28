@@ -51,19 +51,19 @@ public class IcyState extends LaneState {
     }
 
     /**
-     * Jégtörő eltávolítja a jeget a sávról.
+     * Jégtörő eltávolítja a jeget a sávról, hó marad utána.
      *
-     * @return DryState
+     * @return SnowyState
      */
     @Override
     public LaneState cleanWithIceBreaker() {
         CallChainLogger.printCall(this, "cleanWithIceBreaker()");
-        DryState dry = new DryState();
+        SnowyState snow = new SnowyState();
         if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("dry", dry);
+            Skeleton.pushEntity("snow", snow);
         }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(dry));
-        return dry;
+        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(snow));
+        return snow;
     }
 
     /**
