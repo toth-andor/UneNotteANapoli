@@ -23,22 +23,26 @@ public class SaltedState extends LaneState {
     }
 
     /**
-     * Sózott sávra hulló hó havas állapotot eredményez.
+     * Sózott sávra hulló hó nem változtatja az állapotot — a só véd a hó ellen.
+     * Lejárat után a tick() DryState-be vált, onnan indulhat újra a hóakkumuláció.
      *
      * @param lane   az érintett kültéri sáv
      * @param amount a lehullott hó mennyisége
-     * @return SnowyState
+     * @return this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-         return new SnowyState();
+        return this;
     }
 
     /**
      * Sózott sávon a forgalom akadálytalan, nincs hatás.
      *
      * @param v az áthaladó jármű
+     * @return this
      */
-    public void handleTraffic(Vehicle v) {}
+    public LaneState handleTraffic(Vehicle v) {
+        return this;
+    }
 
     /**
      * Seprű eltávolítja a sót és maradék szennyeződést a sávról.

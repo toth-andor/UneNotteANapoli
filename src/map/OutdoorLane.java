@@ -4,11 +4,13 @@ import Vehicle.Vehicle;
 import attachments.Attachment;
 import states.DryState;
 import states.LaneState;
+import states.SaltedState;
+import states.SnowyState;
+import java.util.List;
 
 /**
  * A Lane osztály leszármazottja, a kültéri sávokat valósítja meg.
  * Itt zajlik a valódi szimuláció zöme: számolja a hóréteget, jegesedést, reagál a takarításra.
- * Állapotát egy LaneState példány írja le (State pattern).
  */
 public class OutdoorLane extends Lane {
 
@@ -38,8 +40,20 @@ public class OutdoorLane extends Lane {
     private int saltedTimestamp;
 
     /**
+     * A sávon összegyűlt hó mennyisége. Ha eléri a küszöbértéket, havas állapotba vált.
+     */
+    private int snowAmount = 0;
+
+    /**
+     * @return a sávon összegyűlt hó mennyisége
+     */
+    public int getSnowAmount() {
+        return snowAmount;
+    }
+
+    /**
      * Regisztrálja a járművet a sávon, majd meghívja az állapot forgalomkezelő logikáját.
-     * Jeges sávon a jármű kieshet; balesetes sávon megáll.
+     * Jeges sávon a jármű kieshet; balesetes sávon megáll; havas sávon 5 jármű után jeges lesz.
      *
      * @param v         a befogadandó jármű
      * @param timestamp az aktuális idő
@@ -48,18 +62,22 @@ public class OutdoorLane extends Lane {
     @Override
     public boolean pushVehicle(Vehicle v, int timestamp) {
         super.pushVehicle(v, timestamp);
-        currentState.handleTraffic(v);
+        currentState = currentState.handleTraffic(v);
         return true;
     }
 
     /**
      * A függvény hívásának hatására az adott sávon paraméterként átadott snow mennyiségű hó esik.
-     * Az állapot meghatározza, hogy a hó hogyan változtatja meg a sáv állapotát.
+     * Sózott sávon a hó nem halmozódik fel (a só elolvasztja). Egyéb esetben akkumulálódik;
+     * ha eléri az 5-ös küszöbértéket, havas állapotba vált.
      *
      * @param snow a lehullott hó mennyisége
      */
     @Override
     public void snowFall(int snow) {
+        if (!(currentState instanceof SaltedState)) {
+            snowAmount += snow;
+        }
         currentState = currentState.handleSnow(this, snow);
     }
 
@@ -76,14 +94,13 @@ public class OutdoorLane extends Lane {
 
     /**
      * Ez a függvény kezeli a sáv állapotának és a rajta átmenő jármű interakcióját.
-     * A sáv meghívja a saját állapotának a handleTraffic függvényét.
+     * A sávra lépés hatását a pushVehicle már kezeli; ez a metódus nem végez dupla számlálást.
      *
      * @param v         az áthaladó jármű
      * @param timestamp az aktuális idő
      */
     @Override
     public void handleTraffic(Vehicle v, int timestamp) {
-        currentState.handleTraffic(v);
     }
 
     /**
@@ -109,11 +126,13 @@ public class OutdoorLane extends Lane {
     @Override
     public void cleanWithDragon() {
         currentState = new DryState();
+        snowAmount = 0;
     }
 
     /**
      * Sószóró hatása: az állapot dönt arról, hogy a sózás milyen új állapotot eredményez.
      * Eltárolja a sózás időbélyegét a lejárat nyomon követéséhez.
+     * Nullázza a hómennyiséget, hogy lejárat után száraz állapotból induljon a sáv.
      *
      * @param timestamp a takarítás időbélyege
      */
@@ -121,30 +140,63 @@ public class OutdoorLane extends Lane {
     public void cleanWithSaltVomitter(int timestamp) {
         currentState = currentState.cleanWithSaltVomitter(timestamp);
         this.saltedTimestamp = timestamp;
+        snowAmount = 0;
     }
 
     /**
-     * Söprőfej hatása: az állapot dönt arról, hogy a seprés milyen új állapotot eredményez.
+     * Söprőfej hatása: havas sávon a havat a kisebb indexű, azonos irányú szomszéd sávra tolja
+     * (ha létezik ilyen), különben a hó eltűnik. Minden esetben nullázza a hómennyiséget.
      */
     @Override
     public void cleanWithSweeper() {
+        boolean wasSnowy = currentState instanceof SnowyState;
+        int snowToPush = this.snowAmount;
         currentState = currentState.cleanWithSweeper();
+        snowAmount = 0;
+        if (wasSnowy) {
+            Lane target = findSmallerIndexedSameDirectionLane();
+            if (target != null) {
+                target.snowFall(snowToPush);
+            }
+        }
     }
 
     /**
      * Jégtörőfej hatása: az állapot dönt arról, hogy a jégtörés milyen új állapotot eredményez.
+     * Nullázza a hómennyiséget.
      */
     @Override
     public void cleanWithIceBreaker() {
         currentState = currentState.cleanWithIceBreaker();
+        snowAmount = 0;
     }
 
     /**
      * Hányófej hatása: az állapot dönt arról, hogy a kezelés milyen új állapotot eredményez.
+     * Nullázza a hómennyiséget.
      */
     @Override
     public void cleanWithVomittingHead() {
         currentState = currentState.cleanWithVomittingHead();
+        snowAmount = 0;
+    }
+
+    /**
+     * Megkeresi a kisebb indexű, azonos menetirányú szomszéd sávot az út sávlistájában.
+     * Ha nincs ilyen sáv, null-t ad vissza.
+     *
+     * @return a kisebb indexű azonos irányú sáv, vagy null ha nincs
+     */
+    private Lane findSmallerIndexedSameDirectionLane() {
+        List<Lane> lanes = getRoad().getLanes();
+        int myIndex = lanes.indexOf(this);
+        for (int i = myIndex - 1; i >= 0; i--) {
+            Lane candidate = lanes.get(i);
+            if (candidate.getSource() == this.source && candidate.getDestination() == this.destination) {
+                return candidate;
+            }
+        }
+        return null;
     }
 
     /**

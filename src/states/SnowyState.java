@@ -22,12 +22,28 @@ public class SnowyState extends LaneState {
     }
 
     /**
-     * Havas sávon a forgalom lassabb, de a járművek nem akadályozottak.
+     * Az áthaladó járművek számlálója. Ha eléri a küszöbértéket, jeges állapotba vált.
+     */
+    private int vehicleCount = 0;
+
+    /**
+     * Az áthaladó járművek száma, amely után a sáv jeges lesz.
+     */
+    private static final int ICY_THRESHOLD = 5;
+
+    /**
+     * Havas sávon a forgalom lassabb, de nem akadályozott. Ha 5 jármű haladt át,
+     * a sáv jeges állapotba vált.
      *
      * @param v az áthaladó jármű
+     * @return IcyState ha elég jármű áthaladt, egyébként this
      */
-    public void handleTraffic(Vehicle v) {
-        // havas úton a forgalom lassabb, de nem akadályozott
+    public LaneState handleTraffic(Vehicle v) {
+        vehicleCount++;
+        if (vehicleCount >= ICY_THRESHOLD) {
+            return new IcyState();
+        }
+        return this;
     }
 
     /**

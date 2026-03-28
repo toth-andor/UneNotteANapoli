@@ -28,8 +28,9 @@ public abstract class LaneState {
      * a handleTraffic függvényét.
      *
      * @param v az áthaladó jármű
+     * @return az új állapot a forgalom kezelése után
      */
-    public abstract void handleTraffic(Vehicle v);
+    public abstract LaneState handleTraffic(Vehicle v);
 
     /**
      * A só hatásának időtartama tickekben.

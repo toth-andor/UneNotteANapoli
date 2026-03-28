@@ -11,22 +11,33 @@ import map.OutdoorLane;
 public class DryState extends LaneState {
 
     /**
-     * Hóesés hatására a száraz sáv havas lesz.
+     * A hóakkumuláció küszöbértéke: ennyi egység hó szükséges a havas állapothoz.
+     */
+    private static final int SNOW_THRESHOLD = 5;
+
+    /**
+     * Hóesés hatására a száraz sáv havas lesz, ha az összegyűlt hó eléri a küszöbértéket.
      *
      * @param lane   az érintett kültéri sáv
      * @param amount a lehullott hó mennyisége
-     * @return SnowyState
+     * @return SnowyState ha elég hó gyűlt össze, egyébként this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-        return new SnowyState();
+        if (lane.getSnowAmount() >= SNOW_THRESHOLD) {
+            return new SnowyState();
+        }
+        return this;
     }
 
     /**
      * Száraz sávon a forgalom akadálytalan, nincs hatás.
      *
      * @param v az áthaladó jármű
+     * @return this
      */
-    public void handleTraffic(Vehicle v) {}
+    public LaneState handleTraffic(Vehicle v) {
+        return this;
+    }
 
     /**
      * Száraz sávon a seprűnek nincs hatása.

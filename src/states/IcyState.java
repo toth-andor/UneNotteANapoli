@@ -25,9 +25,11 @@ public class IcyState extends LaneState {
      * Jeges sávon az áthaladó jármű megcsúszik és kiesik a sávból.
      *
      * @param v az áthaladó jármű
+     * @return this
      */
-    public void handleTraffic(Vehicle v) {
+    public LaneState handleTraffic(Vehicle v) {
         v.gotoLane(null, 0);
+        return this;
     }
 
     /**

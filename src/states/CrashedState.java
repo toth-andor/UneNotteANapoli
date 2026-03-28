@@ -26,9 +26,11 @@ public class CrashedState extends LaneState {
      * A balesetes sávra érkező jármű kénytelen elhagyni a sávot.
      *
      * @param v az áthaladó jármű
+     * @return this
      */
-    public void handleTraffic(Vehicle v) {
+    public LaneState handleTraffic(Vehicle v) {
         v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll
+        return this;
     }
 
     /**
