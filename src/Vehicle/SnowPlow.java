@@ -1,8 +1,6 @@
 package Vehicle;
 
 import attachments.Attachment;
-import attachments.Sweeper;
-
 import java.util.ArrayList;
 import map.Lane;
 import skeleton.Skeleton;
@@ -51,11 +49,6 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
         this.owner = owner;
         this.ownedTools = new ArrayList<>();
         this.currentTool = null;
-        Sweeper sw = new Sweeper();
-        CallChainLogger.printCall(sw, "Sweeper()");
-        CallChainLogger.printReturn(null);
-        Skeleton.pushEntity("DefaultSweeper-" + sw.hashCode(), sw);
-        ownedTools.add(sw);
     }
 
     /**
