@@ -206,6 +206,6 @@ public class OutdoorLane extends Lane {
 És innentől az inicializálásnál nem kell `setState`, hanem csak megadjuk a konstruktorában a tesztesetnél aktuális kezdőállapotot, majd lekérjük a getterrel a `currentState`
 -et, és hozzáadjuk a Map-hez.
 
-`Note: ` így már a `currentState`-nek nincs alapértelmezett `dryState` értéke, (nem minden esetben ez a kiindulópont).
+`Note: ` így már a `currentState`-nek nincs alapértelmezett `DryState` értéke, (nem minden esetben ez a kiindulópont).
 
 Ha ez nektek is rendben van, akkor kérlek majd dobjátok bele a végleges verzióba.
