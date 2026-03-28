@@ -13,6 +13,21 @@ import states.LaneState;
 public class OutdoorLane extends Lane {
 
     /**
+     * @param source      a sáv kiindulópontja
+     * @param destination a sáv végpontja
+     */
+    public OutdoorLane(Junction source, Junction destination) {
+        super();
+        this.source = source;
+        this.destination = destination;
+    }
+
+    public OutdoorLane(LaneState initialState) {
+        super();
+        this.currentState = initialState;
+    }
+
+    /**
      * A sáv aktuális állapota (pl. száraz, havas, jeges, sózott, balesetes).
      */
     private LaneState currentState = new DryState();
@@ -69,6 +84,13 @@ public class OutdoorLane extends Lane {
     @Override
     public void handleTraffic(Vehicle v, int timestamp) {
         currentState.handleTraffic(v);
+    }
+
+    /**
+     * Visszaadja az út aktuális állapotát.
+     */
+    public LaneState getCurrentState() {
+        return currentState;
     }
 
     /**
