@@ -4,6 +4,8 @@ import Vehicle.Vehicle;
 import attachments.Attachment;
 import java.util.ArrayList;
 import java.util.List;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy útszakaszon belül a sávokat reprezentáló absztrakt osztály.
@@ -57,7 +59,9 @@ public abstract class Lane implements ILane {
      */
     @Override
     public void popVehicle(Vehicle v) {
+        CallChainLogger.printCall(this, "popVehicle(" + Skeleton.getEntityByRef(v) + ")");
         vehicles.remove(v);
+        CallChainLogger.printReturn(null);
     }
 
     /**

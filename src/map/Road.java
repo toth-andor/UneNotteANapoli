@@ -2,6 +2,7 @@ package map;
 
 import java.util.ArrayList;
 import java.util.List;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Több sávot összefogó útszakaszt reprezentáló osztály, amely a környezeti eseményekért felel.
@@ -48,9 +49,11 @@ public class Road {
      * @param amount a lehullott hó mennyisége
      */
     public void snowFall(int amount) {
+        CallChainLogger.printCall(this, "snowFall(" + amount + ")");
         for (Lane lane : lanes) {
             lane.snowFall(amount);
         }
+        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -60,9 +63,11 @@ public class Road {
      * @param timestamp az aktuális idő
      */
     public void tick(int timestamp) {
+        CallChainLogger.printCall(this, "tick(" + timestamp + ")");
         for (Lane lane : lanes) {
             lane.tick(timestamp);
         }
+        CallChainLogger.printReturn(null);
     }
 
     /**

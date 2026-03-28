@@ -2,6 +2,8 @@ package states;
 
 import Vehicle.Vehicle;
 import map.OutdoorLane;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A LaneState leszármazottja, a balesetes sávállapotot reprezentálja.
@@ -19,6 +21,8 @@ public class CrashedState extends LaneState {
      * @return this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
+        CallChainLogger.printCall(this, "handleSnow(" + Skeleton.getEntityByRef(lane) + ", " + amount + ")");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -29,7 +33,9 @@ public class CrashedState extends LaneState {
      * @return this
      */
     public LaneState handleTraffic(Vehicle v) {
+        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
         v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -41,6 +47,8 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithSaltVomitter(int timestamp) {
+        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -51,6 +59,8 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithSweeper() {
+        CallChainLogger.printCall(this, "cleanWithSweeper()");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -61,6 +71,8 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithIceBreaker() {
+        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -71,6 +83,8 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithVomittingHead() {
+        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 }
