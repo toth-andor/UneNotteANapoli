@@ -14,6 +14,16 @@ import skeleton.Skeleton.CallChainLogger;
  */
 public abstract class Lane implements ILane {
 
+    private boolean stateWasChanged = false;
+
+    public void setStateWasChanged(boolean stateWasChanged) {
+        this.stateWasChanged = stateWasChanged;
+    }
+
+    public boolean getStateWasChanged() {
+        return stateWasChanged;
+    }
+
     /**
      * A sáv kiindulópontját jelölő csomópont.
      */

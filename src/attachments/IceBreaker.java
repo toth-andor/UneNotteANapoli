@@ -34,8 +34,8 @@ public class IceBreaker extends Attachment {
             "cleanLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
         );
         l.cleanWithIceBreaker();
-        CallChainLogger.printReturn("true");
-        return true;
+        CallChainLogger.printReturn(String.valueOf(l.getStateWasChanged()));
+        return l.getStateWasChanged();
     }
 
     /**
