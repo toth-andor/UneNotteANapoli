@@ -12,13 +12,14 @@ import skeleton.Skeleton.CallChainLogger;
  */
 public class Sweeper extends Attachment {
 
+    static final int PRICE = 0;
     /**
      * Létrehoz egy új söprő fejet.
      *
      * @param price a fej vételára
      */
-    public Sweeper(int price) {
-        super(price);
+    public Sweeper() {
+        super(PRICE);
     }
 
     /**

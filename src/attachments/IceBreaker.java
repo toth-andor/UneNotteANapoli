@@ -10,14 +10,15 @@ import skeleton.Skeleton.CallChainLogger;
  * műveletre van szükség egy söprő- vagy hányófejjel. Fogyóanyagot nem igényel.
  */
 public class IceBreaker extends Attachment {
+    static final int PRICE = 3;
 
     /**
      * Létrehoz egy új jégtörő fejet.
      *
      * @param price a fej vételára
      */
-    public IceBreaker(int price) {
-        super(price);
+    public IceBreaker() {
+        super(PRICE);
     }
 
     /**

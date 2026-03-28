@@ -10,14 +10,15 @@ import skeleton.Skeleton.CallChainLogger;
  * Feltöretlen jeget nem képes eltávolítani, fogyóanyagot nem igényel.
  */
 public class VomitingHead extends Attachment {
+    static final int PRICE = 0;
 
     /**
      * Létrehoz egy új hányó fejet.
      *
      * @param price a fej vételára
      */
-    public VomitingHead(int price) {
-        super(price);
+    public VomitingHead() {
+        super(PRICE);
     }
 
     /**

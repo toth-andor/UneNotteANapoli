@@ -10,6 +10,7 @@ import skeleton.Skeleton.CallChainLogger;
  * hatástalanná válik, amíg nem töltik fel.
  */
 public class Dragon extends Attachment {
+    static final int PRICE = 10, PRICE_OF_FUEL = 2;
 
     int fuelLevel;
 
@@ -24,9 +25,9 @@ public class Dragon extends Attachment {
      * @param price a fej vételára
      * @param priceOfFuel a fogyóanyag utántöltés ára
      */
-    public Dragon(int price, int priceOfFuel) {
-        super(price);
-        this.priceOfFuel = priceOfFuel;
+    public Dragon() {
+        super(PRICE);
+        this.priceOfFuel = PRICE_OF_FUEL;
         this.fuelLevel = 0;
     }
 

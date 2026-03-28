@@ -10,6 +10,7 @@ import skeleton.Skeleton.CallChainLogger;
  * igényel, és ha az elfogy, hatástalanná válik, amíg nem töltik fel.
  */
 public class SaltVommiter extends Attachment {
+    static final int PRICE = 5, PRICE_OF_FUEL = 1;
 
     private int fuelLevel;
 
@@ -24,9 +25,9 @@ public class SaltVommiter extends Attachment {
      * @param price a fej vételára
      * @param priceOfFuel a fogyóanyag utántöltés ára
      */
-    public SaltVommiter(int price, int priceOfFuel) {
-        super(price);
-        this.priceOfFuel = priceOfFuel;
+    public SaltVommiter() {
+        super(PRICE);
+        this.priceOfFuel = PRICE_OF_FUEL;
         this.fuelLevel = 0;
     }
 
