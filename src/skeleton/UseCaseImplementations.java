@@ -1,5 +1,6 @@
 package skeleton;
 
+import Vehicle.Car;
 import Vehicle.Cleaner;
 import Vehicle.SnowPlow;
 import attachments.IceBreaker;
@@ -117,8 +118,54 @@ public class UseCaseImplementations {
     }
 
     public static void UC11() {
-        // TODO implement UC11
         System.out.println("Running UC11!");
+
+        Junction sourceJunction = new Junction();
+        Skeleton.pushEntity("sourceJunction", sourceJunction);
+        CallChainLogger.printCall(sourceJunction, "Junction()");
+        CallChainLogger.printReturn(null);
+        Junction destinationJunction = new Junction();
+        Skeleton.pushEntity("targetJunction", destinationJunction);
+        CallChainLogger.printCall(destinationJunction, "Junction()");
+        CallChainLogger.printReturn(null);
+
+        DryState dryState = new DryState();
+        Skeleton.pushEntity("dryState", dryState);
+        CallChainLogger.printCall(dryState, "DryState()");
+        CallChainLogger.printReturn(null);
+
+        OutdoorLane outdoorLane = new OutdoorLane(dryState);
+        Skeleton.pushEntity("outdoorLane", outdoorLane);
+        CallChainLogger.printCall(outdoorLane, "OutdoorLane(" + Skeleton.getEntityByRef(dryState) + ")");
+        CallChainLogger.printReturn(null);
+        Road road1 = new Road(sourceJunction, destinationJunction);
+        Skeleton.pushEntity("road1", road1);
+        CallChainLogger.printCall(road1, "Road(" +
+            Skeleton.getEntityByRef(sourceJunction) +
+            ", " +
+            Skeleton.getEntityByRef(destinationJunction) +
+            ")");
+        CallChainLogger.printReturn(null);
+        Road road2 = new Road(destinationJunction, sourceJunction);
+        Skeleton.pushEntity("road2", road2);
+        CallChainLogger.printCall(road2, "Road(" +
+            Skeleton.getEntityByRef(destinationJunction) +
+            ", " +
+            Skeleton.getEntityByRef(sourceJunction) +
+            ")");
+        CallChainLogger.printReturn(null);
+
+        Car car = new Car(road1, road2, outdoorLane);
+        Skeleton.pushEntity("car", car);
+        CallChainLogger.printCall(car, "Car(" +
+            Skeleton.getEntityByRef(road1) +
+            ", " +
+            Skeleton.getEntityByRef(road2) +
+            ", " +
+            Skeleton.getEntityByRef(outdoorLane) +
+            ")");
+        CallChainLogger.printReturn(null);
+        car.gotoLane(outdoorLane, 0);
     }
 
     public static void UC12() {
