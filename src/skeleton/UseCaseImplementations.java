@@ -169,8 +169,38 @@ public class UseCaseImplementations {
     }
 
     public static void UC12() {
-        // TODO implement UC12
         System.out.println("Running UC12!");
+        System.out.println("[Teszt: Hókotró sószórófejjel száraz úton]\n");
+
+        DryState dryState = new DryState();
+        Skeleton.pushEntity("dryState", dryState);
+        CallChainLogger.printCall(dryState, "DryState()");
+        CallChainLogger.printReturn(null);
+
+        OutdoorLane outdoorLane = new OutdoorLane(dryState);
+        Skeleton.pushEntity("outdoorLane", outdoorLane);
+        CallChainLogger.printCall(outdoorLane, "OutdoorLane(" + Skeleton.getEntityByRef(dryState) + ")");
+        CallChainLogger.printReturn(null);
+
+        Cleaner cleaner = new Cleaner(100);
+        Skeleton.pushEntity("cleaner", cleaner);
+        CallChainLogger.printCall(cleaner, "Cleaner(100)");
+        CallChainLogger.printReturn(null);
+
+        attachments.SaltVommiter saltVommiter = new attachments.SaltVommiter();
+        Skeleton.pushEntity("saltVommiter", saltVommiter);
+        CallChainLogger.printCall(saltVommiter, "SaltVommiter()");
+        CallChainLogger.printReturn(null);
+
+        SnowPlow snowplow = new SnowPlow(cleaner, outdoorLane);
+        Skeleton.pushEntity("snowplow", snowplow);
+        CallChainLogger.printCall(snowplow, "SnowPlow(" + Skeleton.getEntityByRef(cleaner) + ", " + Skeleton.getEntityByRef(outdoorLane) + ")");
+        CallChainLogger.printReturn(null);
+
+        snowplow.buyAttachment(saltVommiter);
+        snowplow.changeAttachment(saltVommiter);
+        snowplow.refillAttachment();
+        snowplow.interactWithLane(outdoorLane, 0);
     }
 
     public static void UC13() {
