@@ -56,6 +56,10 @@ public abstract class Vehicle {
             return false;
         }
         boolean result = l.pushVehicle(this, timestamp);
+        if (result) {
+            currentLane = l;
+            interactWithLane(l, timestamp);
+        }
         CallChainLogger.printReturn(result + "");
         return result;
     }
