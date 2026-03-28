@@ -2,6 +2,7 @@ package Vehicle;
 
 import map.Lane;
 import map.Road;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy buszvezető által irányított buszt reprezentál.
@@ -28,7 +29,12 @@ public class Bus extends Commuter implements IScoreOwner {
      * @param currentLane a busz kezdeti sáva
      * @param balance az induláskor megadott kezdeti bevétel
      */
-    public Bus(Road destination1, Road destination2, Lane currentLane, int balance) {
+    public Bus(
+        Road destination1,
+        Road destination2,
+        Lane currentLane,
+        int balance
+    ) {
         super(destination1, destination2, currentLane);
         this.balance = balance;
     }
@@ -40,7 +46,9 @@ public class Bus extends Commuter implements IScoreOwner {
      * @param amount a bevételhez hozzáadandó összeg
      */
     public void addIncome(int amount) {
+        CallChainLogger.printCall(this, "addIncome(" + amount + ")");
         balance += amount;
+        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -50,6 +58,8 @@ public class Bus extends Commuter implements IScoreOwner {
      * @return az aktuális pontszám
      */
     public int getScore() {
+        CallChainLogger.printCall(this, "getScore()");
+        CallChainLogger.printReturn(balance + "");
         return balance;
     }
 
@@ -59,6 +69,8 @@ public class Bus extends Commuter implements IScoreOwner {
      */
     @Override
     protected void updateIncome() {
+        CallChainLogger.printCall(this, "updateIncome()");
+        CallChainLogger.printReturn(balance + "");
         balance += TURN_AROUND_BONUS;
     }
 }

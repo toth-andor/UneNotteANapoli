@@ -1,6 +1,8 @@
 package attachments;
 
 import map.Lane;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy söprőfej típusú hókotró-fejet reprezentál, amely a havat és a feltört jeget
@@ -28,7 +30,12 @@ public class Sweeper extends Attachment {
      * @param timestamp az aktuális idő
      */
     public boolean cleanLane(Lane l, int timestamp) {
+        CallChainLogger.printCall(
+            this,
+            "cleanLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
+        );
         l.cleanWithSweeper();
+        CallChainLogger.printReturn("true");
         return true;
     }
 
@@ -40,6 +47,8 @@ public class Sweeper extends Attachment {
      * @return a felhasználás utáni maradék budget
      */
     public int refill(int budget) {
+        CallChainLogger.printCall(this, "refill(" + budget + ")");
+        CallChainLogger.printReturn(budget + "");
         return budget;
     }
 }

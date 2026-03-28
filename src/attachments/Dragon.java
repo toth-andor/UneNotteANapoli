@@ -1,6 +1,8 @@
 package attachments;
 
 import map.Lane;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy sárkányfej típusú hókotró-fejet reprezentál, amely biokerozin elégetésével azonnal
@@ -36,11 +38,17 @@ public class Dragon extends Attachment {
      * @param timestamp az aktuális idő
      */
     public boolean cleanLane(Lane l, int timestamp) {
+        CallChainLogger.printCall(
+            this,
+            "cleanLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
+        );
         if (fuelLevel <= 0) {
+            CallChainLogger.printReturn("false");
             return false;
         }
         l.cleanWithSaltVomitter(timestamp);
         fuelLevel--;
+        CallChainLogger.printReturn("true");
         return true;
     }
 
@@ -52,9 +60,13 @@ public class Dragon extends Attachment {
      * @return a felhasználás utáni maradék budget
      */
     public int refill(int budget) {
+        CallChainLogger.printCall(this, "refill(" + budget + ")");
         if (budget < priceOfFuel) {
+            CallChainLogger.printReturn(budget + "");
             return budget;
         }
-        return budget - priceOfFuel;
+        int result = budget - priceOfFuel;
+        CallChainLogger.printReturn(result + "");
+        return result;
     }
 }

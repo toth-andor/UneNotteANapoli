@@ -2,6 +2,8 @@ package Vehicle;
 
 import map.Lane;
 import map.Road;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A Bus és Car osztályok közös viselkedését foglalja össze.
@@ -44,12 +46,14 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
      * Meghívja az updateIncome metódust a sikeres út után járó bevétel elszámolásához.
      */
     public void turnAround() {
+        CallChainLogger.printCall(this, "turnAround()");
         if (currentLane.getRoad().equals(destination1)) {
             updateIncome();
             Road temp = destination1;
             destination1 = destination2;
             destination2 = temp;
         }
+        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -61,9 +65,17 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
      * @param timestamp az aktuális idő
      */
     public void interactWithLane(Lane l, int timestamp) {
+        CallChainLogger.printCall(
+            this,
+            "interactWithLane(" +
+                Skeleton.getEntityByRef(l) +
+                ", " +
+                timestamp +
+                ")"
+        );
         l.handleTraffic(this, timestamp);
+        CallChainLogger.printReturn(null);
     }
-
 
     /**
      * Ütközés esetén hívódik, beállítja az timeOutStart-ot a paraméterül kapott időpillanatra.
@@ -71,6 +83,8 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
      * @param timestamp az ütközés időpontja
      */
     public void crash(int timestamp) {
+        CallChainLogger.printCall(this, "crash(" + timestamp + ")");
         timeOutStart = timestamp;
+        CallChainLogger.printReturn(null);
     }
 }

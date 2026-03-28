@@ -1,5 +1,7 @@
 package Vehicle;
 
+import skeleton.Skeleton.CallChainLogger;
+
 /**
  * Egy takarító játékost reprezentál.
  * Kezeli a játékoshoz tartozó egy vagy több hókotró működését, nyilvántartja a rendelkezésre
@@ -29,7 +31,9 @@ public class Cleaner implements IScoreOwner {
      * @param amount a hozzáadandó összeg
      */
     public void addIncome(int amount) {
+        CallChainLogger.printCall(this, "addIncome(" + amount + ")");
         balance += amount;
+        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -39,7 +43,9 @@ public class Cleaner implements IScoreOwner {
      * @param score az új pénzösszeg
      */
     public void setScore(int score) {
+        CallChainLogger.printCall(this, "setScore(" + score + ")");
         balance = score;
+        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -49,6 +55,8 @@ public class Cleaner implements IScoreOwner {
      * @return az aktuális pontszám
      */
     public int getScore() {
+        CallChainLogger.printCall(this, "getScore()");
+        CallChainLogger.printReturn(balance + "");
         return balance;
     }
 }

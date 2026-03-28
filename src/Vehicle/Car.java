@@ -2,6 +2,7 @@ package Vehicle;
 
 import map.Lane;
 import map.Road;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy gépi vezérlésű személyautót reprezentál, amely a legrövidebb járható úton közlekedik
@@ -25,5 +26,8 @@ public class Car extends Commuter {
      * Üres implementáció, mivel a személyautók nem termelnek bevételt.
      */
     @Override
-    protected void updateIncome() {}
+    protected void updateIncome() {
+        CallChainLogger.printCall(this, "updateIncome()");
+        CallChainLogger.printReturn(null);
+    }
 }

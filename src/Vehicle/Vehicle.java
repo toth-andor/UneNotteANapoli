@@ -1,6 +1,8 @@
 package Vehicle;
 
 import map.Lane;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Az összes játékbeli jármű közös ősét reprezentálja.
@@ -45,10 +47,17 @@ public abstract class Vehicle {
      * @return true, ha a művelet sikerült, egyébként false
      */
     public boolean gotoLane(Lane l, int timestamp) {
+        CallChainLogger.printCall(
+            this,
+            "gotoLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
+        );
         if (timeOutStart != -1 && timestamp - timeOutStart < IMMOBILE_TIME) {
+            CallChainLogger.printReturn("false");
             return false;
         }
-        return l.pushVehicle(this, timestamp);
+        boolean result = l.pushVehicle(this, timestamp);
+        CallChainLogger.printReturn(result + "");
+        return result;
     }
 
     /**

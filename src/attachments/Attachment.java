@@ -1,6 +1,7 @@
 package attachments;
 
 import map.Lane;
+import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Az összes hókotró-fej közös ősét reprezentálja.
@@ -30,6 +31,8 @@ public abstract class Attachment implements IAttachment {
      * @return a fej ára
      */
     public int getPrice() {
+        CallChainLogger.printCall(this, "getPrice()");
+        CallChainLogger.printReturn(price + "");
         return price;
     }
 
