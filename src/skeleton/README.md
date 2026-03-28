@@ -43,7 +43,7 @@ A Controller (`sys`) elindítja a havazást az úton (`road`).
 
 ### Loggolás beállítása
 
-### 1. Road osztály
+### 1. Road osztály - snowFall
 
 ```java
 public void snowFall(int amount) {
