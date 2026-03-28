@@ -134,6 +134,8 @@ public class Skeleton {
          *  @param _caller A függvényt hívó objektum
          *  @param _methodSignature A függvény szignatúrája **/
         public static void printCall(Object _caller, String _methodSignature) {
+            if (!Skeleton.ENABLE_LOGGING)
+                return;
             String name = objectToName.getOrDefault(_caller, "unknown");
             String callIndent =  getIndent();
 
@@ -144,6 +146,8 @@ public class Skeleton {
         /** Metódus a függvények visszatérésének loggolásához
          @param _value A visszatérés értéke **/
         public static void printReturn(String _value) {
+            if (!Skeleton.ENABLE_LOGGING)
+                return;
             indentCount--;
             String returnIndent = getIndent();
 
