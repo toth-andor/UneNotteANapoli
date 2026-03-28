@@ -10,7 +10,7 @@ import skeleton.Skeleton.CallChainLogger;
  * hatástalanná válik, amíg nem töltik fel.
  */
 public class Dragon extends Attachment {
-    static final int PRICE = 10, PRICE_OF_FUEL = 2;
+    static final int PRICE = 10, PRICE_OF_FUEL = 2, FULL_TANK = 20;
 
     int fuelLevel;
 
@@ -47,7 +47,7 @@ public class Dragon extends Attachment {
             CallChainLogger.printReturn("false");
             return false;
         }
-        l.cleanWithSaltVomitter(timestamp);
+        l.cleanWithDragon();
         fuelLevel--;
         CallChainLogger.printReturn("true");
         return true;
@@ -67,6 +67,7 @@ public class Dragon extends Attachment {
             return budget;
         }
         int result = budget - priceOfFuel;
+        fuelLevel = FULL_TANK;
         CallChainLogger.printReturn(result + "");
         return result;
     }
