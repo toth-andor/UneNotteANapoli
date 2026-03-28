@@ -1,5 +1,9 @@
 package Vehicle;
 
+import java.util.ArrayList;
+
+import map.Lane;
+import skeleton.Skeleton;
 import skeleton.Skeleton.CallChainLogger;
 
 /**
@@ -9,6 +13,10 @@ import skeleton.Skeleton.CallChainLogger;
  * finanszírozható. Pontszámát a megtisztított útszakaszok után kapott bevétel adja.
  */
 public class Cleaner implements IScoreOwner {
+
+    static final int SNOW_PLOW_PRICE = 30;
+
+    ArrayList<SnowPlow> snowplows = new ArrayList<>();
 
     /**
      * A takarító rendelkezésére álló pénzösszeg.
@@ -20,8 +28,18 @@ public class Cleaner implements IScoreOwner {
      *
      * @param initialBalance a kezdeti pénzösszeg
      */
-    public Cleaner(int initialBalance) {
+    public Cleaner(int initialBalance, Lane dest) {
         this.balance = initialBalance;
+        snowplows = new ArrayList<>();
+
+        SnowPlow sn = new SnowPlow(this, dest);
+        CallChainLogger.printCall(sn, "SnowPlow(" + Skeleton.getEntityByRef(this) + ", " + Skeleton.getEntityByRef(dest) + ")");
+        CallChainLogger.printReturn(null);
+        Skeleton.pushEntity("NewSnowPlowBought-" + sn.hashCode(), sn);
+
+        sn.buyAttachment(sn.getOwnedTools().getFirst());
+
+        snowplows.add(sn);
     }
 
     /**
@@ -58,5 +76,26 @@ public class Cleaner implements IScoreOwner {
         CallChainLogger.printCall(this, "getScore()");
         CallChainLogger.printReturn(balance + "");
         return balance;
+    }
+
+    public boolean buySnowPlow(Lane dest) {
+        CallChainLogger.printCall(this, "buySnowPlow(" + Skeleton.getEntityByRef(dest) + ")");
+        if (balance < SNOW_PLOW_PRICE) {
+            CallChainLogger.printReturn("false");
+            return false;
+        }
+        balance -= SNOW_PLOW_PRICE;
+
+        SnowPlow sn = new SnowPlow(this, dest);
+        CallChainLogger.printCall(sn, "SnowPlow(" + Skeleton.getEntityByRef(this) + ", " + Skeleton.getEntityByRef(dest) + ")");
+        CallChainLogger.printReturn(null);
+
+        Skeleton.pushEntity("NewSnowPlowBought-" + sn.hashCode(), sn);
+
+
+        snowplows.add(sn);
+
+        CallChainLogger.printReturn("true");
+        return true;
     }
 }
