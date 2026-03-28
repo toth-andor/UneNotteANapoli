@@ -2,10 +2,12 @@ package skeleton;
 
 import Vehicle.Cleaner;
 import Vehicle.SnowPlow;
+import attachments.IceBreaker;
 import attachments.Sweeper;
 import map.Junction;
 import map.OutdoorLane;
 import map.Road;
+import skeleton.Skeleton.CallChainLogger;
 import states.DryState;
 import states.LaneState;
 import states.SnowyState;
@@ -97,8 +99,21 @@ public class UseCaseImplementations {
     }
 
     public static void UC10() {
-        // TODO implement UC10
         System.out.println("Running UC10!");
+        Cleaner cleaner = new Cleaner(100);
+        Skeleton.pushEntity("cleaner", cleaner);
+        CallChainLogger.printCall(cleaner, "Cleaner(100)");
+        CallChainLogger.printReturn(null);
+        SnowPlow snowplow = new SnowPlow(cleaner, null);
+        Skeleton.pushEntity("snowplow", snowplow);
+        CallChainLogger.printCall(snowplow, "SnowPlow(" + Skeleton.getEntityByRef(cleaner) + ", )");
+        CallChainLogger.printReturn(null);
+        IceBreaker iceBreaker = new IceBreaker();
+        Skeleton.pushEntity("icebreaker", iceBreaker);
+        CallChainLogger.printCall(iceBreaker, "IceBreaker()");
+        CallChainLogger.printReturn(null);
+        snowplow.buyAttachment(iceBreaker);
+        snowplow.changeAttachment(iceBreaker);
     }
 
     public static void UC11() {
