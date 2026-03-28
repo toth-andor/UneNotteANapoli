@@ -10,7 +10,7 @@ import skeleton.Skeleton.CallChainLogger;
  * igényel, és ha az elfogy, hatástalanná válik, amíg nem töltik fel.
  */
 public class SaltVommiter extends Attachment {
-    static final int PRICE = 5, PRICE_OF_FUEL = 1;
+    static final int PRICE = 5, PRICE_OF_FUEL = 1, FULL_TANK = 20;
 
     private int fuelLevel;
 
@@ -67,6 +67,7 @@ public class SaltVommiter extends Attachment {
             return budget;
         }
         int result = budget - priceOfFuel;
+        fuelLevel = FULL_TANK;
         CallChainLogger.printReturn(result + "");
         return result;
     }
