@@ -1,4 +1,33 @@
 package Vehicle;
 
-public class Car {
+import map.Lane;
+import map.Road;
+import skeleton.Skeleton.CallChainLogger;
+
+/**
+ * Egy gépi vezérlésű személyautót reprezentál, amely a legrövidebb járható úton közlekedik
+ * két célpont között. Hozzájárul a sávok letaposásához és ezáltal a jégesedéshez, de nem
+ * termel bevételt és nem tart nyilván pontszámot.
+ */
+public class Car extends Commuter {
+
+    /**
+     * Létrehoz egy új személyautót.
+     *
+     * @param destination1 az első végállomás
+     * @param destination2 a második végállomás
+     * @param currentLane az autó kezdeti sáva
+     */
+    public Car(Road destination1, Road destination2, Lane currentLane) {
+        super(destination1, destination2, currentLane);
+    }
+
+    /**
+     * Üres implementáció, mivel a személyautók nem termelnek bevételt.
+     */
+    @Override
+    protected void updateIncome() {
+        CallChainLogger.printCall(this, "updateIncome()");
+        CallChainLogger.printReturn(null);
+    }
 }

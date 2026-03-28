@@ -72,7 +72,7 @@ public class UseCaseImplementations {
 
         // TODO
         // Itt a fej árát bele kéne hard code-olni a fejek konstruktorába ahelyett, hogy paraméterként kapja
-        snowplow.buyAttachment(new Sweeper(100));
+        snowplow.buyAttachment(new Sweeper());
 
     }
 

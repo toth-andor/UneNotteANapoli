@@ -1,4 +1,90 @@
 package states;
 
-public class CrashedState {
+import Vehicle.Vehicle;
+import map.OutdoorLane;
+import skeleton.Skeleton;
+import skeleton.Skeleton.CallChainLogger;
+
+/**
+ * A LaneState leszármazottja, a balesetes sávállapotot reprezentálja.
+ * A sávon baleset történt, amely blokkolja a forgalmat.
+ * Egyetlen takarítóeszköz sem képes eltávolítani a balesetet — csak a Dragon
+ * (lángszóró) tudja megtisztítani a sávot, közvetlenül DryState-be váltva.
+ */
+public class CrashedState extends LaneState {
+
+    /**
+     * Balesetes sávra hulló hó nem változtatja az állapotot.
+     *
+     * @param lane   az érintett kültéri sáv
+     * @param amount a lehullott hó mennyisége
+     * @return this
+     */
+    public LaneState handleSnow(OutdoorLane lane, int amount) {
+        CallChainLogger.printCall(this, "handleSnow(" + Skeleton.getEntityByRef(lane) + ", " + amount + ")");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
+
+    /**
+     * A balesetes sávra érkező jármű kénytelen elhagyni a sávot.
+     *
+     * @param v az áthaladó jármű
+     * @return this
+     */
+    public LaneState handleTraffic(Vehicle v) {
+        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
+        v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
+
+    /**
+     * Balesetet nem lehet sózással eltávolítani.
+     *
+     * @param timestamp a takarítás időbélyege
+     * @return this
+     */
+    @Override
+    public LaneState cleanWithSaltVomitter(int timestamp) {
+        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
+
+    /**
+     * Seprű nem képes eltakarítani a balesetet.
+     *
+     * @return this
+     */
+    @Override
+    public LaneState cleanWithSweeper() {
+        CallChainLogger.printCall(this, "cleanWithSweeper()");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
+
+    /**
+     * Jégtörő nem képes eltakarítani a balesetet.
+     *
+     * @return this
+     */
+    @Override
+    public LaneState cleanWithIceBreaker() {
+        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
+
+    /**
+     * Hányófej nem képes eltakarítani a balesetet.
+     *
+     * @return this
+     */
+    @Override
+    public LaneState cleanWithVomittingHead() {
+        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
 }
