@@ -1,5 +1,7 @@
 package skeleton;
 
+import Vehicle.Bus;
+import attachments.IceBreaker;
 import Vehicle.Cleaner;
 import Vehicle.SnowPlow;
 import attachments.Sweeper;
@@ -34,8 +36,25 @@ public class UseCaseImplementations {
     }
 
     public static void UC2() {
-        // TODO implement UC2
+        System.out.println("[Teszt: Hatásos általános takarítás: Hóeltakarítás söpréssel]\n");
 
+        // Init
+        Cleaner cleaner = new Cleaner(0); Skeleton.pushEntity("cleaner", cleaner);
+        Sweeper sweeper = new Sweeper(); Skeleton.pushEntity("sweeper", sweeper);
+        SnowPlow snowplow = new SnowPlow(cleaner, null); Skeleton.pushEntity("snowplow", snowplow);
+        snowplow.getOwnedTools().add(sweeper);
+        snowplow.changeAttachment(sweeper);
+
+        Junction junction1 = new Junction(); Skeleton.pushEntity("junction1", junction1);
+        Junction junction2 = new Junction(); Skeleton.pushEntity("junction2", junction2);
+        Road road = new Road(junction1, junction2); Skeleton.pushEntity("road", road);
+
+        OutdoorLane lane = new OutdoorLane(new SnowyState()); Skeleton.pushEntity("lane", lane);
+        Skeleton.pushEntity("snowy", lane.getCurrentState());
+        road.addLane(lane);
+
+        // Call trigger
+        snowplow.interactWithLane(lane, 0);
     }
 
     public static void UC3() {
@@ -51,8 +70,24 @@ public class UseCaseImplementations {
     }
 
     public static void UC4() {
-        // TODO implement UC4
-        System.out.println("Running UC4!");
+        System.out.println("[Teszt: Busz megfordulása és pontszerzés]\n");
+
+        // Init
+        Junction junction1 = new Junction(); Skeleton.pushEntity("junction1", junction1);
+        Junction junction2 = new Junction(); Skeleton.pushEntity("junction2", junction2);
+        Road road1 = new Road(junction1, junction2); Skeleton.pushEntity("road1", road1);
+
+        Junction junction3 = new Junction(); Skeleton.pushEntity("junction3", junction3);
+        Junction junction4 = new Junction(); Skeleton.pushEntity("junction4", junction4);
+        Road road2 = new Road(junction3, junction4); Skeleton.pushEntity("road2", road2);
+
+        OutdoorLane lane = new OutdoorLane(new DryState()); Skeleton.pushEntity("lane", lane);
+        road1.addLane(lane);
+
+        Bus bus = new Bus(road1, road2, lane, 0); Skeleton.pushEntity("bus", bus);
+
+        // Call trigger
+        bus.turnAround();
     }
 
     public static void UC5() {
@@ -77,8 +112,25 @@ public class UseCaseImplementations {
     }
 
     public static void UC6() {
-        // TODO implement UC6
-        System.out.println("Running UC6!");
+        System.out.println("[Teszt: Hatástalan takarítás: Hóeltakarítás jégtörővel]\n");
+
+        // Init
+        Cleaner cleaner = new Cleaner(0); Skeleton.pushEntity("cleaner", cleaner);
+        IceBreaker iceBreaker = new IceBreaker(); Skeleton.pushEntity("ib", iceBreaker);
+        SnowPlow snowplow = new SnowPlow(cleaner, null); Skeleton.pushEntity("p", snowplow);
+        snowplow.getOwnedTools().add(iceBreaker);
+        snowplow.changeAttachment(iceBreaker);
+
+        Junction junction1 = new Junction(); Skeleton.pushEntity("junction1", junction1);
+        Junction junction2 = new Junction(); Skeleton.pushEntity("junction2", junction2);
+        Road road = new Road(junction1, junction2); Skeleton.pushEntity("road", road);
+
+        OutdoorLane lane = new OutdoorLane(new SnowyState()); Skeleton.pushEntity("lane", lane);
+        Skeleton.pushEntity("state", lane.getCurrentState());
+        road.addLane(lane);
+
+        // Call trigger
+        snowplow.interactWithLane(lane, 0);
     }
 
     public static void UC7() {
