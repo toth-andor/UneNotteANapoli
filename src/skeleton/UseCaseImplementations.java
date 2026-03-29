@@ -53,11 +53,12 @@ public class UseCaseImplementations {
 
         Cleaner cleaner = new Cleaner(100);
         Skeleton.pushEntity("cleaner", cleaner);
+        Skeleton.pushEntity("cleanerBalance", cleaner.getScore());
 
         SnowPlow snowplow = new SnowPlow(cleaner, null);
         Skeleton.pushEntity("snowplow", snowplow);
 
-        Sweeper sweeper = new Sweeper(100);
+        Sweeper sweeper = new Sweeper();
         Skeleton.pushEntity("sweeper", sweeper);
         snowplow.buyAttachment(sweeper);
         snowplow.changeAttachment(sweeper);
@@ -65,6 +66,7 @@ public class UseCaseImplementations {
         // 2. A Cleaner letakarítja az utat — egyenlege növekszik
         snowplow.interactWithLane(lane, 0);
         // Az egynleg nem növekedik, mert az AddIncome() metódus még nincs implementálva a snowplowban.
+        Skeleton.pushEntity("cleanerBalance", cleaner.getScore());
     }
 
     public static void UC4() {
@@ -141,6 +143,7 @@ public class UseCaseImplementations {
 
         // 2. A Car interaktál a sávval — SaltedState.handleTraffic() nem csúsztatja meg
         car.gotoLane(lane, 0);
+        
     }
 
     public static void UC14() {
@@ -172,7 +175,7 @@ public class UseCaseImplementations {
 
         SnowPlow snowplow = new SnowPlow(cleaner, null); Skeleton.pushEntity("snowplow", snowplow);
 
-        Sweeper sweeper = new Sweeper(100); Skeleton.pushEntity("sweeper", sweeper);
+        Sweeper sweeper = new Sweeper(); Skeleton.pushEntity("sweeper", sweeper);
         snowplow.buyAttachment(sweeper);
         snowplow.changeAttachment(sweeper);
 
@@ -202,12 +205,12 @@ public class UseCaseImplementations {
         String choice = Skeleton.CallChainLogger.askQuestion("Melyik fejet használjuk?", "dragon/salt");
 
         if (choice.equalsIgnoreCase("dragon")) {
-            Dragon dragon = new Dragon(100, 50);
+            Dragon dragon = new Dragon();
             Skeleton.pushEntity("dragon", dragon);
             snowplow.buyAttachment(dragon);
             snowplow.changeAttachment(dragon);
         } else {
-            SaltVommiter saltVommiter = new SaltVommiter(100, 50);
+            SaltVommiter saltVommiter = new SaltVommiter();
             Skeleton.pushEntity("saltVommiter", saltVommiter);
             snowplow.buyAttachment(saltVommiter);
             snowplow.changeAttachment(saltVommiter);
@@ -235,7 +238,7 @@ public class UseCaseImplementations {
         SnowPlow snowplow = new SnowPlow(cleaner, null);
         Skeleton.pushEntity("snowplow", snowplow);
 
-        IceBreaker iceBreaker = new IceBreaker(100);
+        IceBreaker iceBreaker = new IceBreaker();
         Skeleton.pushEntity("iceBreaker", iceBreaker);
 
         snowplow.buyAttachment(iceBreaker);
