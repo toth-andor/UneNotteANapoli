@@ -199,6 +199,7 @@ public class Skeleton {
         testCases.put(14, new TestCase("Söprőfej hatása szomszédos sávok esetén: Hókotró söprőfejjel takarít havas utat", UseCaseImplementations::UC14));
         testCases.put(15, new TestCase("Hókotró utat próbál takarítani kifogyott Sárkány vagy Sószóró fejjel", UseCaseImplementations::UC15));
         testCases.put(16, new TestCase("Jeges út takarítása IceBreaker fejjel", UseCaseImplementations::UC16));
+        testCases.put(17, new TestCase("Autó elakad a mély hóban", UseCaseImplementations::UC17));
     }
 
     /** A testCases HashMap tartalma alapján a menü kiírása **/
