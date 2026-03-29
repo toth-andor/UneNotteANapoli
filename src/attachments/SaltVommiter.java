@@ -22,8 +22,8 @@ public class SaltVommiter extends Attachment {
     /**
      * Létrehoz egy új sószóró fejet.
      *
-     * @param price a fej vételára
-     * @param priceOfFuel a fogyóanyag utántöltés ára
+     * price a fej vételára
+     * priceOfFuel a fogyóanyag utántöltés ára
      */
     public SaltVommiter() {
         super(PRICE);
