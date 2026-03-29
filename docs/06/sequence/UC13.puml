@@ -1,0 +1,32 @@
+@startuml
+' UC13: Autó interakció sószórt úton
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "car : Car" as CAR
+participant "lane : OutdoorLane" as L
+participant "salted : SaltedState" as ST
+
+T -> CAR : gotoLane(lane, 0)
+activate CAR
+    note right: timeOutStart == -1\nSaltedState nem SnowyState → továbbléphet
+    CAR -> L : pushVehicle(car, 0)
+    activate L
+        note right: nem CrashedState
+        L -> ST : handleTraffic(car)
+        activate ST
+            note right: Sózott sávon akadálytalan a forgalom
+            ST -->> L : salted (this)
+        deactivate ST
+        L -> L : setState(salted)
+        L -->> CAR : true
+    deactivate L
+    CAR -> L : handleTraffic(car, 0)
+    activate L
+        note right: OutdoorLane.handleTraffic – nincs hatás
+        L -->> CAR :
+    deactivate L
+    CAR -->> T : true
+deactivate CAR
+@enduml

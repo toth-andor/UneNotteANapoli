@@ -1,0 +1,35 @@
+@startuml
+' UC2: Hatásos általános takarítás – Hóeltakarítás söpréssel
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "cleaner : Cleaner" as C
+participant "snowplow : SnowPlow" as P
+participant "sweeper : Sweeper" as SW
+participant "lane : OutdoorLane" as L
+participant "snowy : SnowyState" as ST
+
+C -> P : interactWithLane(lane, 0)
+activate P
+    P -> SW : cleanLane(lane, 0)
+    activate SW
+        SW -> L : cleanWithSweeper()
+        activate L
+            L -> ST : cleanWithSweeper()
+            activate ST
+                create participant "dry : DryState" as D
+                ST -> D : <<create>>
+                ST -->> L : dry
+            deactivate ST
+            L -> L : setState(dry)
+            note right: snowAmount = 0\ntarget = null (nincs kisebb indexű szomszéd)
+            L -->> SW :
+        deactivate L
+        SW -->> P : true
+    deactivate SW
+    P -> C : addIncome(2)
+    activate C
+    deactivate C
+    P -->> C :
+deactivate P
+@enduml
