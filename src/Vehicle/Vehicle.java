@@ -57,12 +57,6 @@ public abstract class Vehicle {
             CallChainLogger.printReturn("false");
             return false;
         }
-        if (l == null) {
-            currentLane = null;
-            timeOutStart = timestamp;
-            CallChainLogger.printReturn("false");
-            return false;
-        }
         if (l instanceof OutdoorLane) {
             // Ha a cél sáv havas állapotban van, nem járható és a jármű nem hókotró
             if((((OutdoorLane) l).getCurrentState() instanceof SnowyState) && !(((OutdoorLane) l).isNavigable()) && !(this instanceof SnowPlow)) {
