@@ -154,18 +154,51 @@ public class UseCaseImplementations {
     }
 
     public static void UC7() {
-        // TODO implement UC7
-        System.out.println("Running UC7!");
+
+        System.out.println("[Teszt: Két autó ütközik jeges úton]\n");
+
+        Junction junction1 = new Junction(); Skeleton.pushEntity("junction1", junction1);
+        Junction junction2 = new Junction(); Skeleton.pushEntity("junction2", junction2);
+        Road road1 = new Road(junction1, junction2); Skeleton.pushEntity("road1", road1);
+        Road road2 = new Road(junction2, junction1); Skeleton.pushEntity("road2", road2);
+
+        OutdoorLane lane = new OutdoorLane(new IcyState()); Skeleton.pushEntity("OutdoorLane", lane);
+
+        Car car1 = new Car(road1, road2, lane); Skeleton.pushEntity("car1", car1);
+        Car car2 = new Car(road2, road1, lane); Skeleton.pushEntity("car2", car2);
+
+        lane.crash(car1, car2, 10);
+
     }
 
     public static void UC8() {
-        // TODO implement UC8
-        System.out.println("Running UC8!");
+        System.out.println("[Teszt: Hókotró fej újratöltése]\n!");
+
+        Cleaner cleaner = new Cleaner(15); Skeleton.pushEntity("cleaner", cleaner);
+        SnowPlow snowplow = new SnowPlow(cleaner, null); Skeleton.pushEntity("snowplow", snowplow);
+        Dragon dragon = new Dragon(); Skeleton.pushEntity("dragon", dragon);
+
+        snowplow.buyAttachment(dragon);
+        snowplow.changeAttachment(dragon);
+        snowplow.refillAttachment();
+
     }
 
     public static void UC9() {
-        // TODO implement UC9
-        System.out.println("Running UC9!");
+        System.out.println("[Teszt: Busz/Autó interakció hóval borított úton]\n!");
+
+        Junction junction1 = new Junction(); Skeleton.pushEntity("junction1", junction1);
+        Junction junction2 = new Junction(); Skeleton.pushEntity("junction2", junction2);
+        Road road1 = new Road(junction1, junction2); Skeleton.pushEntity("road1", road1);
+        Road road2 = new Road(junction2, junction1); Skeleton.pushEntity("road2", road2);
+        OutdoorLane lane1 = new OutdoorLane(new SnowyState()); Skeleton.pushEntity("lane1", lane1);
+        OutdoorLane lane2 = new OutdoorLane(new SnowyState()); Skeleton.pushEntity("lane2", lane2);
+        road1.addLane(lane1);
+        road1.addLane(lane2);
+        Bus bus = new Bus(road1, road2, lane1, 0); Skeleton.pushEntity("bus", bus);
+
+        bus.interactWithLane(lane2, 10);
+
     }
 
     public static void UC10() {
