@@ -47,9 +47,14 @@ public class UseCaseImplementations {
         System.out.println("[Teszt: Takarítás és ennek hatására egyenleg változása]\n");
 
         // 1. Létrehozunk egy OutdoorLane-t SnowyState-ben
+        Junction j1 = new Junction(); Skeleton.pushEntity("junction1", j1);
+        Junction j2 = new Junction(); Skeleton.pushEntity("junction2", j2);
+        Road road = new Road(j1, j2); Skeleton.pushEntity("road", road);
+
         OutdoorLane lane = new OutdoorLane(new SnowyState());
         Skeleton.pushEntity("lane", lane);
         Skeleton.pushEntity("snowy", lane.getCurrentState());
+        road.addLane(lane);
 
         Cleaner cleaner = new Cleaner(100);
         Skeleton.pushEntity("cleaner", cleaner);
@@ -162,6 +167,7 @@ public class UseCaseImplementations {
 
         OutdoorLane snowyLane = new OutdoorLane(j1, j2);
         Skeleton.pushEntity("snowyLane", snowyLane);
+        Skeleton.pushEntity("snowyLaneDry", snowyLane.getCurrentState());
 
         road.addLane(dryLane);
         road.addLane(snowyLane);
