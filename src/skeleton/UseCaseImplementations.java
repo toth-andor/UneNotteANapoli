@@ -168,8 +168,15 @@ public class UseCaseImplementations {
     }
 
     public static void UC8() {
-        // TODO implement UC8
-        System.out.println("Running UC8!");
+        System.out.println("[Teszt: Hókotró fej újratöltése]\n");
+
+        Cleaner cleaner = new Cleaner(15); Skeleton.pushEntity("cleaner", cleaner);
+        SnowPlow snowplow = new SnowPlow(cleaner, null); Skeleton.pushEntity("snowplow", snowplow);
+        Dragon dragon = new Dragon(); Skeleton.pushEntity("dragon", dragon);
+
+        snowplow.buyAttachment(dragon);
+        snowplow.changeAttachment(dragon);
+        snowplow.refillAttachment();
     }
 
     public static void UC9() {
