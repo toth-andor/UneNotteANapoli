@@ -17,7 +17,7 @@ public class Skeleton {
     public static final boolean ENABLE_LOGGING = true;
 
     /** Debug ágak engedélyezése **/
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /** Scanner a use input kezeléséhez **/
     private static final Scanner scanner = new Scanner(System.in);
