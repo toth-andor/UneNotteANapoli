@@ -53,7 +53,7 @@ public class IcyState extends LaneState {
     /**
      * Jégtörő eltávolítja a jeget a sávról, hó marad utána.
      *
-     * @return SnowyState
+     * @return DryState
      */
     @Override
     public LaneState cleanWithIceBreaker() {
