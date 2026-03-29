@@ -48,6 +48,18 @@ public class OutdoorLane extends Lane {
      */
     private int snowAmount = 0;
 
+     /**
+     * A hó maximális mennyiségének küszöbértéke, amíg még járható a sáv.
+     */
+    private static final int USABLE_THRESHOLD = 10;
+
+     /**
+     * Visszaadja a sávon lévő hó mennyiségétől függően, hogy járható e még a sáv
+     */
+    public boolean isNavigable() {
+        return this.snowAmount <= USABLE_THRESHOLD;
+    }
+
     /**
      * @return a sávon összegyűlt hó mennyisége
      */
@@ -227,7 +239,11 @@ public class OutdoorLane extends Lane {
     @Override
     public void cleanWithIceBreaker() {
         CallChainLogger.printCall(this, "cleanWithIceBreaker()");
+        LaneState previousState = getCurrentState();
         setState(currentState.cleanWithIceBreaker());
+        if(previousState.getClass() != currentState.getClass()) {
+            setStateWasChanged(true);
+        }  
         CallChainLogger.printReturn(null);
     }
 
