@@ -103,16 +103,10 @@ public class UseCaseImplementations {
         System.out.println("Running UC10!");
         Cleaner cleaner = new Cleaner(100);
         Skeleton.pushEntity("cleaner", cleaner);
-        CallChainLogger.printCall(cleaner, "Cleaner(100)");
-        CallChainLogger.printReturn(null);
         SnowPlow snowplow = new SnowPlow(cleaner, null);
         Skeleton.pushEntity("snowplow", snowplow);
-        CallChainLogger.printCall(snowplow, "SnowPlow(" + Skeleton.getEntityByRef(cleaner) + ", )");
-        CallChainLogger.printReturn(null);
         IceBreaker iceBreaker = new IceBreaker();
         Skeleton.pushEntity("icebreaker", iceBreaker);
-        CallChainLogger.printCall(iceBreaker, "IceBreaker()");
-        CallChainLogger.printReturn(null);
         snowplow.buyAttachment(iceBreaker);
         snowplow.changeAttachment(iceBreaker);
     }
@@ -122,49 +116,21 @@ public class UseCaseImplementations {
 
         Junction sourceJunction = new Junction();
         Skeleton.pushEntity("sourceJunction", sourceJunction);
-        CallChainLogger.printCall(sourceJunction, "Junction()");
-        CallChainLogger.printReturn(null);
         Junction destinationJunction = new Junction();
         Skeleton.pushEntity("targetJunction", destinationJunction);
-        CallChainLogger.printCall(destinationJunction, "Junction()");
-        CallChainLogger.printReturn(null);
 
         DryState dryState = new DryState();
         Skeleton.pushEntity("dryState", dryState);
-        CallChainLogger.printCall(dryState, "DryState()");
-        CallChainLogger.printReturn(null);
 
         OutdoorLane outdoorLane = new OutdoorLane(dryState);
         Skeleton.pushEntity("outdoorLane", outdoorLane);
-        CallChainLogger.printCall(outdoorLane, "OutdoorLane(" + Skeleton.getEntityByRef(dryState) + ")");
-        CallChainLogger.printReturn(null);
         Road road1 = new Road(sourceJunction, destinationJunction);
         Skeleton.pushEntity("road1", road1);
-        CallChainLogger.printCall(road1, "Road(" +
-            Skeleton.getEntityByRef(sourceJunction) +
-            ", " +
-            Skeleton.getEntityByRef(destinationJunction) +
-            ")");
-        CallChainLogger.printReturn(null);
         Road road2 = new Road(destinationJunction, sourceJunction);
         Skeleton.pushEntity("road2", road2);
-        CallChainLogger.printCall(road2, "Road(" +
-            Skeleton.getEntityByRef(destinationJunction) +
-            ", " +
-            Skeleton.getEntityByRef(sourceJunction) +
-            ")");
-        CallChainLogger.printReturn(null);
 
         Car car = new Car(road1, road2, outdoorLane);
         Skeleton.pushEntity("car", car);
-        CallChainLogger.printCall(car, "Car(" +
-            Skeleton.getEntityByRef(road1) +
-            ", " +
-            Skeleton.getEntityByRef(road2) +
-            ", " +
-            Skeleton.getEntityByRef(outdoorLane) +
-            ")");
-        CallChainLogger.printReturn(null);
         car.gotoLane(outdoorLane, 0);
     }
 
@@ -179,23 +145,15 @@ public class UseCaseImplementations {
 
         OutdoorLane outdoorLane = new OutdoorLane(dryState);
         Skeleton.pushEntity("outdoorLane", outdoorLane);
-        CallChainLogger.printCall(outdoorLane, "OutdoorLane(" + Skeleton.getEntityByRef(dryState) + ")");
-        CallChainLogger.printReturn(null);
 
         Cleaner cleaner = new Cleaner(100);
         Skeleton.pushEntity("cleaner", cleaner);
-        CallChainLogger.printCall(cleaner, "Cleaner(100)");
-        CallChainLogger.printReturn(null);
 
         attachments.SaltVommiter saltVommiter = new attachments.SaltVommiter();
         Skeleton.pushEntity("saltVommiter", saltVommiter);
-        CallChainLogger.printCall(saltVommiter, "SaltVommiter()");
-        CallChainLogger.printReturn(null);
 
         SnowPlow snowplow = new SnowPlow(cleaner, outdoorLane);
         Skeleton.pushEntity("snowplow", snowplow);
-        CallChainLogger.printCall(snowplow, "SnowPlow(" + Skeleton.getEntityByRef(cleaner) + ", " + Skeleton.getEntityByRef(outdoorLane) + ")");
-        CallChainLogger.printReturn(null);
 
         snowplow.buyAttachment(saltVommiter);
         snowplow.changeAttachment(saltVommiter);
