@@ -4,6 +4,8 @@ import attachments.Attachment;
 import attachments.Sweeper;
 
 import java.util.ArrayList;
+
+import attachments.VomitingHead;
 import map.Lane;
 import skeleton.Skeleton;
 import skeleton.Skeleton.CallChainLogger;
@@ -50,12 +52,12 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
         super(currentLane);
         this.owner = owner;
         this.ownedTools = new ArrayList<>();
-        Sweeper s = new Sweeper();
-        Skeleton.pushEntity("DefaultSweeperAttachment", s);
-        CallChainLogger.printCall(s, "Sweeper()");
+        VomitingHead v = new VomitingHead();
+        Skeleton.pushEntity("DefaultAttachment", v);
+        CallChainLogger.printCall(v, "<<create>>");
         CallChainLogger.printReturn(null);
-        this.ownedTools.add(s);
-        this.currentTool = s;
+        this.ownedTools.add(v);
+        this.currentTool = v;
     }
 
     /**
