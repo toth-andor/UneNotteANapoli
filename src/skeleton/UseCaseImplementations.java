@@ -180,8 +180,18 @@ public class UseCaseImplementations {
     }
 
     public static void UC9() {
-        // TODO implement UC9
-        System.out.println("Running UC9!");
+       System.out.println("[Teszt: Hó letposása és jéggé alakulása havas úton]\n");
+
+        OutdoorLane lane = new OutdoorLane(new SnowyState()); Skeleton.pushEntity("lane", lane);
+
+        Bus bus = new Bus(null, null, null, 0); Skeleton.pushEntity("bus", bus);
+
+        // Call trigger
+        bus.gotoLane(lane, 0);
+        bus.gotoLane(lane, 1);
+        bus.gotoLane(lane, 2);
+        bus.gotoLane(lane, 3);
+        bus.gotoLane(lane, 4); // Itt vált a sávon lévő járművek száma 5-re -> a letaposott hóból jég lesz
     }
 
     public static void UC10() {
