@@ -352,4 +352,22 @@ public class UseCaseImplementations {
         Skeleton.pushEntity("snowy", lane.getCurrentState());
     }
 
+    public static void UC17() {
+        System.out.println("[Teszt: Autó elakad a mély hóban]\n");
+
+        // Init
+        OutdoorLane lane = new OutdoorLane(new SnowyState());
+        Skeleton.pushEntity("lane", lane);
+        Skeleton.pushEntity("snowy", lane.getCurrentState());
+
+        // Több hó esik, mint amiben még közlekedni tudnak az autók (max 20 egység)
+        lane.snowFall(40);
+
+        Car car = new Car(null, null, null);
+        Skeleton.pushEntity("car", car);
+
+        // Call trigger
+        car.gotoLane(lane, 0);
+    }
+
 }
