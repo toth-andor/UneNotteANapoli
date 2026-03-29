@@ -79,15 +79,9 @@ public class UseCaseImplementations {
 
         Cleaner cleaner = new Cleaner(100);
         Skeleton.pushEntity("cleaner", cleaner);
-        Skeleton.pushEntity("cleanerBalance", cleaner.getScore());
 
         SnowPlow snowplow = new SnowPlow(cleaner, null);
         Skeleton.pushEntity("snowplow", snowplow);
-
-        Sweeper sweeper = new Sweeper();
-        Skeleton.pushEntity("sweeper", sweeper);
-        snowplow.buyAttachment(sweeper);
-        snowplow.changeAttachment(sweeper);
 
         // 2. A Cleaner letakarítja az utat — egyenlege növekszik
         snowplow.interactWithLane(lane, 0);
