@@ -154,8 +154,17 @@ public class UseCaseImplementations {
     }
 
     public static void UC7() {
-        // TODO implement UC7
-        System.out.println("Running UC7!");
+       System.out.println("[Teszt: Két autó ütközik jeges úton]\n");
+
+        OutdoorLane lane = new OutdoorLane(new IcyState()); Skeleton.pushEntity("lane", lane);
+
+        Car car1 = new Car(null, null, lane); Skeleton.pushEntity("car1", car1);
+        Car car2 = new Car(null, null, lane); Skeleton.pushEntity("car2", car2);
+
+        car1.gotoLane(lane, 0);
+        car2.gotoLane(lane, 0);
+
+        lane.crash(car1, car2, 10);
     }
 
     public static void UC8() {
