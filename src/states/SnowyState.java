@@ -74,19 +74,15 @@ public class SnowyState extends LaneState {
     }
 
     /**
-     * Jégtörő eltávolítja a havat a sávról.
+     * Jégtörő havas sávon hatástalan — a hót nem képes eltávolítani, csak jeget tud törni.
      *
-     * @return DryState
+     * @return this
      */
     @Override
     public LaneState cleanWithIceBreaker() {
         CallChainLogger.printCall(this, "cleanWithIceBreaker()");
-        DryState dry = new DryState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("dry", dry);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(dry));
-        return dry;
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
     }
 
     /**

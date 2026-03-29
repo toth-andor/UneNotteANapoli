@@ -204,7 +204,11 @@ public class OutdoorLane extends Lane {
     @Override
     public void cleanWithIceBreaker() {
         CallChainLogger.printCall(this, "cleanWithIceBreaker()");
+        LaneState previousState = getCurrentState();
         setState(currentState.cleanWithIceBreaker());
+        if(previousState.getClass() != currentState.getClass()) {
+            setStateWasChanged(true);
+        }  
         CallChainLogger.printReturn(null);
     }
 

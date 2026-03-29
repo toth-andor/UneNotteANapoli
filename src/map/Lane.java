@@ -15,6 +15,27 @@ import skeleton.Skeleton.CallChainLogger;
 public abstract class Lane implements ILane {
 
     /**
+     * Jelzi, hogy a sáv állapota megváltozott-e az aktuális játék során
+     */
+    private boolean stateWasChanged = false;
+
+    /**
+     * Beállítja, hogy a sáv állapota megváltozott-e az aktuális játék során.
+     *
+     * @param stateWasChanged true, ha az állapot megváltozott
+     */
+    public void setStateWasChanged(boolean stateWasChanged) {
+        this.stateWasChanged = stateWasChanged;
+    }
+
+    /**
+     * @return true, ha a sáv állapota megváltozott 
+     */
+    public boolean getStateWasChanged() {
+        return stateWasChanged;
+    }
+
+    /**
      * A sáv kiindulópontját jelölő csomópont.
      */
     protected Junction source;
