@@ -68,7 +68,9 @@ public class CrashedState extends LaneState {
      */
     public LaneState handleTraffic(Vehicle v) {
         CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
-        v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll
+        
+        // TODO JAVITANI KELL
+        v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll 
         CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
