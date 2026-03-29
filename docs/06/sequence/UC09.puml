@@ -1,0 +1,50 @@
+@startuml
+' UC9: Hó letaposása és jéggé alakulása havas úton
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "bus : Bus" as B
+participant "lane : OutdoorLane" as L
+participant "snowy : SnowyState" as ST
+
+loop timestamp = 0..3 (vehicleCount 1→4)
+    T -> B : gotoLane(lane, timestamp)
+    activate B
+        B -> L : pushVehicle(bus, timestamp)
+        activate L
+            L -> ST : handleTraffic(bus)
+            activate ST
+                note right: vehicleCount++ → még < 5
+                ST -->> L : snowy (this)
+            deactivate ST
+            L -> L : setState(snowy)
+            L -->> B : true
+        deactivate L
+        B -> L : handleTraffic(bus, timestamp)
+        activate L
+        deactivate L
+        B -->> T : true
+    deactivate B
+end
+
+T -> B : gotoLane(lane, 4)
+activate B
+    B -> L : pushVehicle(bus, 4)
+    activate L
+        L -> ST : handleTraffic(bus)
+        activate ST
+            note right: vehicleCount++ → 5 >= ICY_THRESHOLD(5)
+            create participant "icy : IcyState" as IS
+            ST -> IS : <<create>>
+            ST -->> L : icy
+        deactivate ST
+        L -> L : setState(icy)
+        L -->> B : true
+    deactivate L
+    B -> L : handleTraffic(bus, 4)
+    activate L
+    deactivate L
+    B -->> T : true
+deactivate B
+@enduml

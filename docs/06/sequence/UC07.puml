@@ -1,0 +1,74 @@
+@startuml
+' UC7: Két autó ütközik jeges úton
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "car1 : Car" as C1
+participant "car2 : Car" as C2
+participant "lane : OutdoorLane" as L
+participant "icy : IcyState" as ST
+
+T -> C1 : gotoLane(lane, 0)
+activate C1
+    C1 -> L : pushVehicle(car1, 0)
+    activate L
+        note right: nem CrashedState
+        L -> ST : handleTraffic(car1)
+        activate ST
+            note right: Jeges sávon a jármű megcsúszik
+            ST -> C1 : gotoLane(null, 0)
+            activate C1
+                note right: currentLane = null\ntimeOutStart = 0
+                C1 -->> ST : false
+            deactivate C1
+            ST -->> L : icy (this)
+        deactivate ST
+        L -> L : setState(icy)
+        L -->> C1 : true
+    deactivate L
+    C1 -> L : handleTraffic(car1, 0)
+    activate L
+    deactivate L
+    C1 -->> T : true
+deactivate C1
+
+T -> C2 : gotoLane(lane, 0)
+activate C2
+    C2 -> L : pushVehicle(car2, 0)
+    activate L
+        L -> ST : handleTraffic(car2)
+        activate ST
+            ST -> C2 : gotoLane(null, 0)
+            activate C2
+                note right: currentLane = null\ntimeOutStart = 0
+                C2 -->> ST : false
+            deactivate C2
+            ST -->> L : icy (this)
+        deactivate ST
+        L -> L : setState(icy)
+        L -->> C2 : true
+    deactivate L
+    C2 -> L : handleTraffic(car2, 0)
+    activate L
+    deactivate L
+    C2 -->> T : true
+deactivate C2
+
+T -> L : crash(car1, car2, 10)
+activate L
+    note right: currentState instanceof IcyState\ngetVehicles().contains(car1, car2) → igaz
+    L -> C1 : crash(10)
+    activate C1
+        note right: timeOutStart = 10
+    deactivate C1
+    L -> C2 : crash(10)
+    activate C2
+        note right: timeOutStart = 10
+    deactivate C2
+    create participant "crashed : CrashedState" as CS
+    L -> CS : <<create>>(expiresAt = 30)
+    L -> L : setState(crashed)
+    L -->> T :
+deactivate L
+@enduml
