@@ -1,0 +1,19 @@
+@startuml
+' UC4: Busz megfordulása és pontszerzés
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "bus : Bus" as B
+
+T -> B : turnAround()
+activate B
+    note right: currentLane.getRoad() == destination1
+    B -> B : updateIncome()
+    activate B
+        note right: balance += TURN_AROUND_BONUS (1)
+    deactivate B
+    note right: destination1 ↔ destination2 csere
+    B -->> T :
+deactivate B
+@enduml

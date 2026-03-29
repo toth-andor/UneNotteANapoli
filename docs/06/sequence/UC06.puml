@@ -1,0 +1,37 @@
+@startuml
+' UC6: Hatástalan takarítás – Hóeltakarítás jégtörővel
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "cleaner : Cleaner" as C
+participant "snowplow : SnowPlow" as P
+participant "ib : IceBreaker" as I
+participant "lane : OutdoorLane" as L
+participant "snowy : SnowyState" as ST
+
+C -> P : interactWithLane(lane, 0)
+activate P
+    P -> I : cleanLane(lane, 0)
+    activate I
+        I -> L : cleanWithIceBreaker()
+        activate L
+            note right: previousState = snowy
+            L -> ST : cleanWithIceBreaker()
+            activate ST
+                note right: Havas sávon a jégtörő hatástalan
+                ST -->> L : snowy (this)
+            deactivate ST
+            L -> L : setState(snowy)
+            note right: previousState == currentState\nsetStateWasChanged(false)
+            L -->> I :
+        deactivate L
+        I -> L : getStateWasChanged()
+        activate L
+        L -->> I : false
+        deactivate L
+        I -->> P : false
+    deactivate I
+    note right: false → nincs addIncome
+    P -->> C :
+deactivate P
+@enduml

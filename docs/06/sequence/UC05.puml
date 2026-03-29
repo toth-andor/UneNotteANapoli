@@ -1,0 +1,35 @@
+@startuml
+' UC5: Fej vásárlása és egyenleg csökkenése
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "snowplow : SnowPlow" as P
+participant "cleaner : Cleaner" as C
+participant "sweeper : Sweeper" as SW
+
+T -> P : buyAttachment(sweeper)
+activate P
+    P -> SW : getPrice()
+    activate SW
+    SW -->> P : 1
+    deactivate SW
+    P -> C : getScore()
+    activate C
+    C -->> P : balance
+    deactivate C
+    note right: 1 <= balance → vásárlás lehetséges\nownedTools.add(sweeper)
+    P -> C : getScore()
+    activate C
+    C -->> P : balance
+    deactivate C
+    P -> SW : getPrice()
+    activate SW
+    SW -->> P : 1
+    deactivate SW
+    P -> C : setScore(balance - 1)
+    activate C
+    deactivate C
+    P -->> T : true
+deactivate P
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+' UC1: Havazás
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "road : Road" as R
+participant "lane : OutdoorLane" as L
+participant "dry : DryState" as D
+
+T -> R : snowFall(10)
+activate R
+    R -> L : snowFall(10)
+    activate L
+        note right: snowAmount += 10 → 10
+        L -> D : handleSnow(lane, 10)
+        activate D
+            note right: snowAmount=10 >= küszöb(5)
+            create participant "snowy : SnowyState" as S
+            D -> S : <<create>>
+            D -->> L : snowy
+        deactivate D
+        L -> L : setState(snowy)
+        L -->> R :
+    deactivate L
+    R -->> T :
+deactivate R
+@enduml

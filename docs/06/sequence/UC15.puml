@@ -1,0 +1,24 @@
+@startuml
+' UC15: Hókotró utat próbál takarítani kifogyott Sárkány vagy Sószóró fejjel
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "snowplow : SnowPlow" as P
+participant "attachment\n(Dragon / SaltVommiter)" as A
+participant "lane : OutdoorLane" as L
+participant "snowy : SnowyState" as ST
+
+T -> P : interactWithLane(lane, 0)
+activate P
+    P -> A : cleanLane(lane, 0)
+    activate A
+        note right: fuelLevel <= 0 (kifogyott tank)
+        A -->> P : false
+    deactivate A
+    note right: false → nincs addIncome\na sáv állapota változatlan
+    P -->> T :
+deactivate P
+
+note over L, ST: lane marad SnowyState-ben
+@enduml

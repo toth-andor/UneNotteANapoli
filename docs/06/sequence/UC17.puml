@@ -1,0 +1,29 @@
+@startuml
+' UC17: Autó elakad a mély hóban
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "lane : OutdoorLane" as L
+participant "snowy : SnowyState" as ST
+participant "car : Car" as CAR
+
+T -> L : snowFall(40)
+activate L
+    note right: snowAmount += 40 → 40
+    L -> ST : handleSnow(lane, 40)
+    activate ST
+        note right: Már havas → állapot nem változik
+        ST -->> L : snowy (this)
+    deactivate ST
+    L -> L : setState(snowy)
+    note right: snowAmount=40 > USABLE_THRESHOLD(20)
+    L -->> T :
+deactivate L
+
+T -> CAR : gotoLane(lane, 0)
+activate CAR
+    note right: SnowyState && !isNavigable() (40 > 20)\n&& !(car instanceof SnowPlow)\n→ behatolás megtagadva
+    CAR -->> T : false
+deactivate CAR
+@enduml

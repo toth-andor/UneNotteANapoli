@@ -1,0 +1,341 @@
+@startuml UneNotteANapli
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+
+package "attachments" {
+  interface IAttachment {
+    +cleanLane(l: Lane, timestamp: int): boolean
+    +getPrice(): int
+    +refill(budget: int): int
+  }
+
+  abstract class Attachment {
+    #price: int
+    +Attachment(price: int)
+    +getPrice(): int
+    +{abstract} cleanLane(l: Lane, timestamp: int): boolean
+    +{abstract} refill(budget: int): int
+  }
+
+  class VomitingHead {
+    {static} PRICE: int = 0
+    +VomitingHead()
+    +cleanLane(l: Lane, timestamp: int): boolean
+    +refill(budget: int): int
+  }
+
+  class IceBreaker {
+    {static} PRICE: int = 3
+    +IceBreaker()
+    +cleanLane(l: Lane, timestamp: int): boolean
+    +refill(budget: int): int
+  }
+
+  class Sweeper {
+    {static} PRICE: int = 1
+    +Sweeper()
+    +cleanLane(l: Lane, timestamp: int): boolean
+    +refill(budget: int): int
+  }
+
+  class Dragon {
+    {static} PRICE: int = 10
+    {static} PRICE_OF_FUEL: int = 2
+    {static} FULL_TANK: int = 20
+    ~fuelLevel: int
+    -priceOfFuel: int
+    +Dragon()
+    +cleanLane(l: Lane, timestamp: int): boolean
+    +refill(budget: int): int
+  }
+
+  class SaltVommiter {
+    {static} PRICE: int = 5
+    {static} PRICE_OF_FUEL: int = 1
+    {static} FULL_TANK: int = 20
+    -fuelLevel: int
+    -priceOfFuel: int
+    +SaltVommiter()
+    +cleanLane(l: Lane, timestamp: int): boolean
+    +refill(budget: int): int
+  }
+
+  Attachment ..|> IAttachment
+  VomitingHead --|> Attachment
+  IceBreaker --|> Attachment
+  Sweeper --|> Attachment
+  Dragon --|> Attachment
+  SaltVommiter --|> Attachment
+}
+
+package "map" {
+  interface ILane {
+    +pushVehicle(v: Vehicle, timestamp: int): boolean
+    +popVehicle(v: Vehicle): void
+    +snowFall(snow: int): void
+    +cleanWithHead(head: Attachment): void
+  }
+
+  abstract class Lane {
+    -stateWasChanged: boolean
+    #source: Junction
+    #destination: Junction
+    -road: Road
+    -vehicles: List<Vehicle>
+    +Lane()
+    +setStateWasChanged(stateWasChanged: boolean): void
+    +getStateWasChanged(): boolean
+    +pushVehicle(v: Vehicle, timestamp: int): boolean
+    +getVehicles(): List<Vehicle>
+    +popVehicle(v: Vehicle): void
+    +{abstract} snowFall(snow: int): void
+    +{abstract} cleanWithHead(head: Attachment): void
+    +{abstract} handleTraffic(v: Vehicle, timestamp: int): void
+    +{abstract} cleanWithDragon(): void
+    +{abstract} cleanWithSaltVomitter(timestamp: int): void
+    +{abstract} cleanWithSweeper(): void
+    +{abstract} cleanWithIceBreaker(): void
+    +{abstract} cleanWithVomittingHead(): void
+    +{abstract} tick(timestamp: int): void
+    +getRoad(): Road
+    +setRoad(road: Road): void
+    +getSource(): Junction
+    +getDestination(): Junction
+  }
+
+  class TunnelLane {
+    +pushVehicle(v: Vehicle, timestamp: int): boolean
+    +snowFall(snow: int): void
+    +cleanWithHead(head: Attachment): void
+    +handleTraffic(v: Vehicle, timestamp: int): void
+    +cleanWithDragon(): void
+    +cleanWithSaltVomitter(timestamp: int): void
+    +cleanWithSweeper(): void
+    +cleanWithIceBreaker(): void
+    +cleanWithVomittingHead(): void
+    +tick(timestamp: int): void
+  }
+
+  class OutdoorLane {
+    -currentState: LaneState
+    -saltedTimestamp: int
+    -snowAmount: int
+    {static} -USABLE_THRESHOLD: int = 20
+    +OutdoorLane(source: Junction, destination: Junction)
+    +OutdoorLane(initialState: LaneState)
+    +isNavigable(): boolean
+    +getSnowAmount(): int
+    +pushVehicle(v: Vehicle, timestamp: int): boolean
+    +crash(v1: Vehicle, v2: Vehicle, timestamp: int): void
+    +snowFall(snow: int): void
+    +cleanWithHead(head: Attachment): void
+    +handleTraffic(v: Vehicle, timestamp: int): void
+    +getCurrentState(): LaneState
+    +setState(s: LaneState): void
+    +cleanWithDragon(): void
+    +cleanWithSaltVomitter(timestamp: int): void
+    +cleanWithSweeper(): void
+    +cleanWithIceBreaker(): void
+    +cleanWithVomittingHead(): void
+    -findSmallerIndexedSameDirectionLane(): Lane
+    +tick(timestamp: int): void
+  }
+
+  class Road {
+    -lanes: List<Lane>
+    -end1: Junction
+    -end2: Junction
+    +Road(end1: Junction, end2: Junction)
+    +addLane(lane: Lane): void
+    +snowFall(amount: int): void
+    +tick(timestamp: int): void
+    +getEnd1(): Junction
+    +getEnd2(): Junction
+    +getLanes(): List<Lane>
+  }
+
+  class Junction {
+    -roads: List<Road>
+    +Junction()
+    +addRoad(road: Road): void
+    +getRoads(): List<Road>
+  }
+
+  Lane ..|> ILane
+  TunnelLane --|> Lane
+  OutdoorLane --|> Lane
+
+  OutdoorLane *-- LaneState
+
+  Road "1" *-- "4" Lane
+  Road "2" o--o Junction
+
+  Lane "n" --> "1" Junction : source
+  Lane "n" --> "1" Junction : destination
+}
+
+package "states" {
+  abstract class LaneState {
+    {static} SALT_DURATION: int = 5
+    +{abstract} handleSnow(lane: OutdoorLane, amount: int): LaneState
+    +{abstract} handleTraffic(v: Vehicle): LaneState
+    +cleanWithSaltVomitter(timestamp: int): LaneState
+    +tick(timestamp: int): LaneState
+    +{abstract} cleanWithSweeper(): LaneState
+    +{abstract} cleanWithIceBreaker(): LaneState
+    +{abstract} cleanWithVomittingHead(): LaneState
+  }
+
+  class DryState {
+    {static} -SNOW_THRESHOLD: int = 5
+    +handleSnow(lane: OutdoorLane, amount: int): LaneState
+    +handleTraffic(v: Vehicle): LaneState
+    +cleanWithSweeper(): LaneState
+    +cleanWithIceBreaker(): LaneState
+    +cleanWithVomittingHead(): LaneState
+  }
+
+  class SnowyState {
+    -vehicleCount: int = 0
+    {static} -ICY_THRESHOLD: int = 5
+    +handleSnow(lane: OutdoorLane, amount: int): LaneState
+    +handleTraffic(v: Vehicle): LaneState
+    +cleanWithSweeper(): LaneState
+    +cleanWithIceBreaker(): LaneState
+    +cleanWithVomittingHead(): LaneState
+  }
+
+  class IcyState {
+    +handleSnow(lane: OutdoorLane, amount: int): LaneState
+    +handleTraffic(v: Vehicle): LaneState
+    +cleanWithSweeper(): LaneState
+    +cleanWithIceBreaker(): LaneState
+    +cleanWithVomittingHead(): LaneState
+  }
+
+  class SaltedState {
+    -expiresAt: int
+    +SaltedState(expiresAt: int)
+    +handleSnow(lane: OutdoorLane, amount: int): LaneState
+    +handleTraffic(v: Vehicle): LaneState
+    +cleanWithSweeper(): LaneState
+    +cleanWithIceBreaker(): LaneState
+    +cleanWithVomittingHead(): LaneState
+    +tick(timestamp: int): LaneState
+  }
+
+  class CrashedState {
+    -expiresAt: int
+    +CrashedState(expiresAt: int)
+    +tick(timestamp: int): LaneState
+    +handleSnow(lane: OutdoorLane, amount: int): LaneState
+    +handleTraffic(v: Vehicle): LaneState
+    +cleanWithSaltVomitter(timestamp: int): LaneState
+    +cleanWithSweeper(): LaneState
+    +cleanWithIceBreaker(): LaneState
+    +cleanWithVomittingHead(): LaneState
+  }
+
+  DryState --|> LaneState
+  SnowyState --|> LaneState
+  IcyState --|> LaneState
+  SaltedState --|> LaneState
+  CrashedState --|> LaneState
+}
+
+package "Vehicle" {
+  interface IControllable {
+    +gotoLane(l: Lane, timestamp: int): boolean
+    +crash(timestamp: int): void
+    +interactWithLane(l: Lane): void
+  }
+
+  interface IRouteHandler {
+    +turnAround(): void
+  }
+
+  interface IScoreOwner {
+    +getScore(): int
+  }
+
+  interface ISnowPlow {
+    +changeAttachment(a: Attachment): boolean
+    +buyAttachment(newAttachment: Attachment): boolean
+    +refillAttachment(): void
+  }
+
+  abstract class Vehicle {
+    {static} +IMMOBILE_TIME: int = 20
+    #timeOutStart: int
+    +Vehicle(currentLane: Lane)
+    +gotoLane(l: Lane, timestamp: int): boolean
+    +crash(timestamp: int): void
+    +{abstract} interactWithLane(l: Lane, timestamp: int): void
+  }
+
+  abstract class Commuter {
+    -destination1: Road
+    -destination2: Road
+    +Commuter(destination1: Road, destination2: Road, currentLane: Lane)
+    +{abstract} #updateIncome(): void
+    +turnAround(): void
+    +interactWithLane(l: Lane, timestamp: int): void
+    +crash(timestamp: int): void
+  }
+
+  class Car {
+    +Car(destination1: Road, destination2: Road, currentLane: Lane)
+    #updateIncome(): void
+  }
+
+  class Bus {
+    {static} TURN_AROUND_BONUS: int = 1
+    -balance: int
+    +Bus(destination1: Road, destination2: Road, currentLane: Lane, balance: int)
+    +addIncome(amount: int): void
+    +getScore(): int
+    #updateIncome(): void
+  }
+
+  class SnowPlow {
+    +SnowPlow(owner: Cleaner, currentLane: Lane)
+    +getOwnedTools(): ArrayList<Attachment>
+    +changeAttachment(a: Attachment): boolean
+    +buyAttachment(newAttachment: Attachment): boolean
+    +refillAttachment(): void
+    +interactWithLane(l: Lane, timestamp: int): void
+    +crash(timestamp: int): void
+  }
+
+  class Cleaner {
+    -balance: int
+    +Cleaner(initialBalance: int)
+    +addIncome(amount: int): void
+    +setScore(score: int): void
+    +getScore(): int
+  }
+
+  Vehicle ..|> IControllable
+  Commuter --|> Vehicle
+  Commuter ..|> IRouteHandler
+  Car --|> Commuter
+  Bus --|> Commuter
+  Bus ..|> IScoreOwner
+  SnowPlow --|> Vehicle
+  SnowPlow ..|> ISnowPlow
+  Cleaner ..|> IScoreOwner
+
+  Cleaner "1" *-- "1..*" SnowPlow : controls
+  SnowPlow "1" --> "1" Cleaner : owner
+
+  SnowPlow "1" o-- "1..*" Attachment : owned_tools
+  SnowPlow "1" o-- "1" Attachment : active_tool
+
+  Vehicle "1" o-- "1" ILane : currentLane
+  Commuter "1" o-- "1" Road : destination1
+  Commuter "1" o-- "1" Road : destination2
+}
+
+@enduml
