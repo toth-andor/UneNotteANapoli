@@ -51,7 +51,7 @@ public class OutdoorLane extends Lane {
      /**
      * A hó maximális mennyiségének küszöbértéke, amíg még járható a sáv.
      */
-    private static final int USABLE_THRESHOLD = 10;
+    private static final int USABLE_THRESHOLD = 20;
 
      /**
      * Visszaadja a sávon lévő hó mennyiségétől függően, hogy járható e még a sáv
