@@ -182,7 +182,7 @@ public class UseCaseImplementations {
     }
 
     public static void UC11() {
-        System.out.println("Running UC11!");
+        System.out.println("[Teszt: Autó interakció száraz úton]\n");
 
         Junction sourceJunction = new Junction();
         Skeleton.pushEntity("sourceJunction", sourceJunction);
