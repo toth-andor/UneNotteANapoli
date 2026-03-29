@@ -33,7 +33,6 @@ public class IcyState extends LaneState {
      */
     public LaneState handleTraffic(Vehicle v) {
         CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
-        v.gotoLane(null, 0);
         CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
