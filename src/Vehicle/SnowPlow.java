@@ -89,6 +89,7 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * @return true, ha a vásárlás sikerült, egyébként false
      */
     public boolean buyAttachment(Attachment newAttachment) {
+        Skeleton.pushEntity("newAttachment", newAttachment);
         CallChainLogger.printCall(
             this,
             "buyAttachment(" + Skeleton.getEntityByRef(newAttachment) + ")"
