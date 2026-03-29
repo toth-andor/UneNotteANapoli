@@ -127,7 +127,9 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
                 timestamp +
                 ")"
         );
-        currentTool.cleanLane(l, timestamp);
+        if (currentTool.cleanLane(l, timestamp))
+            owner.addIncome(2);
+
         CallChainLogger.printReturn(null);
     }
 
