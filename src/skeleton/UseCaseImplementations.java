@@ -6,10 +6,12 @@ import Vehicle.SnowPlow;
 import attachments.Dragon;
 import attachments.IceBreaker;
 import attachments.SaltVommiter;
+import attachments.IceBreaker;
 import attachments.Sweeper;
 import map.Junction;
 import map.OutdoorLane;
 import map.Road;
+import skeleton.Skeleton.CallChainLogger;
 import states.DryState;
 import states.IcyState;
 import states.SaltedState;
@@ -121,18 +123,65 @@ public class UseCaseImplementations {
     }
 
     public static void UC10() {
-        // TODO implement UC10
         System.out.println("Running UC10!");
+        Cleaner cleaner = new Cleaner(100);
+        Skeleton.pushEntity("cleaner", cleaner);
+        SnowPlow snowplow = new SnowPlow(cleaner, null);
+        Skeleton.pushEntity("snowplow", snowplow);
+        IceBreaker iceBreaker = new IceBreaker();
+        Skeleton.pushEntity("icebreaker", iceBreaker);
+        snowplow.buyAttachment(iceBreaker);
+        snowplow.changeAttachment(iceBreaker);
     }
 
     public static void UC11() {
-        // TODO implement UC11
         System.out.println("Running UC11!");
+
+        Junction sourceJunction = new Junction();
+        Skeleton.pushEntity("sourceJunction", sourceJunction);
+        Junction destinationJunction = new Junction();
+        Skeleton.pushEntity("targetJunction", destinationJunction);
+
+        DryState dryState = new DryState();
+        Skeleton.pushEntity("dryState", dryState);
+
+        OutdoorLane outdoorLane = new OutdoorLane(dryState);
+        Skeleton.pushEntity("outdoorLane", outdoorLane);
+        Road road1 = new Road(sourceJunction, destinationJunction);
+        Skeleton.pushEntity("road1", road1);
+        Road road2 = new Road(destinationJunction, sourceJunction);
+        Skeleton.pushEntity("road2", road2);
+
+        Car car = new Car(road1, road2, outdoorLane);
+        Skeleton.pushEntity("car", car);
+        car.gotoLane(outdoorLane, 0);
     }
 
     public static void UC12() {
-        // TODO implement UC12
         System.out.println("Running UC12!");
+        System.out.println("[Teszt: Hókotró sószórófejjel száraz úton]\n");
+
+        DryState dryState = new DryState();
+        Skeleton.pushEntity("dryState", dryState);
+        CallChainLogger.printCall(dryState, "DryState()");
+        CallChainLogger.printReturn(null);
+
+        OutdoorLane outdoorLane = new OutdoorLane(dryState);
+        Skeleton.pushEntity("outdoorLane", outdoorLane);
+
+        Cleaner cleaner = new Cleaner(100);
+        Skeleton.pushEntity("cleaner", cleaner);
+
+        attachments.SaltVommiter saltVommiter = new attachments.SaltVommiter();
+        Skeleton.pushEntity("saltVommiter", saltVommiter);
+
+        SnowPlow snowplow = new SnowPlow(cleaner, outdoorLane);
+        Skeleton.pushEntity("snowplow", snowplow);
+
+        snowplow.buyAttachment(saltVommiter);
+        snowplow.changeAttachment(saltVommiter);
+        snowplow.refillAttachment();
+        snowplow.interactWithLane(outdoorLane, 0);
     }
 
     public static void UC13() {
