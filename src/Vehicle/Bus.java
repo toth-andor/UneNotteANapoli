@@ -70,7 +70,7 @@ public class Bus extends Commuter implements IScoreOwner {
     @Override
     protected void updateIncome() {
         CallChainLogger.printCall(this, "updateIncome()");
-        CallChainLogger.printReturn(balance + "");
         balance += TURN_AROUND_BONUS;
+        CallChainLogger.printReturn(String.valueOf(balance));
     }
 }
