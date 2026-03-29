@@ -205,12 +205,11 @@ public class UseCaseImplementations {
     }
 
     public static void UC12() {
-        System.out.println("Running UC12!");
-        System.out.println("[Teszt: Hókotró sószórófejjel száraz úton]\n");
+        System.out.println("[Teszt: Hóeltakarítás sószóró fejjel]\n");
 
         DryState dryState = new DryState();
         Skeleton.pushEntity("dryState", dryState);
-        CallChainLogger.printCall(dryState, "DryState()");
+        CallChainLogger.printCall(dryState, "<<create>>");
         CallChainLogger.printReturn(null);
 
         OutdoorLane outdoorLane = new OutdoorLane(dryState);
