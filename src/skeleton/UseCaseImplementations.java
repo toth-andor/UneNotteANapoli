@@ -169,7 +169,8 @@ public class UseCaseImplementations {
     }
 
     public static void UC10() {
-        System.out.println("Running UC10!");
+        System.out.println("[Teszt: Hókotró fej csere]\n");
+        
         Cleaner cleaner = new Cleaner(100);
         Skeleton.pushEntity("cleaner", cleaner);
         SnowPlow snowplow = new SnowPlow(cleaner, null);
