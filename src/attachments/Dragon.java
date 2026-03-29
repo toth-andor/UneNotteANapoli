@@ -22,8 +22,8 @@ public class Dragon extends Attachment {
     /**
      * Létrehoz egy új sárkányfejet.
      *
-     * @param price a fej vételára
-     * @param priceOfFuel a fogyóanyag utántöltés ára
+     * price a fej vételára
+     * priceOfFuel a fogyóanyag utántöltés ára
      */
     public Dragon() {
         super(PRICE);
