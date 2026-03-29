@@ -2,7 +2,9 @@ package map;
 
 import Vehicle.Vehicle;
 import attachments.Attachment;
+import states.CrashedState;
 import states.DryState;
+import states.IcyState;
 import states.LaneState;
 import states.SaltedState;
 import states.SnowyState;
@@ -64,10 +66,43 @@ public class OutdoorLane extends Lane {
     @Override
     public boolean pushVehicle(Vehicle v, int timestamp) {
         CallChainLogger.printCall(this, "pushVehicle(" + Skeleton.getEntityByRef(v) + ", " + timestamp + ")");
+        if (currentState instanceof CrashedState) {
+            CallChainLogger.printReturn("false");
+            return false;
+        }
         super.pushVehicle(v, timestamp);
         setState(currentState.handleTraffic(v));
         CallChainLogger.printReturn("true");
         return true;
+    }
+
+    /**
+     * Két járművet összeütköztet a sávon. Ellenőrzi, hogy a sáv jeges állapotban van-e,
+     * és hogy mindkét jármű a sávon tartózkodik-e. Ha igen, mindkét jármű immobilizálódik,
+     * és a sáv balesetes állapotba kerül.
+     *
+     * @param v1        az első jármű
+     * @param v2        a második jármű
+     * @param timestamp az ütközés időpontja
+     */
+    public void crash(Vehicle v1, Vehicle v2, int timestamp) {
+        CallChainLogger.printCall(this, "crash(" + Skeleton.getEntityByRef(v1) + ", " + Skeleton.getEntityByRef(v2) + ", " + timestamp + ")");
+        if (!(currentState instanceof IcyState)) {
+            CallChainLogger.printReturn(null);
+            return;
+        }
+        if (!getVehicles().contains(v1) || !getVehicles().contains(v2)) {
+            CallChainLogger.printReturn(null);
+            return;
+        }
+        v1.crash(timestamp);
+        v2.crash(timestamp);
+        CrashedState crashed = new CrashedState(timestamp + Vehicle.IMMOBILE_TIME);
+        if (Skeleton.ENABLE_LOGGING) {
+            Skeleton.pushEntity("crashed", crashed);
+        }
+        setState(crashed);
+        CallChainLogger.printReturn(null);
     }
 
     /**

@@ -3,6 +3,7 @@ package map;
 import Vehicle.Vehicle;
 import attachments.Attachment;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import skeleton.Skeleton;
 import skeleton.Skeleton.CallChainLogger;
@@ -57,6 +58,13 @@ public abstract class Lane implements ILane {
      *
      * @param v az eltávolítandó jármű
      */
+    /**
+     * @return a sávon tartózkodó járművek csak olvasható listája
+     */
+    public List<Vehicle> getVehicles() {
+        return Collections.unmodifiableList(vehicles);
+    }
+
     @Override
     public void popVehicle(Vehicle v) {
         CallChainLogger.printCall(this, "popVehicle(" + Skeleton.getEntityByRef(v) + ")");

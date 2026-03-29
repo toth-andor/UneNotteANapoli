@@ -14,7 +14,7 @@ public abstract class Vehicle {
     /**
      * Idő ameddig a jármű mozgásképessé válik egy baleset következtében.
      */
-    static final int IMMOBILE_TIME = 20;
+    public static final int IMMOBILE_TIME = 20;
 
     /**
      * Az ütközés bekövetkezésének időpillanata; ebből számítható,
@@ -55,9 +55,26 @@ public abstract class Vehicle {
             CallChainLogger.printReturn("false");
             return false;
         }
+        if (l == null) {
+            currentLane = null;
+            timeOutStart = timestamp;
+            CallChainLogger.printReturn("false");
+            return false;
+        }
         boolean result = l.pushVehicle(this, timestamp);
         CallChainLogger.printReturn(result + "");
         return result;
+    }
+
+    /**
+     * Balesetet szenved a jármű: immobilizálódik a megadott időponttól kezdve.
+     *
+     * @param timestamp a baleset időpontja
+     */
+    public void crash(int timestamp) {
+        CallChainLogger.printCall(this, "crash(" + timestamp + ")");
+        timeOutStart = timestamp;
+        CallChainLogger.printReturn(null);
     }
 
     /**
