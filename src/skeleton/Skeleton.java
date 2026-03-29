@@ -191,7 +191,7 @@ public class Skeleton {
         testCases.put(6, new TestCase("Hatástalan takarítás: Hóeltakarítás jégtörővel", UseCaseImplementations::UC6));
         testCases.put(7, new TestCase("Két autó ütközik jeges úton",  UseCaseImplementations::UC7));
         testCases.put(8, new TestCase("Hókotró fej újratöltése", UseCaseImplementations::UC8));
-        testCases.put(9, new TestCase("Busz/Autó interakció hóval borított úton", UseCaseImplementations::UC9));
+        testCases.put(9, new TestCase("Hó letposása és jéggé alakulása havas úton", UseCaseImplementations::UC9));
         testCases.put(10, new TestCase("Hókotró fej csere",  UseCaseImplementations::UC10));
         testCases.put(11, new TestCase("Autó interakció száraz úton", UseCaseImplementations::UC11));
         testCases.put(12, new TestCase("Hóeltakarítás sószóró fejjel",  UseCaseImplementations::UC12));
