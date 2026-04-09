@@ -204,7 +204,7 @@ player_1 [BUS] >
 > Parancsok kimenete: ebben az esetben is üzenet nyugtázza a sikeres műveleteket. Amennyiben választott sáv járhatatlan, a takarítónak nincs elég pontja a vásárláshoz vagy a hivatkozott fájlok hibásak, hibaüzenet keletkezik.
 ---
 
-## Szálkezelés (ide ki kéne találni valami értélmeset)
+## Szálkezelés (ide ki kéne találni valami értelmeset)
 
 A prototípusban az események szekvenciálisan kerülnek végrehajtásra,
 így a működés determinisztikus és tesztelhető.
