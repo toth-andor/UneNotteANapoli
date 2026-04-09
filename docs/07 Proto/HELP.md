@@ -1,0 +1,1 @@
+>TODO: sugó ablakok tartalma
