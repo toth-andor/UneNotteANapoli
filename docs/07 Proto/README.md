@@ -179,7 +179,7 @@ Innen elérhető:
 | Új állapotkonfiguráció betöltése fájlból: load <src filepath>       |
 * ------------------------------------------------------------------- *
 
-* ======================== TESZTELÉS [LOG] =========================== *
+* ======================== TESZTELÉS [LOG] ========================== *
 | Akutális állapot loggolása fájlba: snapshot <dst filepath>          |
 | Aktuális állapot loggolása konzolra: state                          |
 * ------------------------------------------------------------------- *
