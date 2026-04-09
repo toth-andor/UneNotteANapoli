@@ -24,14 +24,14 @@ pick lane_5
 
 @newround ID 2
 player_2
-pick lane_6 clean
+pick lane_6 -clean
 @endround
 
 @newround ID 3
 player_3
 swap dragon
 refill dragon
-pick lane_7 clean
+pick lane_7 -clean
 @endround
 
 
