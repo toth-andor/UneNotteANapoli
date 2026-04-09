@@ -209,7 +209,7 @@ player_1 [BUS] >
 A prototípusban az események szekvenciálisan kerülnek végrehajtásra,
 így a működés determinisztikus és tesztelhető.
 
-Az időalapú működés (pl. olvadás, mozgás) körökre van bontva.
+Az időalapú működés (pl. hóesés, mozgás) körökre van bontva.
 
 ---
 
