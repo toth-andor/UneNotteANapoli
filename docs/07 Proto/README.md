@@ -51,7 +51,7 @@ Autók száma: nincs megadva
 * ------------------------------------------------------------- *
 
 * ========================= JÁTÉKOSOK ========================= *
-| Játékos felvétele: addplayer <role: bus/cleaner>              |
+| Játékos felvétele: addplayer <role: bus/cleaner> [name]       |
 | Játékos eltávolítása:  rmplayer <name>                        |
 * ------------------------------------------------------------- *
 
