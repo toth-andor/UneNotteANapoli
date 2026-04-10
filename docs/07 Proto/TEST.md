@@ -20,7 +20,7 @@
 
 ---
 
-### A rendszer véletlen elemei kikapcsolhatók a randomoff <SEED> parancs segítségével.
+### A rendszer véletlen elemei kikapcsolhatók a `randomoff <SEED>` parancs segítségével.
 
 pl.: randomoff 39
 
