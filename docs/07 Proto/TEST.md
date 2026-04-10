@@ -5,7 +5,7 @@
 
 - Parancssori futtatás:
   * load input.txt
-  * manuális konfiguráció
+  * manuális konfiguráció a CLI-n keresztül
   
 
 - Összehasonlítás:
