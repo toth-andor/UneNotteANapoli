@@ -21,8 +21,7 @@ swap dragon
 refill dragon
 pick lane_7 -clean
 
-
-
+exit
 ```
 
 > Itt adhatóak meg a játék beállításai, amikkel az első kör indul és a körök forgatókönyvei
