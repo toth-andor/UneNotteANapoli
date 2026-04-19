@@ -15,6 +15,8 @@ A Controller csomag felelős a játékmenet irányításáért, a felhasználói
   - Getterek, hogy a View és a Ptoro le tudják kérdezni a játék teljes állapotát.
 
 ## 2. GameState (Állapotgép megvalósítás)
+- *Függvények*
+  - `GameState handleEvent(Message msg)`: Virtuális függvény melyet a leszármazott állapotok valósítanak meg. A paraméterül kapott `msg` hatására elvégzi a szükséges mellékhatásokat, és visszaadja az új játék állapotot.
 
 A `GameState` absztrakt osztály határozza meg az egyes fázisok viselkedését. A Controller az aktuális állapotnak delegálja az érkező üzenetek feldolgozását.
 
