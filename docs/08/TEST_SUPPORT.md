@@ -39,18 +39,6 @@ Az elvárt kimeneti fájl a snapshot által leírt formátumú. Manuálisan, ref
 
 ---
 
-## Egy teszt lefuttatása
-
-A program standard bemenetről olvassa a parancsokat (`System.in`, a `CommandLineInterpreter` már ezt valósítja meg). Egy teszt lefuttatása Windows parancssori átirányítással:
-
-```
-java -cp bin proto.CLIProto < tests\test_01_input.txt
-```
-
-A `snapshot` parancs a bemeneti fájlban megadott elérési útra írja ki az aktuális állapotot. Az összehasonlítás ezután a generált és az elvárt fájl között történik.
-
----
-
 ## Tesztek futtatásának támogatása – TestRunner
 
 A tesztek futtatásához egy `TestRunner` Java osztály készül. Stdin-ről olvassa a felhasználó választását, majd az adott tesztet alprogramként indítja el. A `snapshot` parancs a bemeneti szkriptben megadott útvonalra írja az actual fájlt, a TestRunner ezt hasonlítja össze az elvárttal.
