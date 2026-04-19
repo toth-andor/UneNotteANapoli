@@ -2,7 +2,7 @@
 
 ## Áttekintés
 
-A tesztelési infrastruktúra tisztán Java-alapú, külön segédprogram nélkül működik, és Windows-on is teljes mértékben futtatható. A tesztek a program saját parancsnyelve alapján íródnak (lásd CONFIG.md), és I/O átirányítással etethetők be a programnak.
+A tesztelési infrastruktúra tisztán Java-alapú, külön segédprogram nélkül működik, és Windows-on is teljes mértékben futtatható. A tesztek a program saját parancsnyelve alapján íródnak, és I/O átirányítással etethetők be a programnak.
 
 ---
 
@@ -18,7 +18,7 @@ Minden teszt két fájlból áll, a `tests/` könyvtárban, névkonvenció szeri
 
 ### Bemeneti fájl felépítése
 
-A bemeneti fájl a CONFIG.md formátumát követi. Minden tesztnél kötelező a `randomoff <seed>` parancs a determinisztikusság biztosításához, majd a játék parancsai, végül egy `snapshot` hívás, amit `exit` zár le.
+A bemeneti fájl a parancsnyelv formátumát követi. Minden tesztnél kötelező a `randomoff <seed>` parancs a determinisztikusság biztosításához, majd a játék parancsai, végül egy `snapshot` hívás, amit `exit` zár le.
 
 ```
 randomoff 39
@@ -29,13 +29,13 @@ start
 
 pick lane_5
 pick lane_6 -clean
-snapshot tests/test_01_actual.txt
+snapshot tests\test_01_actual.txt
 exit
 ```
 
 ### Elvárt kimeneti fájl felépítése
 
-Az elvárt kimeneti fájl a SNAPSHOT.md-ben leírt formátumú snapshot. Manuálisan, referencia-futtatás alapján készül: a fejlesztő egy helyesnek ítélt futás eredményét tárolja el elvárt kimenetként.
+Az elvárt kimeneti fájl a snapshot által leírt formátumú. Manuálisan, referencia-futtatás alapján készül: a fejlesztő egy helyesnek ítélt futás eredményét tárolja el elvárt kimenetként.
 
 ---
 
@@ -44,7 +44,7 @@ Az elvárt kimeneti fájl a SNAPSHOT.md-ben leírt formátumú snapshot. Manuál
 A program standard bemenetről olvassa a parancsokat (`System.in`, a `CommandLineInterpreter` már ezt valósítja meg). Egy teszt lefuttatása Windows parancssori átirányítással:
 
 ```
-java -jar game.jar < tests\test_01_input.txt
+java -cp bin proto.CLIProto < tests\test_01_input.txt
 ```
 
 A `snapshot` parancs a bemeneti fájlban megadott elérési útra írja ki az aktuális állapotot. Az összehasonlítás ezután a generált és az elvárt fájl között történik.
@@ -53,89 +53,62 @@ A `snapshot` parancs a bemeneti fájlban megadott elérési útra írja ki az ak
 
 ## Tesztek futtatásának támogatása – TestRunner
 
-A tesztek futtatásához egy `TestRunner` Java osztály készül. Ez a program:
-- elindítja a játékot alprogramként (`ProcessBuilder`),
-- a megadott bemeneti fájlt átirányítja a játék standard bemenetére,
-- megvárja a futás végét,
-- összehasonlítja a generált kimenetet az elvárttal,
-- kiírja az eredményt.
+A tesztek futtatásához egy `TestRunner` Java osztály készül. Stdin-ről olvassa a felhasználó választását, majd az adott tesztet alprogramként indítja el. A `snapshot` parancs a bemeneti szkriptben megadott útvonalra írja az actual fájlt, a TestRunner ezt hasonlítja össze az elvárttal.
+
+### Menü
+
+```
+TestRunner indul, listázza a tests\ könyvtár *_input.txt fájljait:
+
+  [0] Összes teszt futtatása
+  [1] test_01
+  [2] test_02
+  ...
+
+Választás (stdin): >
+```
 
 ### TestRunner – pszeudókód
 
 ```
 osztály TestRunner:
 
-    metódus runTest(testName: String) -> boolean:
-        inputPath  ← "tests/" + testName + "_input.txt"
-        expectedPath ← "tests/" + testName + "_expected.txt"
-        actualPath ← "tests/" + testName + "_actual.txt"
+    metódus main():
+        tesztek ← listFiles("tests\", végződés: "_input.txt")
+        kiír menü(tesztek)
+        választás ← stdin következő sora
 
-        process ← ProcessBuilder("java", "-jar", "game.jar")
-                        .redirectInput(inputPath)
-                        .redirectOutput(actualPath)
-                        .start()
-        process.waitFor()
+        ha választás == "0":
+            minden tesztre: futtat(teszt)
+        különben:
+            futtat(tesztek[választás])
 
-        ha filesAreEqual(expectedPath, actualPath):
+    metódus futtat(testName):
+        Main osztály elindítása alprogramként
+            stdin ← tests\testName_input.txt
+        megvárja a futás végét
+        // a snapshot parancs a bemeneti szkriptben megadott útvonalra írja az actual fájlt
+
+        eltérések ← összehasonlít(
+            tests\testName_expected.txt,
+            tests\testName_actual.txt
+        )
+
+        ha eltérések üres:
             kiír "PASS: " + testName
-            visszaad igaz
         különben:
             kiír "FAIL: " + testName
-            printDiff(testName, expectedPath, actualPath)
-            visszaad hamis
+            minden eltérésre: kiír sor száma, elvárt, tényleges
 
-    metódus runAllTests() -> void:
-        tests ← listFiles("tests/", végződés: "_input.txt")
-        pass ← 0, fail ← 0
-
-        minden testFile-ra tests-ben:
-            testName ← testFile neve "_input.txt" nélkül
-            ha runTest(testName): pass++
-            különben: fail++
-
-        kiír "---"
-        kiír "Eredmény: " + pass + " PASS, " + fail + " FAIL"
-
-    metódus linesOf(path: String) -> Lista<String>:
-        visszaad Files.readAllLines(path)   // soronként olvassa be, CRLF és LF egyaránt kezeli
-
-    metódus filesAreEqual(expectedPath: String, actualPath: String) -> boolean:
-        expectedLines ← linesOf(expectedPath)
-        actualLines   ← linesOf(actualPath)
-
-        ha expectedLines.mérete != actualLines.mérete:
-            visszaad hamis
-
-        minden i-re 0-tól expectedLines.mérete-1-ig:
-            ha expectedLines[i] != actualLines[i]:
-                visszaad hamis
-
-        visszaad igaz
-
-    metódus printDiff(testName: String, expectedPath: String, actualPath: String) -> void:
-        expectedLines ← linesOf(expectedPath)
-        actualLines   ← linesOf(actualPath)
-        maxSor ← max(expectedLines.mérete, actualLines.mérete)
-
-        minden i-re 0-tól maxSor-1-ig:
-            exp ← ha i < expectedLines.mérete: expectedLines[i], különben "<hiányzó sor>"
-            act ← ha i < actualLines.mérete:   actualLines[i],   különben "<hiányzó sor>"
-            ha exp != act:
-                kiír "  Sor " + (i+1) + ":"
-                kiír "    ELVÁRT:   " + exp
-                kiír "    TÉNYLEGES: " + act
+    metódus összehasonlít(expected, actual):
+        soronként olvassa be mindkét fájlt
+        visszaadja azokat a sorokat ahol eltérés van
 ```
 
-### TestRunner futtatása
+### Futtatás
 
-Egy adott teszt futtatása:
 ```
-java -cp game.jar TestRunner test_01
-```
-
-Az összes teszt futtatása:
-```
-java -cp game.jar TestRunner --all
+java -cp bin TestRunner
 ```
 
 ---
@@ -145,12 +118,17 @@ java -cp game.jar TestRunner --all
 A **teszt oráklum** az elvárt kimeneti fájlok összessége (`*_expected.txt`). Ezeket manuálisan, egyszer kell elkészíteni:
 
 1. A fejlesztő lefuttatja a tesztet a helyesnek ítélt verzióval.
-2. A generált snapshot fájlt átnevezi `*_expected.txt`-re.
+2. A generált snapshot fájlt átmásolja és `*_expected.txt`-ként menti el.
 3. A tartalmat szükség esetén manuálisan ellenőrzi/kiigazítja.
 
-Az összehasonlítás **soronkénti szövegszintű egyezést** jelent. A `Files.readAllLines()` soronként olvassa be a fájlokat, és egységesen kezeli a Windows (CRLF) és Unix (LF) sortöréseket – így nem okoz hamis FAIL-t az, ha az elvárt fájlt Windows-on szerkesztik, a generált kimenet viszont LF-et használ. A teszt pontosan akkor PASS, ha minden sor egyezik.
+A teszt pontosan akkor PASS, ha a TestRunner `összehasonlít` metódusa nem talál eltérést. Eltérés esetén kiírja az érintett sorokat és a különbséget.
 
-Ha a snapshot formátum megváltozik (pl. új `@blokk` kerül bele), az érintett `*_expected.txt` fájlokat frissíteni kell, és a változást dokumentálni kell.
+
+---
+
+## Tesztelési mód
+
+Az állapot kiírása a `snapshot <path>` paranccsal történik, amit a fejlesztő explicit módon helyez el a bemeneti szkriptben, ezzel pontosan meghatározható, hogy mikor és hova íródjon ki az aktuális állapot.
 
 ---
 
@@ -159,8 +137,9 @@ Ha a snapshot formátum megváltozik (pl. új `@blokk` kerül bele), az érintet
 A játék teljes mértékben irányítható a parancsnyelven keresztül, interaktív módban is. A `CommandLineInterpreter` a standard bementről (`System.in`) olvassa a sorokat, így a játék közvetlenül játszható kézzel begépelt parancsokkal is, nemcsak automatizált tesztfájlokból:
 
 ```
-java -jar game.jar
+java -cp bin proto.CLIProto
 ```
 
-Ez a tulajdonság biztosítja, hogy a tesztelési nyelv egyben a játék vezérlési nyelve is – nincs különálló tesztelési szintaxis.
+Ez a tulajdonság biztosítja, hogy a tesztelési nyelv egyben a játék vezérlési nyelve is, nincs különálló tesztelési szintaxis.
+
 
