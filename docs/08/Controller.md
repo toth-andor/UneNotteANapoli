@@ -2,11 +2,11 @@
 
 A Controller csomag felelős a játékmenet irányításáért, a felhasználói parancsok értelmezéséért, a körök kezeléséért és a rendszeresemények koordinálásáért. A vezérlő egy állapotgép, amely szigorú szabályok szerint kezeli a játék fázisait és a játékosok interakcióit.
 
-## Osztályok dokumentációja
+## 1. Osztályok dokumentációja
 
 ### Controller
 #### Felelősség
-A rendszer központi osztálya, amely a State tervezési mintát alkalmazva állapotgépként működik. Kontextusként tárolja a játék aktuális állapotát, és az `IController` interfészen keresztül érkező üzeneteket továbbítja a jelenlegi `GameState` példánynak. Koordinálja a modell, a turn manager és a rendszerfázisért felelős komponensek munkáját.
+A rendszer központi osztálya, amely a State tervezési mintát alkalmazva állapotgépként működik. Kontextusként tárolja a játék aktuális állapotát, és az `IController` interfész megvalósítójaként az érkező üzeneteket továbbítja a jelenlegi `GameState` példánynak. Koordinálja a modell, a turn manager és a rendszerfázisért felelős komponensek munkáját.
 #### Ősosztályok
 Object → Controller
 #### Interfészek
@@ -48,7 +48,7 @@ Nincs.
 #### Attribútumok
 Nincs saját attribútum.
 #### Metódusok
-- `void process(Message msg)`: Felüldefiniálja az AddPlayer, AddJunctions, AddRoad és StartGame üzenetek kezelését. A StartGame hatására átlépteti a vezérlőt az első játékos típusától függően: + (Public)
+- `void process(Message msg)`: Felüldefiniálja az AddPlayer, AddJunctions, AddRoad és StartGame üzenetek kezelését. A StartGame hatására átlépteti a vezérlőt az első játékos típusától függően `AwaitingPurchaseState` vagy `BusActionState` állapotba: + (Public)
 
 ---
 
@@ -62,7 +62,7 @@ Nincs.
 #### Attribútumok
 - `activePlayer`: A soron lévő takarító játékos: - Cleaner
 #### Metódusok
-- `void process(Message msg)`: Kezeli a BuySnowPlow és FinishPurchase üzeneteket. A FinishPurchase hatására kiválasztja az első hókotrót és SnowPlowActionState-be vált: + (Public)
+- `void process(Message msg)`: Kezeli a BuySnowPlow és FinishPurchase üzeneteket. A FinishPurchase hatására kiválasztja a játékos első hókotróját és SnowPlowActionState-be vált: + (Public)
 
 ---
 
@@ -77,7 +77,7 @@ Nincs.
 - `currentPlow`: Az éppen irányított hókotró: - SnowPlow
 - `phase`: A belső döntési al-fázis (BUY/SWAP/REFILL/MOVE): - ActionPhase
 #### Metódusok
-- `void process(Message msg)`: Kezeli a BuyAttachment, SwapAttachment, RefillAttachment, SkipAction és PickLane üzeneteket. PickLane után ellenőrzi, van-e következő gép, és ha nincs, lépteti a játékost: + (Public)
+- `void process(Message msg)`: Kezeli a BuyAttachment, SwapAttachment, RefillAttachment, SkipAction és PickLane üzeneteket. PickLane után ellenőrzi, van-e következő gép, és ha nincs, lépteti a játékost a következő fázisba (következő játékos vagy rendszerfázis): + (Public)
 
 ---
 
@@ -91,7 +91,7 @@ Nincs.
 #### Attribútumok
 - `currentBus`: Az éppen irányított busz: - Bus
 #### Metódusok
-- `void process(Message msg)`: Kizárólag a PickLane üzenetet kezeli, majd átadja a kört a következő játékosnak vagy a rendszernek: + (Public)
+- `void process(Message msg)`: Kizárólag a PickLane üzenetet kezeli, majd átadja a kört a következő egységnek (következő játékos vagy rendszerfázis): + (Public)
 
 ---
 
@@ -107,7 +107,24 @@ Nincs saját attribútum.
 #### Metódusok
 - `void process(Message msg)`: Nem fogad külső üzenetet, a belépéskor automatikusan lefut a rendszerlogika, majd új kört indít az első játékossal: + (Public)
 
----
+## 2. Állapotátmenetek
+
+| Forrás Állapot | Esemény / Üzenet | Cél Állapot | Feltétel / Megjegyzés |
+| :--- | :--- | :--- | :--- |
+| **SetupState** | `StartGame` | **AwaitingPurchaseState** | Ha az első játékos Cleaner típusú. |
+| **SetupState** | `StartGame` | **BusActionState** | Ha az első játékos BusDriver típusú. |
+| **AwaitingPurchaseState** | `FinishPurchase` | **SnowPlowActionState** | A játékos első hókotrójának irányítása kezdődik. |
+| **SnowPlowActionState** | `PickLane` | **SnowPlowActionState** | Ha a játékosnak van még következő (nem lépett) hókotrója. |
+| **SnowPlowActionState** | `PickLane` | **AwaitingPurchaseState** | Ha nincs több gép, és a következő játékos Cleaner. |
+| **SnowPlowActionState** | `PickLane` | **BusActionState** | Ha nincs több gép, és a következő játékos BusDriver. |
+| **SnowPlowActionState** | `PickLane` | **SystemPhaseState** | Ha nincs több gép, és az utolsó játékos végzett. |
+| **BusActionState** | `PickLane` | **AwaitingPurchaseState** | Ha a következő játékos Cleaner. |
+| **BusActionState** | `PickLane` | **BusActionState** | Ha a következő játékos BusDriver. |
+| **BusActionState** | `PickLane` | **SystemPhaseState** | Ha az utolsó játékos végzett. |
+| **SystemPhaseState** | (Automatikus) | **AwaitingPurchaseState** | Rendszerlogika lefutása után, ha az első játékos Cleaner. |
+| **SystemPhaseState** | (Automatikus) | **BusActionState** | Rendszerlogika lefutása után, ha az első játékos BusDriver. |
+
+## 3. Segédosztályok és típusok
 
 ### Player (Abstract)
 #### Felelősség
@@ -137,7 +154,7 @@ Az összes bemeneti parancsot összefogó típus. Java record-ok segítségével
 - `StartGame()`: Játék indítása.
 
 #### Játékos és jármű akciók
-- `BuySnowPlow()`: Új hókotró vásárlása.
+- `BuySnowPlow()`: Új hókotró vásárlása (AwaitingPurchaseState-ben).
 - `FinishPurchase()`: Vásárlási fázis vége.
 - `BuyAttachment(String type)`: Új fej vétele a soron lévő géphez.
 - `SwapAttachment(String type)`: Fejcsere.
