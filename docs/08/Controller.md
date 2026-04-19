@@ -19,8 +19,8 @@ IController
 - `npcHandler`: Az NPC autók mozgásáért felelős segédkomponens: - NPCHandler
 - `weatherManager`: A havazás szimulációjáért felelős segédkomponens: - WeatherManager
 #### Metódusok
-- `void receive(Message msg)`: A külső felületekről (View/Proto) érkező üzenetek fogadása és továbbítása a `gameState.process(msg)` hívással: + (Public)
-- `void setState(GameState s)`: Az állapotgép állapotának megváltoztatása: - (Private)
+- `void receive(Message msg)`: A külső felületekről (View/Proto) érkező üzenetek fogadása és továbbítása a `gameState.process(msg)` hívással: + (Public) gameState firssítése a visszaadott GameState-re
+- `void loadConfig(String cfg)`: Soronként feldolgozza a kapott konfigot, és minden sorhoz hív egy `reciev(msg)`-t a megfelelő `Message`-dszel.
 
 ---
 
