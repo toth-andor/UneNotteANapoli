@@ -2,6 +2,7 @@ package Vehicle;
 
 import java.util.ArrayList;
 
+import map.Lane;
 import skeleton.Skeleton.CallChainLogger;
 
 /**
@@ -20,6 +21,15 @@ public class Cleaner implements IScoreOwner {
 
     public void registerSnowPlow(SnowPlow snowPlow) {
         snowPlows.add(snowPlow);
+    }
+
+    public int buySnowPlow(Lane lane) {
+        if (balance < 100) // TODO: move price to static var
+            return balance;
+
+        balance -= 100;
+        new SnowPlow(this, lane);
+        return balance;
     }
 
     public ArrayList<SnowPlow> getSnowPlows() {

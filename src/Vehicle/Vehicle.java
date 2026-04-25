@@ -66,6 +66,7 @@ public abstract class Vehicle {
         }
         boolean result = l.pushVehicle(this, timestamp);
         if (result) {
+            currentLane.popVehicle(this);
             currentLane = l;
             interactWithLane(l, timestamp);
         }
