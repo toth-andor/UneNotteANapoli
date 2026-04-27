@@ -70,6 +70,23 @@ public abstract class LaneState {
     }
 
     /**
+     * Zúzalékszóró fej hatását alkalmazza a sávra. Alapértelmezetten GraveledState-be vált.
+     * A GraveledState felüldefiniálja, hogy ne változzon az állapot.
+     *
+     * @param timestamp a takarítás időbélyege
+     * @return az új állapot zúzalékszórás után
+     */
+    public LaneState cleanWithStoneVomitter(int timestamp) {
+        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
+        GraveledState graveled = new GraveledState();
+        if (Skeleton.ENABLE_LOGGING) {
+            Skeleton.pushEntity("graveled", graveled);
+        }
+        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(graveled));
+        return graveled;
+    }
+
+    /**
      * Seprű fej hatását alkalmazza a sávra.
      *
      * @return az új állapot seprés után

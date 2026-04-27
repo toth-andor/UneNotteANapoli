@@ -102,6 +102,17 @@ public class TunnelLane extends Lane {
     }
 
     /**
+     * Alagútban zúzalékszórónak nincs hatása.
+     *
+     * @param timestamp a takarítás időbélyege (figyelmen kívül hagyva)
+     */
+    @Override
+    public void cleanWithStoneVomitter(int timestamp) {
+        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
+        CallChainLogger.printReturn(null);
+    }
+
+    /**
      * Alagútban a ticknek nincs hatása, az állapot nem változik.
      *
      * @param timestamp az aktuális idő

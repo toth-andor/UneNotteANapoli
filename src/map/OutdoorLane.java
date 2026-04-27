@@ -4,6 +4,7 @@ import Vehicle.Vehicle;
 import attachments.Attachment;
 import states.CrashedState;
 import states.DryState;
+import states.GraveledState;
 import states.IcyState;
 import states.LaneState;
 import states.SaltedState;
@@ -183,10 +184,15 @@ public class OutdoorLane extends Lane {
     /**
      * Sárkányfej hatása: a sávot azonnal száraz állapotba hozza,
      * eltávolít minden havat, jeget és balesetet.
+     * Zúzalékos sávra a lángszórónak nincs hatása.
      */
     @Override
     public void cleanWithDragon() {
         CallChainLogger.printCall(this, "cleanWithDragon()");
+        if (currentState instanceof GraveledState) {
+            CallChainLogger.printReturn(null);
+            return;
+        }
         DryState dry = new DryState();
         if (Skeleton.ENABLE_LOGGING) {
             Skeleton.pushEntity("dry", dry);
@@ -199,16 +205,21 @@ public class OutdoorLane extends Lane {
     /**
      * Sószóró hatása: az állapot dönt arról, hogy a sózás milyen új állapotot eredményez.
      * Eltárolja a sózás időbélyegét a lejárat nyomon követéséhez.
-     * Nullázza a hómennyiséget, hogy lejárat után száraz állapotból induljon a sáv.
+     * Nullázza a hómennyiséget, ha az állapot ténylegesen megváltozott
+     * (pl. zúzalékos sávra só nem hat, így ott a hómennyiség nem nullázódik).
      *
      * @param timestamp a takarítás időbélyege
      */
     @Override
     public void cleanWithSaltVomitter(int timestamp) {
         CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
-        setState(currentState.cleanWithSaltVomitter(timestamp));
-        this.saltedTimestamp = timestamp;
-        snowAmount = 0;
+        LaneState newState = currentState.cleanWithSaltVomitter(timestamp);
+        boolean changed = newState != currentState;
+        setState(newState);
+        if (changed) {
+            this.saltedTimestamp = timestamp;
+            snowAmount = 0;
+        }
         CallChainLogger.printReturn(null);
     }
 
@@ -244,6 +255,25 @@ public class OutdoorLane extends Lane {
         if(previousState.getClass() != currentState.getClass()) {
             setStateWasChanged(true);
         }  
+        CallChainLogger.printReturn(null);
+    }
+
+    /**
+     * Zúzalékszóró hatása: az állapot dönt arról, hogy a zúzalékszórás milyen új állapotot eredményez.
+     * Nullázza a hómennyiséget, ha az állapot ténylegesen megváltozott
+     * (pl. már zúzalékos sávra újabb zúzalék szórása nem nullázza a felhalmozódott havat).
+     *
+     * @param timestamp a takarítás időbélyege
+     */
+    @Override
+    public void cleanWithStoneVomitter(int timestamp) {
+        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
+        LaneState newState = currentState.cleanWithStoneVomitter(timestamp);
+        boolean changed = newState != currentState;
+        setState(newState);
+        if (changed) {
+            snowAmount = 0;
+        }
         CallChainLogger.printReturn(null);
     }
 

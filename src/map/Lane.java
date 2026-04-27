@@ -147,6 +147,13 @@ public abstract class Lane implements ILane {
     public abstract void cleanWithVomittingHead();
 
     /**
+     * Zúzalékszóróval végzett takarítás hatása a sávra.
+     *
+     * @param timestamp a takarítás időbélyege
+     */
+    public abstract void cleanWithStoneVomitter(int timestamp);
+
+    /**
      * Egy game tick elteltét jelzi a sávnak. A sáv továbbítja az állapotának,
      * amely szükség esetén megváltoztatja azt (pl. só lejáratakor DryState-be vált).
      *
