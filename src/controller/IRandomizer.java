@@ -1,4 +1,4 @@
-package control;
+package controller;
 
 public interface IRandomizer {
     public int randomize(int rangeStart, int rangeEnd);
