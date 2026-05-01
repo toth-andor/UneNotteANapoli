@@ -14,6 +14,7 @@ public sealed interface Message {
     /** Új játékos regisztrálása (pl. role: "bus", "cleaner") **/
     record AddCleaner(String name) implements Message {}
     record AddBusDriver(String name) implements Message {}
+    record AddNPCCar(int count) implements Message {}
 
     /** Meghatározott számú csomópont hozzáadása a térképhez **/
     record AddJunction(String name) implements Message {}

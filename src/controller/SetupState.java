@@ -36,6 +36,13 @@ public class SetupState extends GameState {
                 mm.addJunction(addJunctionsMsg.name());
                 yield this;
             }
+            case Message.AddNPCCar addNPCCarMsg -> {
+                for (int i = 0; i < addNPCCarMsg.count(); i++) {
+                    // TODO: dest1 != dest2
+                    controller.getNpcHandler().addNPC(mm.getRandomRoad(), mm.getRandomRoad(), mm.getRandomLane());
+                }
+                yield this;
+            }
             case Message.AddRoad addRoadMsg -> {
                 mm.addRoad(addRoadMsg.j1(), addRoadMsg.j2());
                 yield this;
