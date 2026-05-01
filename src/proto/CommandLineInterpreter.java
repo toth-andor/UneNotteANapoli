@@ -16,7 +16,7 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
     }
 
     @Override
-    public void parse() {
+    public void parse(int param) {
         System.out.println(workingDirectory.getName() + "  ");
 
         String currentLine = scanner.nextLine();
