@@ -91,4 +91,11 @@ public class Controller implements IController {
     public NPCHandler getNpcHandler() {
         return npcHandler;
     }
+
+    @Override
+    public int getRoundNumber() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoundNumber'");
+    }
+
 }

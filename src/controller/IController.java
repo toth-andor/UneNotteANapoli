@@ -39,4 +39,9 @@ public interface IController {
      * @return az NPC-ket kezelő komponens
      */
     NPCHandler getNpcHandler();
+
+    /**
+     * @return az aktuális kör sorszáma
+     */
+    int getRoundNumber();
 }
