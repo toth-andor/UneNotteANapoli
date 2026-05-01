@@ -69,6 +69,17 @@ public class CLIProto {
         System.out.println("          Játék inicializálása [" + mode + "]");
         System.out.println("-----------------------------------------------------------------");
         System.out.println();
+        System.out.println("? =========================== DOCS ============================ ?");
+        System.out.println("| Útmutató a program működéséhez: help                          |");
+        System.out.println("? ------------------------------------------------------------- ?");
+        System.out.println("| Játék vezérlésének leírása: help game                         |");
+        System.out.println("? ------------------------------------------------------------- ?");
+        System.out.println("| Konfigurációs útmutató: help conf                             |");
+        System.out.println("| Külső konfigurációs fájl elvárt formátuma: help conf format   |");
+        System.out.println("? ------------------------------------------------------------- ?");
+        System.out.println("| Tesztelési útmutató: help test                                |");
+        System.out.println("? ------------------------------------------------------------- ?");
+        System.out.println();
         System.out.println("# ================= TESZTELÉS [RANDOMIZÁCIÓ] =================== #");
         System.out.println("| A randomizáció kikapcsolása: randomoff <SEED>                  |");
         System.out.println("| A randomizáció bekapcsolása: randomon                          |");
@@ -85,8 +96,11 @@ public class CLIProto {
         System.out.println("* ------------------------------------------------------------- *");
         System.out.println("| Konfiguráció törlése: clear                                   |");
         System.out.println("* ------------------------------------------------------------- *");
-        System.out.println("| Tesztelési mód engedélyezése: mode test                       |");
-        System.out.println("| Tesztelési mód kikapcsolása: mode user                        |");
+        if (!controller.isTestMode()) {
+            System.out.println("| Tesztelési mód engedélyezése: mode test                       |");
+        } else {
+            System.out.println("| Tesztelési mód kikapcsolása: mode user                        |");
+        }
         System.out.println("* ------------------------------------------------------------- *");
         System.out.println();
         System.out.println("============================= AUTÓK =============================");
@@ -116,7 +130,6 @@ public class CLIProto {
     /**
      * A játék aktuális körét jeleníti meg.
      * Tartalmazza a játékosok adatait, a térkép állapotát és az elérhető parancsokat.
-     * TODO: TÉRKÉP szekció — szükséges hozzá Vehicle.getCurrentLane() public getter
      *       és az elérhető szomszédos sávok lekérdezése az IMapModel-en keresztül
      */
     private void displayCurrentRound() {
@@ -125,6 +138,7 @@ public class CLIProto {
         System.out.println("   Játék folyamatban [" + mode + "]");
         System.out.println("------------------------------------------------");
         System.out.println("                Jelenlegi kör: " + controller.getRoundNumber());
+        System.out.println("------------------------------------------------");
         System.out.println();
 
         PlayerDirectory dir = controller.getPlayers();
@@ -144,6 +158,11 @@ public class CLIProto {
         System.out.println("Score: " + scoreOf(next));
         System.out.println();
 
+        System.out.println("? ========================= DOCS ========================== ?");
+        System.out.println("| Játék vezérlésének leírása: help game                      |");
+        System.out.println("| Tesztelési útmutató: help test                             |");
+        System.out.println("? --------------------------------------------------------- ?");
+        System.out.println();
         System.out.println("================== TÉRKÉP ==================");
         System.out.println("// TODO");
         System.out.println();
