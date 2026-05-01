@@ -71,12 +71,9 @@ public class CLIProto {
         System.out.println();
         System.out.println("? =========================== DOCS ============================ ?");
         System.out.println("| Útmutató a program működéséhez: help                          |");
-        System.out.println("? ------------------------------------------------------------- ?");
         System.out.println("| Játék vezérlésének leírása: help game                         |");
-        System.out.println("? ------------------------------------------------------------- ?");
         System.out.println("| Konfigurációs útmutató: help conf                             |");
         System.out.println("| Külső konfigurációs fájl elvárt formátuma: help conf format   |");
-        System.out.println("? ------------------------------------------------------------- ?");
         System.out.println("| Tesztelési útmutató: help test                                |");
         System.out.println("? ------------------------------------------------------------- ?");
         System.out.println();
@@ -138,7 +135,6 @@ public class CLIProto {
         System.out.println("   Játék folyamatban [" + mode + "]");
         System.out.println("------------------------------------------------");
         System.out.println("                Jelenlegi kör: " + controller.getRoundNumber());
-        System.out.println("------------------------------------------------");
         System.out.println();
 
         PlayerDirectory dir = controller.getPlayers();
