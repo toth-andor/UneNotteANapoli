@@ -60,13 +60,13 @@ public class CLIProto {
     /**
      * Az inicializációs menüt jeleníti meg.
      * Tartalmazza az elérhető parancsokat és az aktív játékosok listáját.
-     * TODO: mód (user/test) és randomizáció állapotának megjelenítése a fejlécben —
-     *       szükséges hozzá lekérdező metódus az IController-en
+     * TODO: randomizáció állapotának megjelenítése a fejlécben — szükséges hozzá isRandomEnabled() az IController-en
      * TODO: autók száma — szükséges hozzá carcount getter az IController-en
      */
     private void displayInitMenu() {
+        String mode = controller.isTestMode() ? "Tesztelési mód" : "Felhasználói mód";
         System.out.println("-----------------------------------------------------------------");
-        System.out.println("          Játék inicializálása");
+        System.out.println("          Játék inicializálása [" + mode + "]");
         System.out.println("-----------------------------------------------------------------");
         System.out.println();
         System.out.println("# ================= TESZTELÉS [RANDOMIZÁCIÓ] =================== #");
@@ -116,14 +116,15 @@ public class CLIProto {
     /**
      * A játék aktuális körét jeleníti meg.
      * Tartalmazza a játékosok adatait, a térkép állapotát és az elérhető parancsokat.
-     * TODO: kör száma — szükséges hozzá getter az IController-en
      * TODO: TÉRKÉP szekció — szükséges hozzá Vehicle.getCurrentLane() public getter
      *       és az elérhető szomszédos sávok lekérdezése az IMapModel-en keresztül
      */
     private void displayCurrentRound() {
+        String mode = controller.isTestMode() ? "Tesztelési mód" : "Felhasználói mód";
         System.out.println("------------------------------------------------");
-        System.out.println("   Játék folyamatban");
+        System.out.println("   Játék folyamatban [" + mode + "]");
         System.out.println("------------------------------------------------");
+        System.out.println("                Jelenlegi kör: " + controller.getRoundNumber());
         System.out.println();
 
         PlayerDirectory dir = controller.getPlayers();
