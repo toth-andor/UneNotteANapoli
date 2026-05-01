@@ -16,6 +16,14 @@ public class CleanerActionState extends GameState {
         this.cleaner = cleaner;
     }
 
+    public int getCurrentSnowPlowIdx() {
+        return currentSnowPlowIdx;
+    }
+
+    public Cleaner getCleaner() {
+        return cleaner;
+    }
+
     @Override
     public GameState process(Message msg) {
         return switch (msg) {

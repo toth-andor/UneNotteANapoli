@@ -24,6 +24,10 @@ public class NPCHandler {
         npcCars.add(new Car(destination1, destination2, currentLane));
     }
 
+    public ArrayList<Car> getNpcCars() {
+        return npcCars;
+    }
+
     /**
      * Mozgatja az összes NPC autót.
      */

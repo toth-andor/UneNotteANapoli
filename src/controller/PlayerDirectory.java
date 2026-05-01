@@ -27,6 +27,14 @@ public class PlayerDirectory {
         return players.get(currentPlayerIndex);
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
     public Player getCurrentPlayer() {
         return players.get(currentPlayerIndex);
     }
