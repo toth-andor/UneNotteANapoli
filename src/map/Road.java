@@ -18,6 +18,11 @@ public class Road {
     private List<Lane> lanes;
 
     /**
+     * Az út neve (pl. road_1), a MapModel rendeli hozzá.
+     */
+    private String name;
+
+    /**
      * Az út egyik végén lévő csomópont.
      */
     private Junction end1;
@@ -89,5 +94,13 @@ public class Road {
      */
     public List<Lane> getLanes() {
         return lanes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

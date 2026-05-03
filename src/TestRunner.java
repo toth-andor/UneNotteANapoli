@@ -112,7 +112,8 @@ public class TestRunner {
         }
 
         try {
-            ProcessBuilder pb = new ProcessBuilder("java", "-cp", "out/production/UneNotteANapoli22", "proto.CLIProto")
+            String cp = System.getProperty("java.class.path");
+            ProcessBuilder pb = new ProcessBuilder("java", "-cp", cp, "proto.CLIProto")
                     .redirectInput(new File(inputPath))
                     .redirectError(ProcessBuilder.Redirect.DISCARD);
             pb.directory(new File("."));
@@ -168,5 +169,5 @@ public class TestRunner {
             diffs.add(new String[]{"?", "(olvasási hiba: " + e.getMessage() + ")", ""});
         }
         return diffs;
-    }
+        }
 }

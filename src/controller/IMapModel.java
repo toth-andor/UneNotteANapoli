@@ -12,6 +12,8 @@ public interface IMapModel {
     Lane getRandomLane();
     Junction getRandomJunction();
 
+    List<Road> getAllRoads();
+
     void addJunction(String name);
     void addRoad(String j1, String j2);
 

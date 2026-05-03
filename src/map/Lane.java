@@ -47,6 +47,11 @@ public abstract class Lane implements ILane {
     protected Junction destination;
 
     /**
+     * A sáv neve (pl. lane_1), a MapModel rendeli hozzá.
+     */
+    private String name;
+
+    /**
      * Az az út, amelyhez ez a sáv tartozik.
      */
     private Road road;
@@ -160,6 +165,14 @@ public abstract class Lane implements ILane {
      * @param timestamp az aktuális idő
      */
     public abstract void tick(int timestamp);
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * @return az az út, amelyhez ez a sáv tartozik

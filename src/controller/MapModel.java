@@ -11,6 +11,9 @@ public class MapModel implements IMapModel {
     private List<Junction> junctions = new ArrayList<>();
     private Map<String, Junction> junctionsByName = new HashMap<>();
 
+    private int roadCounter = 0;
+    private int laneCounter = 0;
+
     private final Randomizer randomizer;
 
     public MapModel(Randomizer randomizer) {
@@ -31,19 +34,21 @@ public class MapModel implements IMapModel {
         if (start == null || end == null) return;
 
         Road newRoad = new Road(start, end);
+        newRoad.setName("road_" + (++roadCounter));
         start.addRoad(newRoad);
         end.addRoad(newRoad);
         model.add(newRoad);
 
         for (int i = 0; i < 4; i++) {
             int randomVal = randomizer.randomize(1, 100);
+            Lane newLane;
             if (randomVal <= OUTDOOR_CHANCE) {
-                OutdoorLane newLane = new OutdoorLane(start, end);
-                newRoad.addLane(newLane);
+                newLane = new OutdoorLane(start, end);
             } else {
-                TunnelLane newLane = new TunnelLane(start, end);
-                newRoad.addLane(newLane);
+                newLane = new TunnelLane(start, end);
             }
+            newLane.setName("lane_" + (++laneCounter));
+            newRoad.addLane(newLane);
         }
     }
 
@@ -130,10 +135,17 @@ public class MapModel implements IMapModel {
         return new ArrayList<>(model);
     }
 
+    @Override
+    public List<Road> getAllRoads() {
+        return new ArrayList<>(model);
+    }
+
     public void eraseMapModel() {
         model.clear();
         junctions.clear();
         junctionsByName.clear();
+        roadCounter = 0;
+        laneCounter = 0;
     }
 
     private boolean validateMapModel() {
