@@ -15,7 +15,7 @@ public interface IMapModel {
     void addJunction(String name);
     void addRoad(String j1, String j2);
 
-    List<Road> findShortesPath(Junction startJunction, Junction endJunction);
+    Lane findShortestPath(Junction src, Road dst);
 
     void snow(int amount);
 }
