@@ -2,6 +2,16 @@ package proto;
 
 import java.util.List;
 import controller.*;
+import map.Junction;
+import map.Lane;
+import map.OutdoorLane;
+import map.Road;
+import states.CrashedState;
+import states.DryState;
+import states.IcyState;
+import states.SaltedState;
+import states.SnowyState;
+import Vehicle.Vehicle;
 
 /**
  * A parancssori felhasználói felület belépési pontja.
@@ -152,9 +162,7 @@ public class CLIProto {
         System.out.println("| Tesztelési útmutató: help test                             |");
         System.out.println("? --------------------------------------------------------- ?");
         System.out.println();
-        System.out.println("================== TÉRKÉP ==================");
-        System.out.println("// TODO");
-        System.out.println();
+        displayMap(current);
 
         // A takarító-specifikus parancsok csak CLEANER típusú játékosnál jelennek meg
         System.out.println("* ============================= VEZÉRLÉS ============================ *");
@@ -180,6 +188,56 @@ public class CLIProto {
         System.out.println("* ------------------------------------------------------------------- *");
         System.out.println();
         System.out.print(current.getName() + " [" + roleOf(current) + "] > ");
+    }
+
+    private void displayMap(Player current) {
+        Vehicle vehicle = vehicleOf(current);
+        Lane currentLane = vehicle.getCurrentLane();
+        Road currentRoad = currentLane.getRoad();
+        Junction nextJunction = currentLane.getDestination();
+
+        System.out.println("================== TÉRKÉP ==================");
+        System.out.println("Jelenlegi út: " + currentRoad);           // TODO: currentRoad.getName()
+        System.out.println("Jelenlegi sáv: " + currentLane + "  " + laneStateDisplay(currentLane)); // TODO: currentLane.getName()
+        System.out.println("--------------------------------------------");
+        if (current.getType() instanceof PlayerType.PBusDriver) {
+            System.out.println("Célállomás: ?");                       // TODO: Bus.getDestinationJunction() + getName()
+            System.out.println("--------------------------------------------");
+        }
+        System.out.println("Következő kereszteződés: " + nextJunction); // TODO: nextJunction.getName()
+        System.out.println("-----------------------");
+        System.out.println("Innen elérhető: ");
+        System.out.println("--------------");
+        for (Road road : nextJunction.getRoads()) {
+            System.out.println("# " + road);                           // TODO: road.getName()
+            for (Lane lane : road.getLanes()) {
+                String laneType = lane instanceof OutdoorLane ? "OL" : "TL";
+                System.out.println("\t #" + lane + "  [" + laneType + "] " + laneStateDisplay(lane)); // TODO: lane.getName()
+            }
+        }
+        System.out.println();
+    }
+
+    private Vehicle vehicleOf(Player p) {
+        return switch (p.getType()) {
+            case PlayerType.PCleaner c -> c.cleaner().getSnowPlows().get(0);
+            case PlayerType.PBusDriver b -> b.bus();
+        };
+    }
+
+    private String laneStateDisplay(Lane lane) {
+        if (lane instanceof OutdoorLane ol) {
+            String stateName;
+            if (ol.getCurrentState() instanceof DryState) stateName = "DRY";
+            else if (ol.getCurrentState() instanceof SnowyState) stateName = "SNOWY";
+            else if (ol.getCurrentState() instanceof IcyState) stateName = "ICY";
+            else if (ol.getCurrentState() instanceof CrashedState) stateName = "CRASHED";
+            else if (ol.getCurrentState() instanceof SaltedState) stateName = "SALTED";
+            else stateName = "?";
+            boolean navigable = ol.isNavigable() && !(ol.getCurrentState() instanceof CrashedState);
+            return "[" + stateName + " " + (navigable ? "✓" : "x") + "]";
+        }
+        return "[DRY ✓]";
     }
 
     private String roleOf(Player p) {

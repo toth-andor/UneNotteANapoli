@@ -75,6 +75,13 @@ public abstract class Vehicle {
     }
 
     /**
+     * @return az aktuális sáv, amelyen a jármű tartózkodik
+     */
+    public Lane getCurrentLane() {
+        return currentLane;
+    }
+
+    /**
      * Balesetet szenved a jármű: immobilizálódik a megadott időponttól kezdve.
      *
      * @param timestamp a baleset időpontja
