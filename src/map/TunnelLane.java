@@ -12,6 +12,12 @@ import skeleton.Skeleton.CallChainLogger;
  */
 public class TunnelLane extends Lane {
 
+    public TunnelLane(Junction source, Junction destination) {
+        super();
+        this.source = source;
+        this.destination = destination;
+    }
+
     @Override
     public boolean pushVehicle(Vehicle v, int timestamp) {
         CallChainLogger.printCall(this, "pushVehicle(" + Skeleton.getEntityByRef(v) + ", " + timestamp + ")");

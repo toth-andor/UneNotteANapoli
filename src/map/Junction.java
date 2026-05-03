@@ -16,8 +16,18 @@ public class Junction {
      */
     private List<Road> roads;
 
-    public Junction() {
+    /**
+     * A csomópont neve.
+     */
+    private String name;
+
+    public Junction(String name) {
         this.roads = new ArrayList<>();
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**

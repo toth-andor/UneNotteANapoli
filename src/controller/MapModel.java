@@ -3,49 +3,70 @@ package controller;
 import map.*;
 import java.util.*;
 
-public class MapModel implements IMapModel{
+public class MapModel implements IMapModel {
 
     private final int OUTDOOR_CHANCE = 80;
 
-    private List<Road> model = new ArrayList<Road>();
-    private List<Junction> junctions = new ArrayList<Junction>();
+    private List<Road> model = new ArrayList<>();
+    private List<Junction> junctions = new ArrayList<>();
+    private Map<String, Junction> junctionsByName = new HashMap<>();
 
+    private final Randomizer randomizer;
 
-    public void addRoad(Junction startJunction, Junction endJunction, Randomizer randomizer) {
-        Road newRoad = new Road(startJunction, endJunction);
+    public MapModel(Randomizer randomizer) {
+        this.randomizer = randomizer;
+    }
+
+    @Override
+    public void addJunction(String name) {
+        Junction j = new Junction(name);
+        junctions.add(j);
+        junctionsByName.put(name, j);
+    }
+
+    @Override
+    public void addRoad(String j1, String j2) {
+        Junction start = junctionsByName.get(j1);
+        Junction end = junctionsByName.get(j2);
+        if (start == null || end == null) return;
+
+        Road newRoad = new Road(start, end);
+        start.addRoad(newRoad);
+        end.addRoad(newRoad);
         model.add(newRoad);
-        for(int i = 0; i < 4; i++) {
+
+        for (int i = 0; i < 4; i++) {
             int randomVal = randomizer.randomize(1, 100);
-            if(randomVal <= OUTDOOR_CHANCE) {
-                OutdoorLane newLane = new OutdoorLane(startJunction, endJunction);
+            if (randomVal <= OUTDOOR_CHANCE) {
+                OutdoorLane newLane = new OutdoorLane(start, end);
                 newRoad.addLane(newLane);
             } else {
-                TunnelLane newLane = new TunnelLane(startJunction, endJunction);
+                TunnelLane newLane = new TunnelLane(start, end);
                 newRoad.addLane(newLane);
             }
         }
     }
 
-    public void addJunction(Junction newJunction) {
-        junctions.add(newJunction);
-    }
-
-    public Junction getRandomJunction(Randomizer randomizer) {
+    @Override
+    public Junction getRandomJunction() {
         int junctionIdx = randomizer.randomize(0, junctions.size() - 1);
         return junctions.get(junctionIdx);
     }
 
-    public ILane getRandomLane(Randomizer randomizer) {
+    @Override
+    public Lane getRandomLane() {
         int laneIdx = randomizer.randomize(0, 3);
-        int roadIdx = randomizer.randomize(0, model.size() -1);
+        int roadIdx = randomizer.randomize(0, model.size() - 1);
         return model.get(roadIdx).getLanes().get(laneIdx);
     }
 
-    public Road getRandomRoad(Randomizer randomizer) {
-        int roadIdx = randomizer.randomize(0, model.size() -1);
+    @Override
+    public Road getRandomRoad() {
+        int roadIdx = randomizer.randomize(0, model.size() - 1);
         return model.get(roadIdx);
     }
 
+    @Override
     public List<Road> findShortesPath(Junction startJunction, Junction endJunction) {
         if (startJunction == null || endJunction == null) return null;
         if (startJunction.equals(endJunction)) return new ArrayList<>();
@@ -110,6 +131,7 @@ public class MapModel implements IMapModel{
     public void eraseMapModel() {
         model.clear();
         junctions.clear();
+        junctionsByName.clear();
     }
 
     private boolean validateMapModel() {
@@ -144,13 +166,14 @@ public class MapModel implements IMapModel{
         return visited.size() == junctions.size();
     }
 
+    @Override
     public void snow(int amount) {
-     for (Road road : model) {
-         for (Lane lane : road.getLanes()) {
-             if(lane.getClass().getName().equals("OutdoorLane")) {
-                 lane.snowFall(amount);
-             }
-         }
-     }
+        for (Road road : model) {
+            for (Lane lane : road.getLanes()) {
+                if (lane instanceof OutdoorLane) {
+                    lane.snowFall(amount);
+                }
+            }
+        }
     }
 }

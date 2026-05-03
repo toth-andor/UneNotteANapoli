@@ -56,4 +56,7 @@ public sealed interface Message {
     record RandomOn() implements Message {}
 
     record RandomOff(int seed) implements Message {}
+
+    /** Súgó kérése az adott témához **/
+    record RequestHelp(String topic) implements Message {}
 }

@@ -35,10 +35,11 @@ public class Controller implements IController {
      * Létrehoz egy új Controller példányt.
      */
     public Controller() {
+        this.rng = new Randomizer();
         this.playerDirectory = new PlayerDirectory();
         this.gameState = new SetupState(this);
         this.npcHandler = new NPCHandler();
-        this.rng = new Randomizer();
+        this.mapModel = new MapModel(rng);
     }
 
     /**
