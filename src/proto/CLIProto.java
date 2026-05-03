@@ -200,8 +200,8 @@ public class CLIProto {
         System.out.println("Jelenlegi út: " + currentRoad);           // TODO: currentRoad.getName()
         System.out.println("Jelenlegi sáv: " + currentLane + "  " + laneStateDisplay(currentLane)); // TODO: currentLane.getName()
         System.out.println("--------------------------------------------");
-        if (current.getType() instanceof PlayerType.PBusDriver) {
-            System.out.println("Célállomás: ?");                       // TODO: Bus.getDestinationJunction() + getName()
+        if (current.getType() instanceof PlayerType.PBusDriver b) {
+            System.out.println("Célállomás: " + b.bus().getCurrentDestination()); // TODO: getName()
             System.out.println("--------------------------------------------");
         }
         System.out.println("Következő kereszteződés: " + nextJunction); // TODO: nextJunction.getName()
