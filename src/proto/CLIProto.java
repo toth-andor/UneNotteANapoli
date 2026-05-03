@@ -64,9 +64,8 @@ public class CLIProto {
      * TODO: autók száma — szükséges hozzá carcount getter az IController-en
      */
     private void displayInitMenu() {
-        String mode = controller.isTestMode() ? "Tesztelési mód" : "Felhasználói mód";
         System.out.println("-----------------------------------------------------------------");
-        System.out.println("          Játék inicializálása [" + mode + "]");
+        System.out.println("               Játék inicializálása");
         System.out.println("-----------------------------------------------------------------");
         System.out.println();
         System.out.println("? =========================== DOCS ============================ ?");
@@ -93,11 +92,6 @@ public class CLIProto {
         System.out.println("* ------------------------------------------------------------- *");
         System.out.println("| Konfiguráció törlése: clear                                   |");
         System.out.println("* ------------------------------------------------------------- *");
-        if (!controller.isTestMode()) {
-            System.out.println("| Tesztelési mód engedélyezése: mode test                       |");
-        } else {
-            System.out.println("| Tesztelési mód kikapcsolása: mode user                        |");
-        }
         System.out.println("* ------------------------------------------------------------- *");
         System.out.println();
         System.out.println("============================= AUTÓK =============================");
@@ -130,9 +124,8 @@ public class CLIProto {
      *       és az elérhető szomszédos sávok lekérdezése az IMapModel-en keresztül
      */
     private void displayCurrentRound() {
-        String mode = controller.isTestMode() ? "Tesztelési mód" : "Felhasználói mód";
         System.out.println("------------------------------------------------");
-        System.out.println("   Játék folyamatban [" + mode + "]");
+        System.out.println("          Játék folyamatban");
         System.out.println("------------------------------------------------");
         System.out.println("                Jelenlegi kör: " + controller.getRoundNumber());
         System.out.println();
