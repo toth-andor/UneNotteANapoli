@@ -97,8 +97,4 @@ public class Controller implements IController {
         return 0;
     }
 
-    @Override
-    public boolean isTestMode() {
-        return false;
-    }
 }

@@ -45,8 +45,4 @@ public interface IController {
      */
     int getRoundNumber();
 
-    /**
-     * @return true, ha a program tesztelési módban fut
-     */
-    boolean isTestMode();
 }
