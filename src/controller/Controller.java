@@ -1,5 +1,13 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Vehicle.Vehicle;
+import map.Lane;
+import map.OutdoorLane;
+import states.IcyState;
+
 /**
  * A rendszer központi osztálya, amely a State tervezési mintát alkalmazva
  * állapotgépként működik. Kontextusként tárolja a játék aktuális állapotát,
@@ -7,6 +15,8 @@ package controller;
  * a jelenlegi GameState példánynak.
  */
 public class Controller implements IController {
+
+    private static final int ICE_CRASH_CHANCE = 10;
 
     /** A játéktérkép (gráf) és a modell állapotának összefogója */
     private IMapModel mapModel;
@@ -20,6 +30,8 @@ public class Controller implements IController {
     /** Az NPC autók mozgásáért felelős segédkomponens */
     private NPCHandler npcHandler;
 
+    private Randomizer rng;
+
     /**
      * Létrehoz egy új Controller példányt.
      */
@@ -27,6 +39,7 @@ public class Controller implements IController {
         this.playerDirectory = new PlayerDirectory();
         this.gameState = new SetupState(this);
         this.npcHandler = new NPCHandler();
+        this.rng = new Randomizer();
     }
 
     /**
@@ -94,7 +107,31 @@ public class Controller implements IController {
 
     @Override
     public int getRoundNumber() {
-        return 0;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRoundNumber'");
     }
+
+    public Randomizer getRng() {
+        return rng;
+    }
+
+    public void moveVehicleToLane(Vehicle vehicle, Lane lane) {
+        vehicle.gotoLane(lane, 0);
+        if (lane instanceof OutdoorLane) {
+            OutdoorLane outdoorLane = (OutdoorLane) lane;
+            if (outdoorLane.getCurrentState() instanceof IcyState) {
+                List<Vehicle> vehicles = lane.getVehicles();
+                for (Vehicle v : vehicles) {
+                    if (rng.randomize(1, 100) < ICE_CRASH_CHANCE) {
+                        // TODO: use correct timestamp
+                        v.crash(0);
+                        vehicle.crash(0);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
 
 }

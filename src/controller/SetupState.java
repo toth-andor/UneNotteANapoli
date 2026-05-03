@@ -66,6 +66,14 @@ public class SetupState extends GameState {
                     default -> this;
                 };
             }
+            case Message.RandomOn randomOnMsg -> {
+                controller.getRng().disableSeed();
+                yield this;
+            }
+            case Message.RandomOff randomOffMsg -> {
+                controller.getRng().enableSeed(randomOffMsg.seed());
+                yield this;
+            }
             default -> this;
         };
     }

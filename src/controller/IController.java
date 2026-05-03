@@ -44,5 +44,4 @@ public interface IController {
      * @return az aktuális kör sorszáma
      */
     int getRoundNumber();
-
 }

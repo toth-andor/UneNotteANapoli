@@ -53,6 +53,7 @@ public sealed interface Message {
     /** Kilépés a programból **/
     record ExitGame() implements Message {}
 
-    /** Súgó megjelenítése egy adott témakörben **/
-    record RequestHelp(String topic) implements Message {}
+    record RandomOn() implements Message {}
+
+    record RandomOff(int seed) implements Message {}
 }
