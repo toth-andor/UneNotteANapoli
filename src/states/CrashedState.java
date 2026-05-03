@@ -123,4 +123,17 @@ public class CrashedState extends LaneState {
         CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
+
+    /**
+     * Zúzalékszóró nem képes eltakarítani a balesetet.
+     *
+     * @param timestamp a takarítás időbélyege
+     * @return this
+     */
+    @Override
+    public LaneState cleanWithStoneVomitter(int timestamp) {
+        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
+        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
+        return this;
+    }
 }

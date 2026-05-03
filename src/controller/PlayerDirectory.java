@@ -9,6 +9,7 @@ import java.util.List;
  * a soron következő játékos indexét.
  */
 public class PlayerDirectory {
+    private int roundNumber;
     private List<Player> players;
 
     private int currentPlayerIndex;
@@ -16,6 +17,7 @@ public class PlayerDirectory {
     public PlayerDirectory() {
         this.players = new ArrayList<>();
         this.currentPlayerIndex = 0;
+        this.roundNumber = 0;
     }
 
     public void addPlayer(Player player) {
@@ -24,6 +26,9 @@ public class PlayerDirectory {
 
     public Player nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        if (currentPlayerIndex == 0) {
+            roundNumber++;
+        }
         return players.get(currentPlayerIndex);
     }
 
@@ -45,5 +50,9 @@ public class PlayerDirectory {
 
     public boolean isLastPlayer() {
         return currentPlayerIndex == players.size() - 1;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 }

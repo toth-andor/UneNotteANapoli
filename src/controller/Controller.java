@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Vehicle.Vehicle;
@@ -64,7 +63,6 @@ public class Controller implements IController {
         // TODO: Implementálás a konfigurációs fájl feldolgozásának logikája
     }
 
-    // TODO: lehet jobb lenne a havazást és az npc-ket felcserélni
     /**
      * Végrehajtja a rendszerfázis logikáját:
      * 1. Havazás
@@ -107,8 +105,7 @@ public class Controller implements IController {
 
     @Override
     public int getRoundNumber() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoundNumber'");
+        return playerDirectory.getRoundNumber();
     }
 
     public Randomizer getRng() {
@@ -123,9 +120,8 @@ public class Controller implements IController {
                 List<Vehicle> vehicles = lane.getVehicles();
                 for (Vehicle v : vehicles) {
                     if (rng.randomize(1, 100) < ICE_CRASH_CHANCE) {
-                        // TODO: use correct timestamp
-                        v.crash(0);
-                        vehicle.crash(0);
+                        v.crash(getRoundNumber());
+                        vehicle.crash(getRoundNumber());
                         return;
                     }
                 }
