@@ -107,8 +107,7 @@ public class Controller implements IController {
 
     @Override
     public int getRoundNumber() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoundNumber'");
+        return playerDirectory.getRoundNumber();
     }
 
     public Randomizer getRng() {
