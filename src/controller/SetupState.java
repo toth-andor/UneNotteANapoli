@@ -20,7 +20,10 @@ public class SetupState extends GameState {
         return switch (msg) {
             case Message.AddCleaner playerName -> {
                 map.Lane lane = mm.getRandomLane();
-                if (lane == null) { yield this; }
+                if (lane == null) {
+                    System.out.println("[HIBA] Nincs térkép. Előbb adj hozzá csomópontokat (addjunction) és utakat (addroad).");
+                    yield this;
+                }
                 Cleaner owner = new Cleaner(1000);
                 new SnowPlow(owner, lane);
                 Player player = new Player(new PlayerType.PCleaner(owner), playerName.name());
@@ -31,7 +34,10 @@ public class SetupState extends GameState {
                 map.Road r1 = mm.getRandomRoad();
                 map.Road r2 = mm.getRandomRoad();
                 map.Lane lane = mm.getRandomLane();
-                if (r1 == null || r2 == null || lane == null) { yield this; }
+                if (r1 == null || r2 == null || lane == null) {
+                    System.out.println("[HIBA] Nincs térkép. Előbb adj hozzá csomópontokat (addjunction) és utakat (addroad).");
+                    yield this;
+                }
                 Bus bd = new Bus(r1, r2, lane, 500);
                 Player player = new Player(new PlayerType.PBusDriver(bd), playerName.name());
                 controller.getPlayers().addPlayer(player);
