@@ -34,8 +34,7 @@ public class BusActionState extends GameState {
     public GameState process(Message msg) {
         return switch (msg) {
             case Message.PickLane pickLaneMsg -> {
-                // TODO: Timestamp megadása
-                currentBus.gotoLane(pickLaneMsg.lane(), 0);
+                currentBus.gotoLane(pickLaneMsg.lane(), controller.getRoundNumber());
 
                 if (controller.getPlayers().isLastPlayer()) {
                     controller.endOfTurn();
