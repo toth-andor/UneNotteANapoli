@@ -219,10 +219,11 @@ public class CLIProto {
     }
 
     private Vehicle vehicleOf(Player p) {
-        return switch (p.getType()) {
-            case PlayerType.PCleaner c -> c.cleaner().getSnowPlows().get(0);
-            case PlayerType.PBusDriver b -> b.bus();
-        };
+        if (p.getType() instanceof PlayerType.PCleaner c)
+            return c.cleaner().getSnowPlows().get(0);
+        if (p.getType() instanceof PlayerType.PBusDriver b)
+            return b.bus();
+        throw new IllegalStateException("Unknown player type: " + p.getType());
     }
 
     private String laneStateDisplay(Lane lane) {

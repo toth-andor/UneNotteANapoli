@@ -19,15 +19,20 @@ public class SetupState extends GameState {
         IMapModel mm = controller.getMapModel();
         return switch (msg) {
             case Message.AddCleaner playerName -> {
+                map.Lane lane = mm.getRandomLane();
+                if (lane == null) { yield this; }
                 Cleaner owner = new Cleaner(1000);
-                new SnowPlow(owner, mm.getRandomLane());
+                new SnowPlow(owner, lane);
                 Player player = new Player(new PlayerType.PCleaner(owner), playerName.name());
                 controller.getPlayers().addPlayer(player);
                 yield this;
             }
             case Message.AddBusDriver playerName -> {
-                // TODO: ellenőrizni kéne, hogy a két road nem ugyanaz
-                Bus bd = new Bus(mm.getRandomRoad(), mm.getRandomRoad(), mm.getRandomLane(), 500);
+                map.Road r1 = mm.getRandomRoad();
+                map.Road r2 = mm.getRandomRoad();
+                map.Lane lane = mm.getRandomLane();
+                if (r1 == null || r2 == null || lane == null) { yield this; }
+                Bus bd = new Bus(r1, r2, lane, 500);
                 Player player = new Player(new PlayerType.PBusDriver(bd), playerName.name());
                 controller.getPlayers().addPlayer(player);
                 yield this;
@@ -38,8 +43,11 @@ public class SetupState extends GameState {
             }
             case Message.AddNPCCar addNPCCarMsg -> {
                 for (int i = 0; i < addNPCCarMsg.count(); i++) {
-                    // TODO: dest1 != dest2
-                    controller.getNpcHandler().addNPC(mm.getRandomRoad(), mm.getRandomRoad(), mm.getRandomLane());
+                    map.Road d1 = mm.getRandomRoad();
+                    map.Road d2 = mm.getRandomRoad();
+                    map.Lane l  = mm.getRandomLane();
+                    if (d1 == null || d2 == null || l == null) break;
+                    controller.getNpcHandler().addNPC(d1, d2, l);
                 }
                 yield this;
             }
