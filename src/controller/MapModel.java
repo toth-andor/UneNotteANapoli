@@ -98,6 +98,7 @@ public class MapModel implements IMapModel {
 
     @Override
     public Lane getRandomLane() {
+        if (model.isEmpty()) return null;
         int laneIdx = randomizer.randomize(0, 3);
         int roadIdx = randomizer.randomize(0, model.size() - 1);
         return model.get(roadIdx).getLanes().get(laneIdx);
@@ -105,6 +106,7 @@ public class MapModel implements IMapModel {
 
     @Override
     public Road getRandomRoad() {
+        if (model.isEmpty()) return null;
         int roadIdx = randomizer.randomize(0, model.size() - 1);
         return model.get(roadIdx);
     }

@@ -161,4 +161,3 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
         System.exit(0);
     }
 }
-
