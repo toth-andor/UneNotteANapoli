@@ -91,4 +91,14 @@ public class Controller implements IController {
     public NPCHandler getNpcHandler() {
         return npcHandler;
     }
+
+    @Override
+    public int getRoundNumber() {
+        return 0;
+    }
+
+    @Override
+    public boolean isTestMode() {
+        return false;
+    }
 }
