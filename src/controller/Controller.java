@@ -74,7 +74,7 @@ public class Controller implements IController {
 
         // 2. NPC autók mozgatása
         if (npcHandler != null) {
-            npcHandler.moveNPCs();
+            npcHandler.moveNPCs(mapModel, getRoundNumber());
         }
     }
 
