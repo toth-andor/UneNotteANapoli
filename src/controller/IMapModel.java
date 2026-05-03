@@ -1,15 +1,22 @@
 package controller;
 
-import map.Lane;
+import java.util.*;
+
+import map.ILane;
+import map.Junction;
 import map.Road;
 
 public interface IMapModel {
 
-    Road getRandomRoad();
-    Lane getRandomLane();
+    Road getRandomRoad(Randomizer randomizer);
+    ILane getRandomLane(Randomizer randomizer);
+    Junction getRandomJunction(Randomizer randomizer);
 
-    void addJunction(String name);
-    void addRoad(String j1, String j2);
+    void addJunction(Junction newJunction);
+    void addRoad(Junction startJunction, Junction endJunction, Randomizer randomizer);
+
+    List<Road> findShortesPath(Junction startJunction, Junction endJunction);
 
     void snow(int amount);
 }
+
