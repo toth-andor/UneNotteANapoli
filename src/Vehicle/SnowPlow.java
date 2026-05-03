@@ -58,6 +58,7 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
         CallChainLogger.printReturn(null);
         this.ownedTools.add(v);
         this.currentTool = v;
+        owner.registerSnowPlow(this);
     }
 
     /**

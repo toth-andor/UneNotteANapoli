@@ -1,5 +1,8 @@
 package Vehicle;
 
+import java.util.ArrayList;
+
+import map.Lane;
 import skeleton.Skeleton.CallChainLogger;
 
 /**
@@ -14,6 +17,25 @@ public class Cleaner implements IScoreOwner {
      * A takarító rendelkezésére álló pénzösszeg.
      */
     private int balance;
+    private ArrayList<SnowPlow> snowPlows;
+
+    public void registerSnowPlow(SnowPlow snowPlow) {
+        snowPlows.add(snowPlow);
+    }
+
+    public int buySnowPlow(Lane lane) {
+        if (balance < 100) // TODO: move price to static var
+            return balance;
+
+        balance -= 100;
+        new SnowPlow(this, lane);
+        return balance;
+    }
+
+    public ArrayList<SnowPlow> getSnowPlows() {
+        return snowPlows;
+    }
+
 
     /**
      * Létrehoz egy új takarítót.
@@ -22,6 +44,7 @@ public class Cleaner implements IScoreOwner {
      */
     public Cleaner(int initialBalance) {
         this.balance = initialBalance;
+        this.snowPlows = new ArrayList<>();
     }
 
     /**

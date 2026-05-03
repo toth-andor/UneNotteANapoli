@@ -42,6 +42,13 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
     protected abstract void updateIncome();
 
     /**
+     * @return az aktuális célállomás útja
+     */
+    public Road getCurrentDestination() {
+        return destination1;
+    }
+
+    /**
      * Megcseréli a két végállomást, ha az egyik el lett érve.
      * Meghívja az updateIncome metódust a sikeres út után járó bevétel elszámolásához.
      */
@@ -87,4 +94,5 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
         timeOutStart = timestamp;
         CallChainLogger.printReturn(null);
     }
+    
 }

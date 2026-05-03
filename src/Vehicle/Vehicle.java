@@ -66,11 +66,19 @@ public abstract class Vehicle {
         }
         boolean result = l.pushVehicle(this, timestamp);
         if (result) {
+            currentLane.popVehicle(this);
             currentLane = l;
             interactWithLane(l, timestamp);
         }
         CallChainLogger.printReturn(result + "");
         return result;
+    }
+
+    /**
+     * @return az aktuális sáv, amelyen a jármű tartózkodik
+     */
+    public Lane getCurrentLane() {
+        return currentLane;
     }
 
     /**

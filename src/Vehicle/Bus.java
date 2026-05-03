@@ -73,4 +73,6 @@ public class Bus extends Commuter implements IScoreOwner {
         balance += TURN_AROUND_BONUS;
         CallChainLogger.printReturn(String.valueOf(balance));
     }
+
+    
 }
