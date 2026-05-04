@@ -1,0 +1,25 @@
+load tc18_init.txt
+randomoff 1
+start
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+pick lane_2
+snapshot tc18_out.txt
+exit
