@@ -1,0 +1,6 @@
+load tc1_init.txt
+randomoff SEED_TC1
+start
+pick lane_1
+snapshot tc1_out.txt
+exit

@@ -1,0 +1,8 @@
+load tc2_init.txt
+randomoff 1
+start
+buy sweeper
+swap sweeper
+pick lane_1 -clean
+snapshot tc2_out.txt
+exit
