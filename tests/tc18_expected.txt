@@ -1,0 +1,24 @@
+[SNAPSHOT OF ROUND 21]
+
+@global
+ROUND_ID 21
+CURRENT_PLAYER player_1 ROLE bus
+NEXT_PLAYER player_1 ROLE bus
+
+@players
+PLAYER player_1 ROLE bus SCORE 0
+
+@positions
+POSITION player_1 ROAD road_2 LANE lane_2 STATE dry
+
+@lanes
+LANE lane_1 ROAD road_1 TYPE outdoor STATE icy AVAILABLE true
+LANE lane_2 ROAD road_2 TYPE outdoor STATE dry AVAILABLE true
+
+@attachments
+
+@cars
+CAR car_1 ROAD road_1 LANE lane_1 ISMOBILE false
+CAR car_2 ROAD road_1 LANE lane_1 ISMOBILE false
+
+[END SNAPSHOT]

@@ -1,0 +1,13 @@
+# TC10 - Hókotró fej csere
+# lane_1: IcyState; takarítónak van icebreaker feje
+# swap icebreaker -> pick lane_1 -clean -> IcyState -> SnowyState, +2 egyenleg
+# Kezdeti egyenleg 100, várható végső 102 (100 + 2 = 102)
+randomoff 1
+addjunction 2
+addroad junction_1 junction_2
+setlanestate lane_1 icy
+savemap
+carcount 0
+addplayer cleaner player_1
+setbalance player_1 100
+addattachment player_1 icebreaker

@@ -1,0 +1,6 @@
+load tests/tc9_init.txt
+randomoff 9
+start
+pick lane_1
+snapshot tests/tc9_actual.txt
+exit

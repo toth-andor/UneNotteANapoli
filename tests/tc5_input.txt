@@ -1,0 +1,6 @@
+load tests/tc5_init.txt
+randomoff 1
+start
+buy icebreaker
+snapshot tests/tc5_actual.txt
+exit

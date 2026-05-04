@@ -1,0 +1,6 @@
+load tests/tc1_init.txt
+randomoff 42
+start
+pick lane_1
+snapshot tests/tc1_actual.txt
+exit

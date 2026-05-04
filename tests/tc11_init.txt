@@ -1,0 +1,15 @@
+# TC11 - Söprőfej hatása szomszédos sávra
+# road_1: lane_1 (index=0, dry) és lane_2 (index=1, snowy, snowAmount=10) - azonos irány
+# Söprővel lane_2 takarítása: hó lane_1-re tolódik (snowAmount=10 >= 5 -> SnowyState)
+# lane_2: DryState, lane_1: SnowyState a takarítás után; +2 egyenleg
+# Kezdeti egyenleg 4, várható végső 6 (4 + 2 = 6)
+randomoff 1
+addjunction 2
+addroad junction_1 junction_2
+setlanestate lane_1 dry
+setlanestate lane_2 snowy
+setsnowamount lane_2 10
+savemap
+carcount 0
+addplayer cleaner player_1
+setbalance player_1 4

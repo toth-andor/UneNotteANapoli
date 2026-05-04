@@ -1,0 +1,20 @@
+[SNAPSHOT OF ROUND 1]
+
+@global
+ROUND_ID 1
+CURRENT_PLAYER player_1 ROLE bus
+NEXT_PLAYER player_1 ROLE bus
+
+@players
+PLAYER player_1 ROLE bus SCORE 0
+
+@positions
+POSITION player_1 ROAD road_1 LANE lane_1 STATE snowy
+
+@lanes
+LANE lane_1 ROAD road_1 TYPE outdoor STATE snowy AVAILABLE true
+
+@attachments
+
+@cars
+[END SNAPSHOT]

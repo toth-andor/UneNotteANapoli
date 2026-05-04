@@ -1,0 +1,7 @@
+load tests/tc12_init.txt
+randomoff 1
+start
+swap dragon
+pick lane_1 -clean
+snapshot tests/tc12_actual.txt
+exit

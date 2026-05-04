@@ -1,0 +1,9 @@
+load tests/tc16_init.txt
+randomoff 1
+start
+buy salt
+swap salt
+refill salt
+pick lane_1 -clean
+snapshot tests/tc16_actual.txt
+exit

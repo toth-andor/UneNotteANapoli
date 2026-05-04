@@ -1,0 +1,8 @@
+load tests/tc11_init.txt
+randomoff 1
+start
+buy sweeper
+swap sweeper
+pick lane_2 -clean
+snapshot tests/tc11_actual.txt
+exit

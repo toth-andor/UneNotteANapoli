@@ -1,0 +1,7 @@
+load tests/tc8_init.txt
+randomoff 1
+start
+swap salt
+refill salt
+snapshot tests/tc8_actual.txt
+exit

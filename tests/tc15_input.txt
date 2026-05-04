@@ -1,0 +1,6 @@
+load tests/tc15_init.txt
+randomoff 1
+start
+pick lane_1 -clean
+snapshot tests/tc15_actual.txt
+exit

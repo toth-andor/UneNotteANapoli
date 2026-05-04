@@ -1,0 +1,8 @@
+load tests/tc6_init.txt
+randomoff 1
+start
+buy icebreaker
+swap icebreaker
+pick lane_1 -clean
+snapshot tests/tc6_actual.txt
+exit

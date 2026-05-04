@@ -1,0 +1,22 @@
+[SNAPSHOT OF ROUND 1]
+
+@global
+ROUND_ID 1
+CURRENT_PLAYER player_1 ROLE cleaner
+NEXT_PLAYER player_1 ROLE cleaner
+
+@players
+PLAYER player_1 ROLE cleaner SCORE 5
+
+@positions
+POSITION player_1 ROAD road_1 LANE lane_1 STATE dry
+
+@lanes
+LANE lane_1 ROAD road_1 TYPE outdoor STATE dry AVAILABLE true
+
+@attachments
+ATTACHMENT dragon OWNER player_1 FUEL true
+
+@cars
+
+[END SNAPSHOT]
