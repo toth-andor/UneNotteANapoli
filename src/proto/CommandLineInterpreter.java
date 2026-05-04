@@ -178,6 +178,23 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
                 if (_args.length == 1) {
                     message = new Message.StartGame();
                 }
+                break;
+
+            case "randomoff":
+                if (_args.length == 2) {
+                    try {
+                        message = new Message.RandomOff(Integer.parseInt(_args[1]));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Hibás seed érték: " + _args[1]);
+                    }
+                } else {
+                    System.out.println("Helytelen formátum, helyes: randomoff <seed>");
+                }
+                break;
+
+            case "randomon":
+                message = new Message.RandomOn();
+                break;
         }
 
 
