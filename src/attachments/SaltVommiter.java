@@ -1,0 +1,63 @@
+package attachments;
+
+import map.Lane;
+
+/**
+ * Egy sószóró típusú hókotró-fejet reprezentál, amely sót juttat az útra, ezzel idővel
+ * felolvasztja a havat és a jeget, valamint meggátolja az újabb lerakódást. Fogyóanyagot
+ * igényel, és ha az elfogy, hatástalanná válik, amíg nem töltik fel.
+ */
+public class SaltVommiter extends Attachment {
+    static final int PRICE = 5, PRICE_OF_FUEL = 1, FULL_TANK = 20;
+
+    private int fuelLevel;
+
+    /**
+     * Egy egységnyi só-utántöltés ára.
+     */
+    private int priceOfFuel;
+
+    /**
+     * Létrehoz egy új sószóró fejet.
+     *
+     * price a fej vételára
+     * priceOfFuel a fogyóanyag utántöltés ára
+     */
+    public SaltVommiter() {
+        super(PRICE);
+        this.priceOfFuel = PRICE_OF_FUEL;
+        this.fuelLevel = 0;
+    }
+
+    /**
+     * Csak akkor hívja meg l cleanWithHead metódusát, ha van elegendő só.
+     * Ha nincs, false-szal tér vissza és takarítás nem történik.
+     *
+     * @param l a takarítandó sáv
+     * @param timestamp az aktuális idő
+     */
+    public boolean cleanLane(Lane l, int timestamp) {
+        if (fuelLevel <= 0) {
+            return false;
+        }
+        l.cleanWithSaltVomitter(timestamp);
+        fuelLevel--;
+        return true;
+    }
+
+    /**
+     * Ha budget >= priceOfFuel, levonja a feltöltés árát, feltölti a fejet, majd visszaadja
+     * a maradék budgetet. Ha nincs elegendő fedezet, változatlanul visszaadja a budget értékét.
+     *
+     * @param budget a feltöltésre rendelkezésre álló keret
+     * @return a felhasználás utáni maradék budget
+     */
+    public int refill(int budget) {
+        if (budget < priceOfFuel) {
+            return budget;
+        }
+        int result = budget - priceOfFuel;
+        fuelLevel = FULL_TANK;
+        return result;
+    }
+}

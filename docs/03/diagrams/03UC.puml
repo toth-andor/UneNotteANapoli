@@ -1,0 +1,8 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+
+T -> SP : buyAttachment(attachmentType)
+@enduml

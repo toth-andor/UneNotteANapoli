@@ -1,0 +1,40 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "sys : Controller" as S
+participant "road : Road" as R
+participant "lane : OutdoorLane" as L
+participant "state : DryState" as ST
+
+' A rendszer elindítja a havazást az úton
+S -> R : snowFall()
+activate R
+
+    ' Az út továbbadja a havazást a sávnak
+    R -> L : snowFall(amount)
+    activate L
+    
+        ' A sáv delegálja a fizikai hatást az aktuális állapotnak
+        L -> ST : handleSnow(lane, amount)
+        activate ST
+            
+            ' Az állapot (mivel a hó elért egy szintet) létrehozza az új állapotot
+            create participant "snowy : SnowyState" as SS
+            ST -> SS : <<create>>
+            
+            ' Visszatér az új állapottal
+            ST -->> L : snowy
+        deactivate ST
+        
+        ' A sáv frissíti a saját állapotát
+        L -> L : setState(snowy)
+        activate L
+        deactivate L
+        
+        L -->> R : 
+    deactivate L
+    
+    R -->> S : 
+deactivate R
+@enduml

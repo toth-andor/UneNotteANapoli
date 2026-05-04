@@ -1,0 +1,124 @@
+@startuml class-diagram
+
+
+abstract Vehicle {
+  # currentLane: Lane
+  # isImmobilized: bool
+  # immobilizationTime: int
+
+  + nextTurn()
+  + interactWithRoad()
+  + setImmobilized()
+  + checkMobility()
+}
+
+abstract PlayerVehicle {
+    - income: int
+    - updateIncome()
+    + nextTrun()
+}
+
+class Bus {
+  - stop1: Junction
+  - stop2: Junction
+  + interactWithRoad()
+}
+
+class SnowPlow {
+  + changeAttachment(new: Attachment)
+  + buyAttachment()
+  + refillAttachment()
+  + interactWithRoad()
+}
+
+class Car {
+  - home: Junction
+  - work: Junction
+  + nextTrun()
+  + interactWithRoad()
+}
+
+abstract Attachment {
+  # price: int
+
+  + refill()
+  + cleanLane()
+  
+}
+
+class Dragon {
+  - fuelLevel
+  + refill()
+}
+class Sweeper
+class VomitingHead
+class IceBreaker
+class SaltVomitter {
+  - saltLevel
+  + refill()
+}
+
+
+class Road {
+  - end1: Junction
+  - end2: Junction
+  + snowFall()
+}
+
+class Lane {
+  - snowLevel: int
+  - icingCounter: int
+  - isAvalable: bool
+  - isIcy: bool
+  + acceptVehicle(v: Vehicle)
+  + snowFall()
+  
+}
+
+class Junction
+
+class MapModel {
+  + snowFall()
+}
+
+class Game {
+  - saveProgress()
+  + gameTick()
+}
+
+
+Road "4"*--o "1" Lane 
+
+
+
+PlayerVehicle --|> Vehicle
+Bus ..|> PlayerVehicle 
+SnowPlow ..|> PlayerVehicle
+Car ..|> Vehicle
+
+Dragon --|> Attachment
+Sweeper --|> Attachment
+VomitingHead --|> Attachment
+IceBreaker --|> Attachment
+SaltVomitter --|> Attachment
+
+SnowPlow "1"*-- Attachment
+
+
+Road "2" o--o Junction
+
+MapModel *-- Road
+MapModel *-- Junction
+
+Game "1"*-- MapModel
+Game *-- Vehicle
+
+Vehicle "1" o--o Lane
+
+Bus "2" o-- Junction
+Car "2" o-- Junction
+
+
+
+@enduml
+

@@ -1,0 +1,36 @@
+'UJ FEJEK VASARLASA 
+
+@startuml
+actor "Takarító" as T
+participant "p: SnowPlow" as P
+participant "owner: Cleaner" as C
+participant "newAttr: Attachment" as A
+
+T -> P : buyAttachment(newAttr)
+activate P
+    ' uj fej ara
+    P -> A : price = getPrice()
+    activate A
+    deactivate A
+    
+    ' a cleaner egyenlegenek lekerdezese
+    P -> C : balance = getScore()
+    activate C
+    deactivate C
+    
+    alt balance >= price
+        ' sikeres vasarlas, a penzt levonjuk a cleanertol
+        P -> C : addIncome(-price)
+        activate C
+        deactivate C
+        
+        ' hozzaadjuk a fejet a hokotro eszközeihez
+        note right of P: p.owned_tools.add(newAttr)
+        
+        P --> T : true
+    else Nincs elég fedezet
+        ' sikertelen vásárlás
+        P --> T : false
+    end
+deactivate P
+@enduml

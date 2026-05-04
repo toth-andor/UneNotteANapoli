@@ -1,0 +1,12 @@
+@startuml
+skinparam style strictuml
+
+actor "Játékos" as J
+participant "g : Game" as G
+
+J -> G : saveProgress()
+activate G
+    note over G: Adatok kiírása a mentési fájlba
+G --> J
+deactivate G
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+actor "Autó / Busz Vezető" as A
+participant "v: Vehicle" as V
+participant "l: OutdoorLane" as L
+participant "s: LaneState" as S
+
+A -> V : nextTurn()
+activate V
+    
+    V -> L : pushVehicle(v, timestamp)
+    activate L
+        
+        alt l.isAvailable == true
+            L -> S : handleTraffic(l, v)
+            activate S
+                
+                alt SnowyState: Túl mély hó
+                    note right: Ha hóréteg > küszöb
+                    S -> V : crash(timestamp)
+                    S --> L : failed (stuck)
+                else IcyState: Jeges út
+                    S --> L : success (but sliding)
+                else DryState: Minden rendben
+                    S --> L : success
+                end
+                
+            deactivate S
+            L --> V : success_flag
+        else l.isAvailable == false
+            L --> V : false
+        end
+        
+    deactivate L
+
+    alt ha sikeres volt a behajtás
+        V -> V : interactWithLane(l)
+    end
+
+deactivate V
+@enduml

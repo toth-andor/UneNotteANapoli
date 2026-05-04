@@ -1,0 +1,12 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+
+T -> SP : changeAttachment(newAttachment)
+activate SP
+    note right of SP: A belső Attachment referencia frissítése
+SP --> T
+deactivate SP
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "c : Cleaner" as C
+participant "p : SnowPlow" as P
+
+C -> P : changeAttachment(iceBreaker)
+activate P
+    ' Belső ellenőrzés: megvan-e az eszköz a listában
+    note right of P: check if p.owned_tools.contains(iceBreaker)
+    
+    alt az eszköz megvan
+        note right of P: p.active_tool = iceBreaker
+        P -->> C : true
+    else nincs ilyen eszköze
+        P -->> C : false
+    end
+    
+deactivate P
+@enduml

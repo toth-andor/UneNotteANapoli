@@ -1,0 +1,124 @@
+@startuml class-diagram
+abstract Vehicle {
+  # timeOutStart: int
+  + gotoLane(l: Lane, timestamp: int): bool
+}
+class Bus {
+  - balance: int
+  + interactWithLane(l: Lane)
+  + addIncome(amount: int)
+  + getScore(): int
+}
+class SnowPlow {
+  + changeAttachment(a: Attachment): bool
+  + buyAttachment(new: Attachment): bool
+  + refillAttachment()
+  + interactWithLane(l: Lane)
+  + crash(timestamp: int)
+}
+class Car {
+  + interactWithLane(l: Lane)
+}
+class Road {
+  + snowFall()
+}
+
+interface ILane {
+  + pushVehicle(v: Vehicle, timestamp: int)
+  + popVehicle(v: Vehicle)
+  + snowFall(snow: int)
+  + cleanWithHead(head: Attachment)
+}
+
+abstract Lane {
+  + pushVehicle(v: Vehicle, timestamp: int)
+  + popVehicle(v: Vehicle)
+  {abstract} + snowFall(snow: int)
+  {abstract} + cleanWithHead(head: Attachment)
+}
+
+class OutdoorLane {
+  - currentState: LaneState
+  - saltedTimestamp: int
+  + snowFall(snow: int)
+  + cleanWithHead(head: Attachment)
+  + setState(s: LaneState)
+}
+
+class TunnelLane {
+  + snowFall(snow: int)
+  + cleanWithHead(head: Attachment)
+}
+
+' --- State Pattern for OutdoorLane ---
+
+abstract LaneState {
+  {abstract} + handleSnow(lane: OutdoorLane, amount: int): LaneState
+  {abstract} + handleCleaning(lane: OutdoorLane, head: Attachment): LaneState
+  {abstract} + handleTraffic(lane: OutdoorLane, v: Vehicle)
+}
+
+class DryState
+class SnowyState
+class IcyState
+class SaltedState
+class CrashedState
+
+class Junction
+class Cleaner {
+  - balance: int
+  + addIncome(amount: int)
+  + getScore(): int
+}
+abstract class Commuter {
+  + turnAround()
+}
+interface IControllable {
+  + gotoLane(l: Lane, timestamp: int): bool
+  + crash(timestamp: int)
+  + interactWithLane(l: Lane)
+}
+interface ISnowPlow {
+  + buyAttachment(a: Attachment): bool
+  + changeAttachment(a: Attachment): bool
+  + refillAttachment()
+}
+interface IRouteHandler {
+  + turnAround()
+}
+interface IScoreOwner {
+  + getScore(): int
+}
+
+ILane <|.. Lane
+Lane <|-- OutdoorLane
+Lane <|-- TunnelLane
+
+LaneState <|-- DryState
+LaneState <|-- SnowyState
+LaneState <|-- IcyState
+LaneState <|-- SaltedState
+LaneState <|-- CrashedState
+
+OutdoorLane *-- LaneState
+
+Lane "n" --> "1" Junction : source
+Lane "n" --> "1" Junction : destination
+
+Road "4" *-- "1" Lane
+Road "2" o--o Junction
+Vehicle  o-- ILane : currentLane
+Commuter "1" o-- "1" Road : destination1
+Commuter "1" o-- "1" Road : destination2
+Vehicle ..|> IControllable
+SnowPlow --|> Vehicle
+SnowPlow ..|> ISnowPlow
+Commuter --|> Vehicle
+Commuter ..|> IRouteHandler
+Bus --|> Commuter
+Bus ..|> IScoreOwner
+Car --|> Commuter
+Cleaner ..|> IScoreOwner
+Cleaner "1" *-- "1..*" SnowPlow : controls
+SnowPlow "1" --> "1" Cleaner : owner
+@enduml

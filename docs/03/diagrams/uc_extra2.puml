@@ -1,0 +1,22 @@
+@startuml
+skinparam style strictuml
+participant "v : Vehicle" as V
+participant "a : Attachment" as A
+participant "l : Lane" as L
+
+V -> V : interactWithRoad()
+activate V
+    alt ha SnowPlow
+        V -> A : cleanLane(l)
+        activate A
+        A -> L : (módosítja az állapotot)
+        A --> V
+        deactivate A
+        V -> V : updateIncome(amount)
+    else ha Bus (végállomáson)
+        V -> V : updateIncome(amount)
+    else ha Car
+        V -> L : (icingCounter növelése)
+    end
+deactivate V
+@enduml

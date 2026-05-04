@@ -1,0 +1,20 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "v : Car" as V
+participant "lane : OutdoorLane" as L
+participant "state : DryState" as ST
+
+V -> L : interactWithLane(v)
+activate L
+    L -> ST : handleTraffic(lane, v)
+    activate ST
+        note right: Nincs csúszás vagy letaposás
+        ST -->> L : state (this)
+    deactivate ST
+    
+    ' setState nem hívódik meg
+    L -->> V : 
+deactivate L
+@enduml

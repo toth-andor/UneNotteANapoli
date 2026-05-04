@@ -1,0 +1,16 @@
+@startuml
+skinparam style strictuml
+
+participant "r : Road" as R
+participant "l : Lane" as L
+
+R -> L : increaseSnowLevel()
+activate L
+    note right of L: snowLevel++
+    alt snowLevel > MaxLimit
+        L -> L : setAvailable(false)
+        note right: isAvailable = false
+    end
+L --> R
+deactivate L
+@enduml

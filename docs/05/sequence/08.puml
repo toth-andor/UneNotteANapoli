@@ -1,0 +1,30 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "c : Cleaner" as C
+participant "p : SnowPlow" as P
+participant "s : Sweeper" as S
+participant "lane : OutdoorLane" as L
+
+
+C -> P : interactWithLane(lane)
+activate P
+    P -> S : cleanLane(lane, currentTimestamp)
+    activate S
+        S -> L : cleanWithHead(s)
+        activate L
+            note right: Sikeres takarítási folyamat (lásd UC2)
+            L -->> S : 
+        deactivate L
+        S -->> P : true
+    deactivate S
+    
+    ' A sikeres takarítás után jön a jutalom
+    P -> C : addIncome(reward)
+    activate C
+    deactivate C
+    
+P -->> C : 
+deactivate P
+@enduml

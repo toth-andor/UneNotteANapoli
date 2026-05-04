@@ -1,0 +1,32 @@
+@startuml
+' UC11: Autó interakció száraz úton
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "car : Car" as CAR
+participant "outdoorLane : OutdoorLane" as L
+participant "dryState : DryState" as D
+
+T -> CAR : gotoLane(outdoorLane, 0)
+activate CAR
+    note right: timeOutStart == -1 → nem immobilizált\nDryState nem SnowyState → továbbléphet
+    CAR -> L : pushVehicle(car, 0)
+    activate L
+        note right: nem CrashedState
+        L -> D : handleTraffic(car)
+        activate D
+            note right: Száraz sávon nincs forgalmi hatás
+            D -->> L : dryState (this)
+        deactivate D
+        L -> L : setState(dryState)
+        L -->> CAR : true
+    deactivate L
+    CAR -> L : handleTraffic(car, 0)
+    activate L
+        note right: OutdoorLane.handleTraffic – nincs hatás
+        L -->> CAR :
+    deactivate L
+    CAR -->> T : true
+deactivate CAR
+@enduml

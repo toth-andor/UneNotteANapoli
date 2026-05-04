@@ -1,0 +1,41 @@
+@startuml
+' UC16: Jeges út takarítása IceBreaker fejjel
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "tesztelő" as T
+participant "snowplow : SnowPlow" as P
+participant "iceBreaker : IceBreaker" as I
+participant "lane : OutdoorLane" as L
+participant "icy : IcyState" as ST
+participant "cleaner : Cleaner" as C
+
+T -> P : interactWithLane(lane, 0)
+activate P
+    P -> I : cleanLane(lane, 0)
+    activate I
+        I -> L : cleanWithIceBreaker()
+        activate L
+            note right: previousState = icy
+            L -> ST : cleanWithIceBreaker()
+            activate ST
+                create participant "snowy : SnowyState" as SN
+                ST -> SN : <<create>>
+                ST -->> L : snowy
+            deactivate ST
+            L -> L : setState(snowy)
+            note right: previousState != currentState\nsetStateWasChanged(true)
+            L -->> I :
+        deactivate L
+        I -> L : getStateWasChanged()
+        activate L
+        L -->> I : true
+        deactivate L
+        I -->> P : true
+    deactivate I
+    P -> C : addIncome(2)
+    activate C
+    deactivate C
+    P -->> T :
+deactivate P
+@enduml

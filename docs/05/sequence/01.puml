@@ -1,0 +1,30 @@
+@startuml
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "c : Cleaner" as C
+participant "p : SnowPlow" as P
+participant "s : Sweeper" as S
+participant "lane : OutdoorLane" as L
+participant "state : SnowyState" as ST
+
+C -> P : interactWithLane(lane)
+activate P
+    P -> S : cleanLane(lane, currentTimestamp)
+    activate S
+        S -> L : cleanWithHead(s)
+        activate L
+            L -> ST : handleCleaning(lane, s)
+            activate ST
+                create participant "dry : DryState" as D
+                ST -> D : <<create>>
+                ST -->> L : dry
+            deactivate ST
+            L -> L : setState(dry)
+            L -->> S : 
+        deactivate L
+        S -->> P : true
+    deactivate S
+P -->> C : 
+deactivate P
+@enduml

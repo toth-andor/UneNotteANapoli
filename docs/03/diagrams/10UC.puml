@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+
+participant "g : Game" as G
+participant "c : Car" as C
+participant "l : Lane" as L
+
+G -> C : nextTurn()
+activate C
+    note over C: Útvonal keresése Junction-ök között
+    C -> L : acceptVehicle(C)
+    activate L
+    L --> C : true
+    deactivate L
+    
+    C -> C : interactWithRoad()
+    activate C
+        C -> L : incrementIcingCounter()
+        activate L
+        note right of L: icingCounter++
+        L --> C
+        deactivate L
+    deactivate C
+C --> G
+deactivate C
+@enduml

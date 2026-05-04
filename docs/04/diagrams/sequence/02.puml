@@ -1,0 +1,42 @@
+@startuml
+actor "Takarító" as T
+participant "p: SnowPlow" as P
+participant "l: Lane" as L
+participant "s: LaneState" as S
+participant "a: Attachment" as A
+
+T -> P : gotoLane(l, timestamp)
+activate P
+    P -> L : acceptVehicle(p)
+    activate L
+    L --> P : success (bool)
+    deactivate L
+
+    alt success == true
+        P -> P : interactWithLane(l)
+        activate P
+            P -> L : cleanWithHead(active_tool)
+            activate L
+                L -> S : handleCleaning(l, active_tool)
+                activate S
+                    S -> A : cleanLane(l, timestamp)
+                    activate A
+                        note right: Itt módosul: snowLevel/isIcy
+                        A --> S : success
+                    deactivate A
+                    
+                    opt állapotváltás szükséges
+                        S -> L : setState(newState)
+                    end
+                    
+                    S --> L
+                deactivate S
+                L --> P
+            deactivate L
+        deactivate P
+    else success == false
+    end
+    
+    P --> T
+deactivate P
+@enduml

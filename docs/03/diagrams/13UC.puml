@@ -1,0 +1,26 @@
+@startuml
+skinparam style strictuml
+
+participant "l : Lane" as L
+participant "v1 : Vehicle" as V1
+participant "v2 : Vehicle" as V2
+
+activate L
+V1 -> L: acceptVehicle(self)
+note right: Ha van már jármű a sávban és jeges az út valamekkora esélyel ütköznek
+
+alt isIcy() && rng.shouldCollide == true
+
+    L -> V1 : setImmobilized(true)
+    activate V1
+    V1 --> L
+    deactivate V1
+
+    L -> V2 : setImmobilized(true)
+    activate V2
+    V2 --> L
+    deactivate V2
+    note over V1, V2: Mindkét jármű elakad az ütközés következtében
+end
+deactivate L
+@enduml

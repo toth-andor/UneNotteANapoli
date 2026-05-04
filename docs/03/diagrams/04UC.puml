@@ -1,0 +1,17 @@
+@startuml
+skinparam style strictuml
+
+actor "Takarító" as T
+participant "sp : SnowPlow" as SP
+participant "a : Attachment" as A
+
+T -> SP : refillAttachment()
+activate SP
+    SP -> A : refill()
+    activate A
+    note right of A: Visszaállítja a fogyóanyag szintjét
+    A --> SP
+    deactivate A
+SP --> T
+deactivate SP
+@enduml
