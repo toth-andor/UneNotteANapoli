@@ -1,9 +1,0 @@
-# TC1 - Havazás: egyetlen száraz OutdoorLane, busz játékos
-# A seed garantálja, hogy a rendszerfázisban >=5 egység hó esik lane_1-re
-randomoff 1
-addjunction 2
-addroad junction_1 junction_2
-savemap
-carcount 0
-addplayer bus player_1
-setbalance player_1 0

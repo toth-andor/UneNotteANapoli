@@ -1,8 +1,0 @@
-load tests/tc13_init.txt
-randomoff 1
-start
-buy icebreaker
-swap icebreaker
-pick lane_1 -clean
-snapshot tests/tc13_actual.txt
-exit

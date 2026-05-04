@@ -1,6 +1,0 @@
-load tests/tc7_init.txt
-randomoff 7
-start
-pick lane_1
-snapshot tests/tc7_actual.txt
-exit

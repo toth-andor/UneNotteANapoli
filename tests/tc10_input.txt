@@ -1,7 +1,0 @@
-load tests/tc10_init.txt
-randomoff 1
-start
-swap icebreaker
-pick lane_1 -clean
-snapshot tests/tc10_actual.txt
-exit

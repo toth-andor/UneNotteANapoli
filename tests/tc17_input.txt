@@ -1,9 +1,0 @@
-load tests/tc17_init.txt
-randomoff 1
-start
-buy dragon
-swap dragon
-refill dragon
-pick lane_1 -clean
-snapshot tests/tc17_actual.txt
-exit

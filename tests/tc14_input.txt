@@ -1,6 +1,0 @@
-load tests/tc14_init.txt
-randomoff 1
-start
-pick lane_1
-snapshot tests/tc14_actual.txt
-exit

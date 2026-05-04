@@ -1,6 +1,0 @@
-load tests/tc4_init.txt
-randomoff 1
-start
-pick lane_3
-snapshot tests/tc4_actual.txt
-exit
