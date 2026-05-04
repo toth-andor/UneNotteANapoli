@@ -27,9 +27,9 @@ public class Controller implements IController {
     private GameState gameState;
 
     /** Az NPC autók mozgásáért felelős segédkomponens */
-    private NPCHandler npcHandler;
+    public NPCHandler npcHandler;
 
-    private Randomizer rng;
+    public Randomizer rng;
 
     /**
      * Létrehoz egy új Controller példányt.
@@ -74,7 +74,7 @@ public class Controller implements IController {
 
         // 2. NPC autók mozgatása
         if (npcHandler != null) {
-            npcHandler.moveNPCs(mapModel, getRoundNumber());
+            npcHandler.moveNPCs();
         }
     }
 

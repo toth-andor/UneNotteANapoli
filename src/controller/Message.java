@@ -17,10 +17,12 @@ public sealed interface Message {
     record AddNPCCar(int count) implements Message {}
 
     /** Meghatározott számú csomópont hozzáadása a térképhez **/
-    record AddJunction(String name) implements Message {}
+    record AddJunction(int count) implements Message {}
 
     /** Út hozzáadása két létező csomópont azonosítója között **/
     record AddRoad(String j1, String j2) implements Message {}
+
+    record SaveMap() implements Message {}
 
     /** A világ felépítésének lezárása és a játék indítása **/
     record StartGame() implements Message {}

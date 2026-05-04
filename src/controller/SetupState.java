@@ -10,6 +10,9 @@ import Vehicle.Bus;
  */
 public class SetupState extends GameState {
 
+    static int nextBusID = 1;
+    static int nextPlowID = 1;
+
     public SetupState(Controller controller) {
         super(controller);
     }
@@ -19,46 +22,40 @@ public class SetupState extends GameState {
         IMapModel mm = controller.getMapModel();
         return switch (msg) {
             case Message.AddCleaner playerName -> {
-                map.Lane lane = mm.getRandomLane();
-                if (lane == null) {
-                    System.out.println("[HIBA] Nincs térkép. Előbb adj hozzá csomópontokat (addjunction) és utakat (addroad).");
-                    yield this;
-                }
                 Cleaner owner = new Cleaner(1000);
-                new SnowPlow(owner, lane);
+                new SnowPlow(owner, mm.getRandomLane(), "snowplow_" + nextPlowID++);
                 Player player = new Player(new PlayerType.PCleaner(owner), playerName.name());
                 controller.getPlayers().addPlayer(player);
                 yield this;
             }
             case Message.AddBusDriver playerName -> {
-                map.Road r1 = mm.getRandomRoad();
-                map.Road r2 = mm.getRandomRoad();
-                map.Lane lane = mm.getRandomLane();
-                if (r1 == null || r2 == null || lane == null) {
-                    System.out.println("[HIBA] Nincs térkép. Előbb adj hozzá csomópontokat (addjunction) és utakat (addroad).");
-                    yield this;
-                }
-                Bus bd = new Bus(r1, r2, lane, 500);
+                // TODO: ellenőrizni kéne, hogy a két road nem ugyanaz
+                Bus bd = new Bus(mm.getRandomRoad(), mm.getRandomRoad(), mm.getRandomLane(), 500, "bus_" + nextBusID++);
                 Player player = new Player(new PlayerType.PBusDriver(bd), playerName.name());
                 controller.getPlayers().addPlayer(player);
                 yield this;
             }
             case Message.AddJunction addJunctionsMsg -> {
-                mm.addJunction(addJunctionsMsg.name());
+                mm.addJunction(addJunctionsMsg.count());
                 yield this;
             }
             case Message.AddNPCCar addNPCCarMsg -> {
                 for (int i = 0; i < addNPCCarMsg.count(); i++) {
-                    map.Road d1 = mm.getRandomRoad();
-                    map.Road d2 = mm.getRandomRoad();
-                    map.Lane l  = mm.getRandomLane();
-                    if (d1 == null || d2 == null || l == null) break;
-                    controller.getNpcHandler().addNPC(d1, d2, l);
+                   controller.getNpcHandler().addNPC(mm.getRandomRoad(), mm.getRandomRoad(), mm.getRandomLane());
                 }
                 yield this;
             }
             case Message.AddRoad addRoadMsg -> {
                 mm.addRoad(addRoadMsg.j1(), addRoadMsg.j2());
+                yield this;
+            }
+            case Message.SaveMap saveMapMsg -> {
+//                mm.validateMapModel();
+                if(mm.validateMapModel()) {
+                    System.out.println("CORRECT");
+                } else {
+                    System.out.println("INCORRECT");
+                }
                 yield this;
             }
             case Message.StartGame startGameMsg -> {

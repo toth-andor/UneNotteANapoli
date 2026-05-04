@@ -1,8 +1,6 @@
 package attachments;
 
 import map.Lane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy zúzalékszóró típusú hókotró-fejet reprezentál, amely zúzott követ juttat az útra,
@@ -36,17 +34,11 @@ public class StoneVommiter extends Attachment {
      */
     @Override
     public boolean cleanLane(Lane l, int timestamp) {
-        CallChainLogger.printCall(
-            this,
-            "cleanLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
-        );
         if (fuelLevel <= 0) {
-            CallChainLogger.printReturn("false");
             return false;
         }
         l.cleanWithStoneVomitter(timestamp);
         fuelLevel--;
-        CallChainLogger.printReturn("true");
         return true;
     }
 
@@ -59,14 +51,11 @@ public class StoneVommiter extends Attachment {
      */
     @Override
     public int refill(int budget) {
-        CallChainLogger.printCall(this, "refill(" + budget + ")");
         if (budget < priceOfFuel) {
-            CallChainLogger.printReturn(budget + "");
             return budget;
         }
         int result = budget - priceOfFuel;
         fuelLevel = FULL_TANK;
-        CallChainLogger.printReturn(result + "");
         return result;
     }
 }

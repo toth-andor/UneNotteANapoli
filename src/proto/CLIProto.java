@@ -11,7 +11,7 @@ import states.DryState;
 import states.IcyState;
 import states.SaltedState;
 import states.SnowyState;
-import Vehicle.Vehicle;
+import Vehicle.*;
 
 /**
  * A parancssori felhasználói felület belépési pontja.
@@ -61,10 +61,64 @@ public class CLIProto {
      */
     private void displayCurrentState() {
         if (controller.getGameState() instanceof SetupState) {
-            displayInitMenu();
+            if(!controller.getMapModel().isFinalized()) {
+                displayMapInit();
+            } else {
+                displayInitMenu();
+            }
         } else {
             displayCurrentRound();
         }
+    }
+
+
+    private void displayMapInit() {
+        System.out.println("-----------------------------------------------------------------");
+        System.out.println("                    Térkép inicializálása");
+        System.out.println("-----------------------------------------------------------------");
+        System.out.println();
+        System.out.println("? =========================== DOCS ============================ ?");
+        System.out.println("| Útmutató a program működéséhez: help                          |");
+        System.out.println("| Játék vezérlésének leírása: help game                         |");
+        System.out.println("| Konfigurációs útmutató: help conf                             |");
+        System.out.println("| Külső konfigurációs fájl elvárt formátuma: help conf format   |");
+        System.out.println("| Tesztelési útmutató: help test                                |");
+        System.out.println("? ------------------------------------------------------------- ?");
+
+        System.out.println("* ======================== BEÁLLÍTÁSOK ======================== *");
+        System.out.println("| Konfiguráció betöltése: load <src filepath>                   |");
+        System.out.println("* ------------------------------------------------------------- *");
+        System.out.println("| Konfiguráció törlése: clear                                   |");
+        System.out.println("* ------------------------------------------------------------- *");
+
+        System.out.println("\n                  === TÉRKÉP KONFIGURÁCIÓ ===\n");
+        System.out.println("[1] Kereszteződés/csomópont hozzáadása: addjunction <count>\n");
+        System.out.println("-Értéke: " + controller.getMapModel().getJunctionCount());
+        System.out.println("-Lista: ");
+        for(Junction j : controller.getMapModel().getJunctions()) {
+            System.out.println("  #" + j.getName());
+        }
+
+        System.out.println("\n-------------------------------------------------------------\n");
+        System.out.println("[2] Út felvétele két csomópont között: addroad <from> <to>\n");
+        System.out.println("-Értéke: " + controller.getMapModel().getRoadCount());
+        System.out.println("-Lista: ");
+        for(Road r : controller.getMapModel().getRoads()) {
+            System.out.println("  #" + r.getName() + " FROM " + r.getEnd1().getName() + " TO " + r.getEnd2().getName());
+
+            for(Lane l : r.getLanes()) {
+                System.out.println("    ->" + l.getName());
+            }
+        }
+
+        System.out.println("\n-------------------------------------------------------------\n");
+
+        System.out.println("# ========================= VEZÉRLÉS ========================== #");
+        System.out.println("| Térkép mentése: savemap                                       |");
+        System.out.println("# ------------------------------------------------------------- #");
+        System.out.println("| Kilépés: exit                                                 |");
+        System.out.println("# ------------------------------------------------------------- #");
+
     }
 
     /**
@@ -102,15 +156,18 @@ public class CLIProto {
         System.out.println("* ------------------------------------------------------------- *");
         System.out.println("| Konfiguráció törlése: clear                                   |");
         System.out.println("* ------------------------------------------------------------- *");
-        System.out.println("* ------------------------------------------------------------- *");
-        System.out.println();
-        System.out.println("============================= AUTÓK =============================");
-        System.out.println("----------------------------");
-        System.out.println("Autók száma: nincs megadva"); // TODO: IController.getCarCount()
-        System.out.println("----------------------------");
+
+        System.out.println("\n============================= AUTÓK =============================\n");
         System.out.println("* ------------------------------------------------------------- *");
         System.out.println("| Konfigurálása: carcount <value: non-negative integer>         |");
         System.out.println("* ------------------------------------------------------------- *");
+
+        System.out.println("Autók száma: " + controller.getNpcHandler().getCarCount());
+        System.out.println("Lista: ");
+        for (Car c : controller.getNpcHandler().getNpcCars()) {
+            System.out.println("  #" + c.getName() + " ON ROAD " + c.getCurrentLane().getRoad().getName() + " ON LANE " + c.getCurrentLane().getName());
+        }
+
         System.out.println();
         System.out.println("* ========================= JÁTÉKOSOK ========================= *");
         System.out.println("| Játékos felvétele: addplayer <role: bus/cleaner> [name]       |");
@@ -121,11 +178,16 @@ public class CLIProto {
         System.out.println("Aktív játékosok");
         System.out.println("----------------------------");
         for (Player p : controller.getPlayers().getPlayers()) {
-            System.out.println("# " + p.getName() + " [" + roleOf(p) + "]");
+            System.out.print("# " + p.getName() + " [" + roleOf(p) + "]" + " ON ROAD " );
+            if(p.getType() instanceof PlayerType.PBusDriver driver) {
+                System.out.print(driver.bus().getCurrentLane().getRoad().getName() + " ON LANE " + driver.bus().getCurrentLane().getName());
+                System.out.println(" TO STOP " + driver.bus().getCurrentDestination().getName());
+            }
+            else if(p.getType() instanceof PlayerType.PCleaner cleaner) {
+                System.out.println(cleaner.cleaner().getSnowPlows().get(0).getCurrentLane().getRoad().getName() + " ON LANE " + cleaner.cleaner().getSnowPlows().get(0).getCurrentLane().getName() );
+            }
         }
         System.out.println("----------------------------");
-        System.out.println();
-        System.out.print("> ");
     }
 
     /**
@@ -197,33 +259,32 @@ public class CLIProto {
         Junction nextJunction = currentLane.getDestination();
 
         System.out.println("================== TÉRKÉP ==================");
-        System.out.println("Jelenlegi út: " + currentRoad);           // TODO: currentRoad.getName()
-        System.out.println("Jelenlegi sáv: " + currentLane + "  " + laneStateDisplay(currentLane)); // TODO: currentLane.getName()
+        System.out.println("Jelenlegi út: " + currentRoad.getName());
+        System.out.println("Jelenlegi sáv: " + currentLane.getName() + "  " + laneStateDisplay(currentLane));
         System.out.println("--------------------------------------------");
         if (current.getType() instanceof PlayerType.PBusDriver b) {
-            System.out.println("Célállomás: " + b.bus().getCurrentDestination()); // TODO: getName()
+            System.out.println("Célállomás: " + b.bus().getCurrentDestination().getName());
             System.out.println("--------------------------------------------");
         }
-        System.out.println("Következő kereszteződés: " + nextJunction); // TODO: nextJunction.getName()
+        System.out.println("Következő kereszteződés: " + nextJunction.getName());
         System.out.println("-----------------------");
         System.out.println("Innen elérhető: ");
         System.out.println("--------------");
         for (Road road : nextJunction.getRoads()) {
-            System.out.println("# " + road);                           // TODO: road.getName()
+            System.out.println("# " + road.getName());
             for (Lane lane : road.getLanes()) {
                 String laneType = lane instanceof OutdoorLane ? "OL" : "TL";
-                System.out.println("\t #" + lane + "  [" + laneType + "] " + laneStateDisplay(lane)); // TODO: lane.getName()
+                System.out.println("\t #" + lane.getName() + "  [" + laneType + "] " + laneStateDisplay(lane));
             }
         }
         System.out.println();
     }
 
     private Vehicle vehicleOf(Player p) {
-        if (p.getType() instanceof PlayerType.PCleaner c)
-            return c.cleaner().getSnowPlows().get(0);
-        if (p.getType() instanceof PlayerType.PBusDriver b)
-            return b.bus();
-        throw new IllegalStateException("Unknown player type: " + p.getType());
+        return switch (p.getType()) {
+            case PlayerType.PCleaner c -> c.cleaner().getSnowPlows().get(0);
+            case PlayerType.PBusDriver b -> b.bus();
+        };
     }
 
     private String laneStateDisplay(Lane lane) {

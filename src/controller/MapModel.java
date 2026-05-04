@@ -1,18 +1,26 @@
 package controller;
 
 import map.*;
+
+import java.lang.constant.Constable;
 import java.util.*;
 
 public class MapModel implements IMapModel {
 
     private final int OUTDOOR_CHANCE = 80;
 
+    static int nextJunctionID = 1;
+    static int nextRoadID = 1;
+    static int nextLaneID = 1;
+
     private List<Road> model = new ArrayList<>();
     private List<Junction> junctions = new ArrayList<>();
     private Map<String, Junction> junctionsByName = new HashMap<>();
+    private Map<String, Road> roadsByName = new HashMap<>();
+    private Map<String, Lane> lanesByName = new HashMap<>();
 
-    private int roadCounter = 0;
-    private int laneCounter = 0;
+
+    private boolean finalized = false;
 
     private final Randomizer randomizer;
 
@@ -20,36 +28,66 @@ public class MapModel implements IMapModel {
         this.randomizer = randomizer;
     }
 
-    @Override
-    public void addJunction(String name) {
-        Junction j = new Junction(name);
-        junctions.add(j);
-        junctionsByName.put(name, j);
+    public boolean isFinalized() {
+        return finalized;
     }
 
-    @Override
+    public List<Junction> getJunctions() {
+        return junctions;
+    }
+
+    public int getJunctionCount() {
+        return junctions.size();
+    }
+
+    public void setFinalized(boolean finalized) {
+        this.finalized = finalized;
+    }
+
+    public void addJunction(int count) {
+        for (int i = 0; i < count; i++) {
+            String name = "junction_" + nextJunctionID++;
+            Junction j = new Junction(name);
+            junctions.add(j);
+            junctionsByName.put(name, j);
+        }
+    }
+
     public void addRoad(String j1, String j2) {
         Junction start = junctionsByName.get(j1);
         Junction end = junctionsByName.get(j2);
         if (start == null || end == null) return;
 
-        Road newRoad = new Road(start, end);
-        newRoad.setName("road_" + (++roadCounter));
+        String name = "road_" + nextRoadID++;
+        Road newRoad = new Road(start, end, name);
+
         start.addRoad(newRoad);
         end.addRoad(newRoad);
+
         model.add(newRoad);
+        roadsByName.put(name, newRoad);
 
         for (int i = 0; i < 4; i++) {
             int randomVal = randomizer.randomize(1, 100);
-            Lane newLane;
+            String laneName = "lane_" + nextLaneID++;
             if (randomVal <= OUTDOOR_CHANCE) {
-                newLane = new OutdoorLane(start, end);
+                OutdoorLane newLane = new OutdoorLane(start, end, laneName);
+                newRoad.addLane(newLane);
+                lanesByName.put(laneName, newLane);
             } else {
-                newLane = new TunnelLane(start, end);
+                TunnelLane newLane = new TunnelLane(start, end, laneName);
+                newRoad.addLane(newLane);
+                lanesByName.put(laneName, newLane);
             }
-            newLane.setName("lane_" + (++laneCounter));
-            newRoad.addLane(newLane);
         }
+    }
+
+    public int getRoadCount() {
+        return model.size();
+    }
+
+    public List<Road> getRoads() {
+        return model;
     }
 
     @Override
@@ -60,7 +98,6 @@ public class MapModel implements IMapModel {
 
     @Override
     public Lane getRandomLane() {
-        if (model.isEmpty()) return null;
         int laneIdx = randomizer.randomize(0, 3);
         int roadIdx = randomizer.randomize(0, model.size() - 1);
         return model.get(roadIdx).getLanes().get(laneIdx);
@@ -68,97 +105,76 @@ public class MapModel implements IMapModel {
 
     @Override
     public Road getRandomRoad() {
-        if (model.isEmpty()) return null;
         int roadIdx = randomizer.randomize(0, model.size() - 1);
         return model.get(roadIdx);
     }
 
     @Override
-    public Lane findShortestPath(Junction src, Road dst) {
-        if (src == null || dst == null) return null;
+    public List<Road> findShortesPath(Junction startJunction, Junction endJunction) {
+        if (startJunction == null || endJunction == null) return null;
+        if (startJunction.equals(endJunction)) return new ArrayList<>();
 
-        Junction target1 = dst.getEnd1();
-        Junction target2 = dst.getEnd2();
-
-        // Ha src már az egyik végpontja a cél útnak, keressünk egy olyan sávot rajta, ami src-ből indul
-        if (src.equals(target1) || src.equals(target2)) {
-            for (Lane lane : dst.getLanes()) {
-                if (lane.getSource().equals(src)) {
-                    return lane;
-                }
-            }
-        }
-
-        // BFS a legrövidebb út megtalálásához bármelyik cél-csomóponthoz (target1 vagy target2)
         Map<Junction, Junction> parent = new HashMap<>();
         Map<Junction, Road> parentRoad = new HashMap<>();
         Set<Junction> visited = new HashSet<>();
         Queue<Junction> queue = new LinkedList<>();
 
-        queue.add(src);
-        visited.add(src);
+        queue.add(startJunction);
+        visited.add(startJunction);
 
-        Junction foundTarget = null;
+        boolean found = false;
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && !found) {
             Junction current = queue.poll();
 
-            if (current.equals(target1) || current.equals(target2)) {
-                foundTarget = current;
-                break;
-            }
+            for (Road road : model) {
 
-            for (Road road : current.getRoads()) {
-                Junction neighbor = (road.getEnd1().equals(current)) ? road.getEnd2() : road.getEnd1();
+                Junction neighbor = null;
 
-                if (!visited.contains(neighbor)) {
+                if (road.getEnd1().equals(current)) {
+                    neighbor = road.getEnd2();
+                } else if (road.getEnd2().equals(current)) {
+                    neighbor = road.getEnd1();
+                }
+
+                if (neighbor != null && !visited.contains(neighbor)) {
                     visited.add(neighbor);
                     parent.put(neighbor, current);
                     parentRoad.put(neighbor, road);
                     queue.add(neighbor);
+
+                    if (neighbor.equals(endJunction)) {
+                        found = true;
+                        break;
+                    }
                 }
             }
         }
 
-        if (foundTarget == null) return null;
-
-        // Visszakövetés az első útig, ami src-ből indul
-        Junction curr = foundTarget;
-        Road firstRoad = parentRoad.get(curr);
-        
-        while (parent.get(curr) != null && !parent.get(curr).equals(src)) {
-            curr = parent.get(curr);
-            firstRoad = parentRoad.get(curr);
-        }
-        
-        // Visszatérünk az első olyan sávval ezen az úton, ami src-ből indul
-        for (Lane lane : firstRoad.getLanes()) {
-            if (lane.getSource().equals(src)) {
-                return lane;
-            }
+        if (!parent.containsKey(endJunction)) {
+            return null;
         }
 
-        return null;
+        List<Road> path = new ArrayList<>();
+        Junction current = endJunction;
+
+        while (!current.equals(startJunction)) {
+            Road road = parentRoad.get(current);
+            path.add(0, road);
+            current = parent.get(current);
+        }
+
+        return path;
     }
 
-    public List<Road> getMapModel() {
-        return new ArrayList<>(model);
-    }
-
-    @Override
-    public List<Road> getAllRoads() {
-        return new ArrayList<>(model);
-    }
 
     public void eraseMapModel() {
         model.clear();
         junctions.clear();
         junctionsByName.clear();
-        roadCounter = 0;
-        laneCounter = 0;
     }
 
-    private boolean validateMapModel() {
+    public boolean validateMapModel() {
         if (junctions.isEmpty()) { return false; }
 
         Set<Junction> visited = new HashSet<>();
@@ -186,8 +202,9 @@ public class MapModel implements IMapModel {
                 }
             }
         }
-
-        return visited.size() == junctions.size();
+        boolean result = visited.size() == junctions.size();
+        this.finalized = result;
+        return result;
     }
 
     @Override

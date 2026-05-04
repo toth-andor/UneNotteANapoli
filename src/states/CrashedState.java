@@ -2,8 +2,6 @@ package states;
 
 import Vehicle.Vehicle;
 import map.OutdoorLane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A LaneState leszármazottja, a balesetes sávállapotot reprezentálja.
@@ -34,16 +32,10 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState tick(int timestamp) {
-        CallChainLogger.printCall(this, "tick(" + timestamp + ")");
         if (timestamp >= expiresAt) {
             IcyState icy = new IcyState();
-            if (Skeleton.ENABLE_LOGGING) {
-                Skeleton.pushEntity("icy", icy);
-            }
-            CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(icy));
             return icy;
         }
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -55,8 +47,6 @@ public class CrashedState extends LaneState {
      * @return this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-        CallChainLogger.printCall(this, "handleSnow(" + Skeleton.getEntityByRef(lane) + ", " + amount + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -67,11 +57,9 @@ public class CrashedState extends LaneState {
      * @return this
      */
     public LaneState handleTraffic(Vehicle v) {
-        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
-        
+
         // TODO JAVITANI KELL
         v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll 
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -83,8 +71,6 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithSaltVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -95,8 +81,6 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithSweeper() {
-        CallChainLogger.printCall(this, "cleanWithSweeper()");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -107,8 +91,6 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithIceBreaker() {
-        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -119,9 +101,8 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithVomittingHead() {
-        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
+
     }
 
     /**
@@ -132,8 +113,6 @@ public class CrashedState extends LaneState {
      */
     @Override
     public LaneState cleanWithStoneVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 }

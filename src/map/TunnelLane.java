@@ -2,8 +2,6 @@ package map;
 
 import Vehicle.Vehicle;
 import attachments.Attachment;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A Lane osztály leszármazottja, az alagúttal fedett sávokat valósítja meg.
@@ -12,17 +10,16 @@ import skeleton.Skeleton.CallChainLogger;
  */
 public class TunnelLane extends Lane {
 
-    public TunnelLane(Junction source, Junction destination) {
-        super();
+
+    public TunnelLane(Junction source, Junction destination, String name) {
+        super(name);
         this.source = source;
         this.destination = destination;
     }
 
     @Override
     public boolean pushVehicle(Vehicle v, int timestamp) {
-        CallChainLogger.printCall(this, "pushVehicle(" + Skeleton.getEntityByRef(v) + ", " + timestamp + ")");
         super.pushVehicle(v, timestamp);
-        CallChainLogger.printReturn("true");
         return true;
     }
 
@@ -33,8 +30,6 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void snowFall(int snow) {
-        CallChainLogger.printCall(this, "snowFall(" + snow + ")");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -44,8 +39,6 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void cleanWithHead(Attachment head) {
-        CallChainLogger.printCall(this, "cleanWithHead(" + Skeleton.getEntityByRef(head) + ")");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -56,17 +49,14 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void handleTraffic(Vehicle v, int timestamp) {
-        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ", " + timestamp + ")");
-        CallChainLogger.printReturn(null);
     }
+
 
     /**
      * Alagútban sárkányfejnek nincs hatása.
      */
     @Override
     public void cleanWithDragon() {
-        CallChainLogger.printCall(this, "cleanWithDragon()");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -76,8 +66,6 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void cleanWithSaltVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -85,8 +73,6 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void cleanWithSweeper() {
-        CallChainLogger.printCall(this, "cleanWithSweeper()");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -94,17 +80,14 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void cleanWithIceBreaker() {
-        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
-        CallChainLogger.printReturn(null);
     }
+
 
     /**
      * Alagútban hányófejnek nincs hatása.
      */
     @Override
     public void cleanWithVomittingHead() {
-        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -114,8 +97,6 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void cleanWithStoneVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -125,7 +106,5 @@ public class TunnelLane extends Lane {
      */
     @Override
     public void tick(int timestamp) {
-        CallChainLogger.printCall(this, "tick(" + timestamp + ")");
-        CallChainLogger.printReturn(null);
     }
 }

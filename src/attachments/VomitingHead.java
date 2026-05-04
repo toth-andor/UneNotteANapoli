@@ -1,8 +1,6 @@
 package attachments;
 
 import map.Lane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy hányófej típusú hókotró-fejet reprezentál, amely a havat és a feltört jeget
@@ -15,7 +13,6 @@ public class VomitingHead extends Attachment {
     /**
      * Létrehoz egy új hányó fejet.
      *
-     * @param price a fej vételára
      */
     public VomitingHead() {
         super(PRICE);
@@ -31,12 +28,7 @@ public class VomitingHead extends Attachment {
      * @return mindig true, mivel fogyóanyagot nem igényel
      */
     public boolean cleanLane(Lane l, int timestamp) {
-        CallChainLogger.printCall(
-            this,
-            "cleanLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
-        );
         l.cleanWithVomittingHead();
-        CallChainLogger.printReturn("true");
         return true;
     }
 
@@ -48,8 +40,6 @@ public class VomitingHead extends Attachment {
      * @return a felhasználás utáni maradék budget
      */
     public int refill(int budget) {
-        CallChainLogger.printCall(this, "refill(" + budget + ")");
-        CallChainLogger.printReturn(budget + "");
         return budget;
     }
 }

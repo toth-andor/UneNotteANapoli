@@ -2,8 +2,6 @@ package Vehicle;
 
 import map.Lane;
 import map.OutdoorLane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 import states.SnowyState;
 
 /**
@@ -12,6 +10,8 @@ import states.SnowyState;
  * Maga az osztály nem példányosítható.
  */
 public abstract class Vehicle {
+
+    private String name;
 
     /**
      * Idő ameddig a jármű mozgásképessé válik egy baleset következtében.
@@ -29,14 +29,19 @@ public abstract class Vehicle {
      */
     protected Lane currentLane;
 
+    public String getName() {
+        return name;
+    }
+
     /**
      * Létrehoz egy új járművet.
      *
      * @param currentLane a jármű kezdeti sáva
      */
-    public Vehicle(Lane currentLane) {
+    public Vehicle(Lane currentLane, String name) {
         this.currentLane = currentLane;
         this.timeOutStart = -1; // -1 jelzi, hogy nincs időzítés aktív
+        this.name = name;
     }
 
     /**
@@ -49,18 +54,12 @@ public abstract class Vehicle {
      * @return true, ha a művelet sikerült, egyébként false
      */
     public boolean gotoLane(Lane l, int timestamp) {
-        CallChainLogger.printCall(
-            this,
-            "gotoLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
-        );
         if (timeOutStart != -1 && timestamp - timeOutStart < IMMOBILE_TIME) {
-            CallChainLogger.printReturn("false");
             return false;
         }
         if (l instanceof OutdoorLane) {
             // Ha a cél sáv havas állapotban van, nem járható és a jármű nem hókotró
             if((((OutdoorLane) l).getCurrentState() instanceof SnowyState) && !(((OutdoorLane) l).isNavigable()) && !(this instanceof SnowPlow)) {
-                CallChainLogger.printReturn("false");
                 return false;
             }
         }
@@ -70,7 +69,6 @@ public abstract class Vehicle {
             currentLane = l;
             interactWithLane(l, timestamp);
         }
-        CallChainLogger.printReturn(result + "");
         return result;
     }
 
@@ -87,9 +85,7 @@ public abstract class Vehicle {
      * @param timestamp a baleset időpontja
      */
     public void crash(int timestamp) {
-        CallChainLogger.printCall(this, "crash(" + timestamp + ")");
         timeOutStart = timestamp;
-        CallChainLogger.printReturn(null);
     }
 
     /**

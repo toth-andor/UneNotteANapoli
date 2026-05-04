@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import attachments.VomitingHead;
 import map.Lane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy takarító által irányított hókotrót reprezentál.
@@ -48,14 +46,11 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * @param owner a hókotrót irányító takarító
      * @param currentLane a hókotró kezdeti sáva
      */
-    public SnowPlow(Cleaner owner, Lane currentLane) {
-        super(currentLane);
+    public SnowPlow(Cleaner owner, Lane currentLane, String name) {
+        super(currentLane, name);
         this.owner = owner;
         this.ownedTools = new ArrayList<>();
         VomitingHead v = new VomitingHead();
-        Skeleton.pushEntity("DefaultAttachment", v);
-        CallChainLogger.printCall(v, "<<create>>");
-        CallChainLogger.printReturn(null);
         this.ownedTools.add(v);
         this.currentTool = v;
         owner.registerSnowPlow(this);
@@ -68,18 +63,12 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * @return true, ha a váltás sikerült, egyébként false
      */
     public boolean changeAttachment(Attachment a) {
-        CallChainLogger.printCall(
-            this,
-            "changeAttachment(" + Skeleton.getEntityByRef(a) + ")"
-        );
         for (Attachment tool : ownedTools) {
             if (tool.equals(a)) {
                 currentTool = tool;
-                CallChainLogger.printReturn("true");
                 return true;
             }
         }
-        CallChainLogger.printReturn("false");
         return false;
     }
 
@@ -90,19 +79,11 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * @return true, ha a vásárlás sikerült, egyébként false
      */
     public boolean buyAttachment(Attachment newAttachment) {
-        Skeleton.pushEntity("newAttachment", newAttachment);
-        CallChainLogger.printCall(
-            this,
-            "buyAttachment(" + Skeleton.getEntityByRef(newAttachment) + ")"
-        );
         if (newAttachment.getPrice() <= owner.getScore()) {
             ownedTools.add(newAttachment);
             owner.setScore(owner.getScore() - newAttachment.getPrice());
-            CallChainLogger.printReturn("true");
             return true;
         }
-
-        CallChainLogger.printReturn("false");
         return false;
     }
 
@@ -110,9 +91,7 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * Az aktív fej fogyóanyagát tölti fel, ha a tulajdonos egyenlege fedezi a feltöltés árát.
      */
     public void refillAttachment() {
-        CallChainLogger.printCall(this, "refillAttachment()");
         owner.setScore(currentTool.refill(owner.getScore()));
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -123,18 +102,8 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * @param timestamp az aktuális idő
      */
     public void interactWithLane(Lane l, int timestamp) {
-        CallChainLogger.printCall(
-            this,
-            "interactWithLane(" +
-                Skeleton.getEntityByRef(l) +
-                ", " +
-                timestamp +
-                ")"
-        );
         if (currentTool.cleanLane(l, timestamp))
             owner.addIncome(2);
-
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -143,7 +112,9 @@ public class SnowPlow extends Vehicle implements ISnowPlow {
      * @param timestamp az ütközés időpontja
      */
     public void crash(int timestamp) {
-        CallChainLogger.printCall(this, "crash(" + timestamp + ")");
-        CallChainLogger.printReturn(null);
+    }
+
+    public Lane getCurrentLane() {
+        return currentLane;
     }
 }

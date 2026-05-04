@@ -5,8 +5,6 @@ import attachments.Attachment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy útszakaszon belül a sávokat reprezentáló absztrakt osztály.
@@ -47,19 +45,25 @@ public abstract class Lane implements ILane {
     protected Junction destination;
 
     /**
-     * A sáv neve (pl. lane_1), a MapModel rendeli hozzá.
-     */
-    private String name;
-
-    /**
      * Az az út, amelyhez ez a sáv tartozik.
      */
     private Road road;
+
+    private String name;
 
     /**
      * A sávon tartózkodó járművek listája.
      */
     private List<Vehicle> vehicles;
+
+    public Lane(String name) {
+        this.vehicles = new ArrayList<>();
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Lane() {
         this.vehicles = new ArrayList<>();
@@ -93,9 +97,7 @@ public abstract class Lane implements ILane {
 
     @Override
     public void popVehicle(Vehicle v) {
-        CallChainLogger.printCall(this, "popVehicle(" + Skeleton.getEntityByRef(v) + ")");
         vehicles.remove(v);
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -165,14 +167,6 @@ public abstract class Lane implements ILane {
      * @param timestamp az aktuális idő
      */
     public abstract void tick(int timestamp);
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * @return az az út, amelyhez ez a sáv tartozik

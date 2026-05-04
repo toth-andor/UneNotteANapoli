@@ -2,8 +2,6 @@ package states;
 
 import Vehicle.Vehicle;
 import map.OutdoorLane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A LaneState leszármazottja, a zúzalékkal szórt sávállapotot reprezentálja.
@@ -27,16 +25,10 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-        CallChainLogger.printCall(this, "handleSnow(" + Skeleton.getEntityByRef(lane) + ", " + amount + ")");
         if (lane.getSnowAmount() >= SNOW_THRESHOLD) {
             SnowyState snowy = new SnowyState();
-            if (Skeleton.ENABLE_LOGGING) {
-                Skeleton.pushEntity("snowy", snowy);
-            }
-            CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(snowy));
             return snowy;
         }
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -48,9 +40,9 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState handleTraffic(Vehicle v) {
-        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
+
+
     }
 
     /**
@@ -60,12 +52,7 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState cleanWithSweeper() {
-        CallChainLogger.printCall(this, "cleanWithSweeper()");
         DryState dry = new DryState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("dry", dry);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(dry));
         return dry;
     }
 
@@ -76,8 +63,6 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState cleanWithIceBreaker() {
-        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -88,12 +73,7 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState cleanWithVomittingHead() {
-        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
         DryState dry = new DryState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("dry", dry);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(dry));
         return dry;
     }
 
@@ -105,8 +85,6 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState cleanWithSaltVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -118,8 +96,6 @@ public class GraveledState extends LaneState {
      */
     @Override
     public LaneState cleanWithStoneVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 }

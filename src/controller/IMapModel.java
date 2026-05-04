@@ -12,12 +12,20 @@ public interface IMapModel {
     Lane getRandomLane();
     Junction getRandomJunction();
 
-    List<Road> getAllRoads();
+    int getJunctionCount();
+    int getRoadCount();
 
-    void addJunction(String name);
+    void addJunction(int count);
     void addRoad(String j1, String j2);
 
-    Lane findShortestPath(Junction src, Road dst);
+    boolean isFinalized();
+
+    List<Road> findShortesPath(Junction startJunction, Junction endJunction);
+
+    List<Junction> getJunctions();
+    List<Road> getRoads();
 
     void snow(int amount);
+
+    public boolean validateMapModel();
 }

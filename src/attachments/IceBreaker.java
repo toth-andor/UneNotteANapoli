@@ -1,8 +1,6 @@
 package attachments;
 
 import map.Lane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy jégtörőfej típusú hókotró-fejet reprezentál, amely feltöri a jeget, de nem
@@ -15,7 +13,6 @@ public class IceBreaker extends Attachment {
     /**
      * Létrehoz egy új jégtörő fejet.
      *
-     * @param price a fej vételára
      */
     public IceBreaker() {
         super(PRICE);
@@ -29,12 +26,7 @@ public class IceBreaker extends Attachment {
      * @param timestamp az aktuális idő
      */
     public boolean cleanLane(Lane l, int timestamp) {
-        CallChainLogger.printCall(
-            this,
-            "cleanLane(" + Skeleton.getEntityByRef(l) + ", " + timestamp + ")"
-        );
         l.cleanWithIceBreaker();
-        CallChainLogger.printReturn(String.valueOf(l.getStateWasChanged()));
         return l.getStateWasChanged();
     }
 
@@ -46,8 +38,6 @@ public class IceBreaker extends Attachment {
      * @return a felhasználás utáni maradék budget
      */
     public int refill(int budget) {
-        CallChainLogger.printCall(this, "refill(" + budget + ")");
-        CallChainLogger.printReturn(budget + "");
         return budget;
     }
 }

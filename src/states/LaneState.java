@@ -2,8 +2,6 @@ package states;
 
 import Vehicle.Vehicle;
 import map.OutdoorLane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A sávok állapotának reprezentálásáért felelős absztrakt osztály.
@@ -47,12 +45,7 @@ public abstract class LaneState {
      * @return az új állapot sózás után
      */
     public LaneState cleanWithSaltVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
         SaltedState salted = new SaltedState(timestamp + SALT_DURATION);
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("salted", salted);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(salted));
         return salted;
     }
 
@@ -64,8 +57,6 @@ public abstract class LaneState {
      * @return az új állapot a tick után
      */
     public LaneState tick(int timestamp) {
-        CallChainLogger.printCall(this, "tick(" + timestamp + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -77,12 +68,7 @@ public abstract class LaneState {
      * @return az új állapot zúzalékszórás után
      */
     public LaneState cleanWithStoneVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
         GraveledState graveled = new GraveledState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("graveled", graveled);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(graveled));
         return graveled;
     }
 

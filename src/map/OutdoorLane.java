@@ -10,8 +10,6 @@ import states.LaneState;
 import states.SaltedState;
 import states.SnowyState;
 import java.util.List;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A Lane osztály leszármazottja, a kültéri sávokat valósítja meg.
@@ -23,8 +21,8 @@ public class OutdoorLane extends Lane {
      * @param source      a sáv kiindulópontja
      * @param destination a sáv végpontja
      */
-    public OutdoorLane(Junction source, Junction destination) {
-        super();
+    public OutdoorLane(Junction source, Junction destination, String name) {
+        super(name);
         this.source = source;
         this.destination = destination;
     }
@@ -78,14 +76,11 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public boolean pushVehicle(Vehicle v, int timestamp) {
-        CallChainLogger.printCall(this, "pushVehicle(" + Skeleton.getEntityByRef(v) + ", " + timestamp + ")");
         if (currentState instanceof CrashedState) {
-            CallChainLogger.printReturn("false");
             return false;
         }
         super.pushVehicle(v, timestamp);
         setState(currentState.handleTraffic(v));
-        CallChainLogger.printReturn("true");
         return true;
     }
 
@@ -99,23 +94,16 @@ public class OutdoorLane extends Lane {
      * @param timestamp az ütközés időpontja
      */
     public void crash(Vehicle v1, Vehicle v2, int timestamp) {
-        CallChainLogger.printCall(this, "crash(" + Skeleton.getEntityByRef(v1) + ", " + Skeleton.getEntityByRef(v2) + ", " + timestamp + ")");
         if (!(currentState instanceof IcyState)) {
-            CallChainLogger.printReturn(null);
             return;
         }
         if (!getVehicles().contains(v1) || !getVehicles().contains(v2)) {
-            CallChainLogger.printReturn(null);
             return;
         }
         v1.crash(timestamp);
         v2.crash(timestamp);
         CrashedState crashed = new CrashedState(timestamp + Vehicle.IMMOBILE_TIME);
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("crashed", crashed);
-        }
         setState(crashed);
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -127,12 +115,10 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void snowFall(int snow) {
-        CallChainLogger.printCall(this, "snowFall(" + snow + ")");
         if (!(currentState instanceof SaltedState)) {
             snowAmount += snow;
         }
         setState(currentState.handleSnow(this, snow));
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -143,9 +129,7 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithHead(Attachment head) {
-        CallChainLogger.printCall(this, "cleanWithHead(" + Skeleton.getEntityByRef(head) + ")");
         head.cleanLane(this, saltedTimestamp);
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -157,8 +141,6 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void handleTraffic(Vehicle v, int timestamp) {
-        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ", " + timestamp + ")");
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -174,10 +156,6 @@ public class OutdoorLane extends Lane {
      * @param s az új állapot
      */
     public void setState(LaneState s) {
-        if (Skeleton.ENABLE_LOGGING) {
-            CallChainLogger.printCall(this, "setState(" + Skeleton.getEntityByRef(s) + ")");
-            CallChainLogger.printReturn(null);
-        }
         this.currentState = s;
     }
 
@@ -188,18 +166,12 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithDragon() {
-        CallChainLogger.printCall(this, "cleanWithDragon()");
         if (currentState instanceof GraveledState) {
-            CallChainLogger.printReturn(null);
             return;
         }
         DryState dry = new DryState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("dry", dry);
-        }
         setState(dry);
         snowAmount = 0;
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -212,7 +184,6 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithSaltVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithSaltVomitter(" + timestamp + ")");
         LaneState newState = currentState.cleanWithSaltVomitter(timestamp);
         boolean changed = newState != currentState;
         setState(newState);
@@ -220,7 +191,6 @@ public class OutdoorLane extends Lane {
             this.saltedTimestamp = timestamp;
             snowAmount = 0;
         }
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -229,7 +199,6 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithSweeper() {
-        CallChainLogger.printCall(this, "cleanWithSweeper()");
         boolean wasSnowy = currentState instanceof SnowyState;
         int snowToPush = this.snowAmount;
         setState(currentState.cleanWithSweeper());
@@ -240,7 +209,6 @@ public class OutdoorLane extends Lane {
                 target.snowFall(snowToPush);
             }
         }
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -249,13 +217,11 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithIceBreaker() {
-        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
         LaneState previousState = getCurrentState();
         setState(currentState.cleanWithIceBreaker());
         if(previousState.getClass() != currentState.getClass()) {
             setStateWasChanged(true);
         }  
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -267,14 +233,12 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithStoneVomitter(int timestamp) {
-        CallChainLogger.printCall(this, "cleanWithStoneVomitter(" + timestamp + ")");
         LaneState newState = currentState.cleanWithStoneVomitter(timestamp);
         boolean changed = newState != currentState;
         setState(newState);
         if (changed) {
             snowAmount = 0;
         }
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -283,10 +247,8 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void cleanWithVomittingHead() {
-        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
         setState(currentState.cleanWithVomittingHead());
         snowAmount = 0;
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -315,8 +277,6 @@ public class OutdoorLane extends Lane {
      */
     @Override
     public void tick(int timestamp) {
-        CallChainLogger.printCall(this, "tick(" + timestamp + ")");
         setState(currentState.tick(timestamp));
-        CallChainLogger.printReturn(null);
     }
 }

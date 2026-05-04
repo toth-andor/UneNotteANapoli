@@ -3,7 +3,6 @@ package Vehicle;
 import java.util.ArrayList;
 
 import map.Lane;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Egy takarító játékost reprezentál.
@@ -28,7 +27,7 @@ public class Cleaner implements IScoreOwner {
             return balance;
 
         balance -= 100;
-        new SnowPlow(this, lane);
+        new SnowPlow(this, lane, null); //TODO resolve name
         return balance;
     }
 
@@ -54,9 +53,7 @@ public class Cleaner implements IScoreOwner {
      * @param amount a hozzáadandó összeg
      */
     public void addIncome(int amount) {
-        CallChainLogger.printCall(this, "addIncome(" + amount + ")");
         balance += amount;
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -66,9 +63,7 @@ public class Cleaner implements IScoreOwner {
      * @param score az új pénzösszeg
      */
     public void setScore(int score) {
-        CallChainLogger.printCall(this, "setScore(" + score + ")");
         balance = score;
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -78,8 +73,6 @@ public class Cleaner implements IScoreOwner {
      * @return az aktuális pontszám
      */
     public int getScore() {
-        CallChainLogger.printCall(this, "getScore()");
-        CallChainLogger.printReturn(balance + "");
         return balance;
     }
 }

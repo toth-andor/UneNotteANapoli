@@ -2,8 +2,6 @@ package states;
 
 import Vehicle.Vehicle;
 import map.OutdoorLane;
-import skeleton.Skeleton;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * A LaneState leszármazottja, a jeges sávállapotot reprezentálja.
@@ -20,9 +18,8 @@ public class IcyState extends LaneState {
      * @return this
      */
     public LaneState handleSnow(OutdoorLane lane, int amount) {
-        CallChainLogger.printCall(this, "handleSnow(" + Skeleton.getEntityByRef(lane) + ", " + amount + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this; //jegesnel nem lehet jegesebb
+
     }
 
     /**
@@ -32,9 +29,6 @@ public class IcyState extends LaneState {
      * @return this
      */
     public LaneState handleTraffic(Vehicle v) {
-        Skeleton.pushEntity("icy", this);
-        CallChainLogger.printCall(this, "handleTraffic(" + Skeleton.getEntityByRef(v) + ")");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this;
     }
 
@@ -45,8 +39,6 @@ public class IcyState extends LaneState {
      */
     @Override
     public LaneState cleanWithSweeper() {
-        CallChainLogger.printCall(this, "cleanWithSweeper()");
-        CallChainLogger.printReturn(Skeleton.getEntityByRef(this));
         return this; // seprű nem tudja eltávolítani a jeget
     }
 
@@ -57,12 +49,7 @@ public class IcyState extends LaneState {
      */
     @Override
     public LaneState cleanWithIceBreaker() {
-        CallChainLogger.printCall(this, "cleanWithIceBreaker()");
         SnowyState snow = new SnowyState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("snow", snow);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(snow));
         return snow;
     }
 
@@ -73,12 +60,7 @@ public class IcyState extends LaneState {
      */
     @Override
     public LaneState cleanWithVomittingHead() {
-        CallChainLogger.printCall(this, "cleanWithVomittingHead()");
         DryState dry = new DryState();
-        if (Skeleton.ENABLE_LOGGING) {
-            Skeleton.pushEntity("dry", dry);
-        }
-        CallChainLogger.printReturn("<<create>> " + Skeleton.getEntityByRef(dry));
         return dry;
     }
 }

@@ -2,7 +2,6 @@ package map;
 
 import java.util.ArrayList;
 import java.util.List;
-import skeleton.Skeleton.CallChainLogger;
 
 /**
  * Több sávot összefogó útszakaszt reprezentáló osztály, amely a környezeti eseményekért felel.
@@ -18,11 +17,6 @@ public class Road {
     private List<Lane> lanes;
 
     /**
-     * Az út neve (pl. road_1), a MapModel rendeli hozzá.
-     */
-    private String name;
-
-    /**
      * Az út egyik végén lévő csomópont.
      */
     private Junction end1;
@@ -32,10 +26,17 @@ public class Road {
      */
     private Junction end2;
 
-    public Road(Junction end1, Junction end2) {
+    private String name;
+
+    public Road(Junction end1, Junction end2, String name) {
         this.end1 = end1;
         this.end2 = end2;
+        this.name = name;
         this.lanes = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**
@@ -54,11 +55,9 @@ public class Road {
      * @param amount a lehullott hó mennyisége
      */
     public void snowFall(int amount) {
-        CallChainLogger.printCall(this, "snowFall(" + amount + ")");
         for (Lane lane : lanes) {
             lane.snowFall(amount);
         }
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -68,11 +67,9 @@ public class Road {
      * @param timestamp az aktuális idő
      */
     public void tick(int timestamp) {
-        CallChainLogger.printCall(this, "tick(" + timestamp + ")");
         for (Lane lane : lanes) {
             lane.tick(timestamp);
         }
-        CallChainLogger.printReturn(null);
     }
 
     /**
@@ -94,13 +91,5 @@ public class Road {
      */
     public List<Lane> getLanes() {
         return lanes;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
