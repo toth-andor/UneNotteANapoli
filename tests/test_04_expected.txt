@@ -1,0 +1,32 @@
+[SNAPSHOT OF ROUND 2]
+
+@global
+ROUND_ID 2
+CURRENT_PLAYER player_1 ROLE bus
+NEXT_PLAYER player_1 ROLE bus
+
+@players
+PLAYER player_1 ROLE bus SCORE 501
+
+@positions
+POSITION player_1 ROAD road_3 LANE lane_9 STATE dry
+
+@lanes
+LANE lane_1 ROAD road_1 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_2 ROAD road_1 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_3 ROAD road_1 TYPE tunnel STATE dry AVAILABLE true
+LANE lane_4 ROAD road_1 TYPE tunnel STATE dry AVAILABLE true
+LANE lane_5 ROAD road_2 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_6 ROAD road_2 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_7 ROAD road_2 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_8 ROAD road_2 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_9 ROAD road_3 TYPE tunnel STATE dry AVAILABLE true
+LANE lane_10 ROAD road_3 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_11 ROAD road_3 TYPE outdoor STATE dry AVAILABLE true
+LANE lane_12 ROAD road_3 TYPE outdoor STATE dry AVAILABLE true
+
+@attachments
+
+@cars
+
+[END SNAPSHOT]
