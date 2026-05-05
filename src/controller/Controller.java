@@ -5,6 +5,7 @@ import java.util.List;
 import Vehicle.Vehicle;
 import map.Lane;
 import map.OutdoorLane;
+import map.Road;
 import states.IcyState;
 
 /**
@@ -71,8 +72,9 @@ public class Controller implements IController {
      */
     public void endOfTurn() {
         mapModel.snow(1);
-
-        // 2. NPC autók mozgatása
+        for (Road road : mapModel.getRoads()) {
+            road.tick(getRoundNumber());
+        }
         if (npcHandler != null) {
             npcHandler.moveNPCs();
         }

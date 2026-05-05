@@ -2,6 +2,7 @@ package proto;
 
 import controller.AttachmentType;
 import Vehicle.Cleaner;
+import Vehicle.Vehicle;
 import controller.IController;
 import controller.Message;
 import controller.Player;
@@ -141,6 +142,15 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
 
             case "refillattachment":
                 message = new Message.RefillAttachment();
+                break;
+
+            case "crash":
+                if (_args.length == 2) {
+                    Lane crashLane = controller.getMapModel().getLaneByName(_args[1]);
+                    if (crashLane instanceof OutdoorLane outdoorLane) {
+                        outdoorLane.setState(new CrashedState(controller.getRoundNumber() + Vehicle.IMMOBILE_TIME));
+                    }
+                }
                 break;
 
             case "pick":

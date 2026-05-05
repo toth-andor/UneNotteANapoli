@@ -1,6 +1,8 @@
 package controller;
 
 import Vehicle.Cleaner;
+import Vehicle.SnowPlow;
+import attachments.Attachment;
 import attachments.Dragon;
 import attachments.IceBreaker;
 import attachments.SaltVommiter;
@@ -62,6 +64,25 @@ public class CleanerActionState extends GameState {
                         default -> this;
                     };
                 }
+            }
+
+            case Message.SwapAttachment swapAttachmentMsg -> {
+                SnowPlow sp = cleaner.getSnowPlows().get(currentSnowPlowIdx);
+                for (Attachment tool : sp.getOwnedTools()) {
+                    boolean matches = switch (swapAttachmentMsg.type()) {
+                        case DRAGON -> tool instanceof Dragon;
+                        case ICE_BREAKER -> tool instanceof IceBreaker;
+                        case SALT_VOMITTER -> tool instanceof SaltVommiter;
+                        case SWEEPER -> tool instanceof Sweeper;
+                        case VOMITING_HEAD -> tool instanceof VomitingHead;
+                        case STONE_VOMITTER -> tool instanceof StoneVommiter;
+                    };
+                    if (matches) {
+                        sp.changeAttachment(tool);
+                        break;
+                    }
+                }
+                yield this;
             }
 
             case Message.RefillAttachment refillAttachmentMsg -> {

@@ -1,0 +1,13 @@
+randomoff 1
+addjunction 3
+addroad junction_1 junction_2
+addroad junction_2 junction_3
+addroad junction_3 junction_1
+savemap
+carcount 0
+addplayer bus player_1
+start
+snow 40
+pick lane_3
+snapshot tests/test_14_actual.txt
+exit

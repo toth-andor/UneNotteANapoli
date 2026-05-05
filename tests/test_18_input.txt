@@ -1,0 +1,33 @@
+randomoff 1
+addjunction 3
+addroad junction_1 junction_2
+addroad junction_2 junction_3
+addroad junction_3 junction_1
+savemap
+carcount 0
+addplayer bus player_1
+start
+crash lane_3
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+snapshot tests/test_18_actual.txt
+exit
