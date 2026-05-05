@@ -1,0 +1,26 @@
+[SNAPSHOT OF ROUND 6]
+
+@global
+ROUND_ID 6
+CURRENT_PLAYER player_1 ROLE cleaner
+NEXT_PLAYER player_1 ROLE cleaner
+
+@players
+PLAYER player_1 ROLE cleaner SCORE 997
+
+@positions
+POSITION player_1 ROAD road_1 LANE lane_1 STATE snowy
+
+@lanes
+LANE lane_1 ROAD road_1 TYPE outdoor STATE snowy AVAILABLE true
+LANE lane_2 ROAD road_1 TYPE outdoor STATE snowy AVAILABLE true
+LANE lane_3 ROAD road_1 TYPE tunnel STATE dry AVAILABLE true
+LANE lane_4 ROAD road_1 TYPE tunnel STATE dry AVAILABLE true
+
+@attachments
+ATTACHMENT player_1 SNOWPLOW 0 TOOL VomitingHead
+ATTACHMENT player_1 SNOWPLOW 0 TOOL IceBreaker
+
+@cars
+
+[END SNAPSHOT]

@@ -1,0 +1,17 @@
+randomoff 17
+addjunction 2
+addroad junction_1 junction_2
+savemap
+carcount 10
+addplayer bus player_1
+start
+snow 10
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+pick lane_1
+crash lane_1
+snapshot tests/test_07_actual.txt
+exit

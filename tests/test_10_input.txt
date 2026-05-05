@@ -1,0 +1,17 @@
+randomoff 39
+addjunction 2
+addroad junction_1 junction_2
+savemap
+addplayer cleaner player_1
+start
+buy attachment ICE_BREAKER
+swapattachment ICE_BREAKER
+snow 10
+pick lane_2
+pick lane_1
+pick lane_2
+pick lane_1
+pick lane_2
+pick lane_1
+snapshot tests/test_10_actual.txt
+exit

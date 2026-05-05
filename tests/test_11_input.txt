@@ -1,0 +1,12 @@
+randomoff 39
+addjunction 2
+addroad junction_1 junction_2
+savemap
+addplayer cleaner player_1
+start
+buy attachment SWEEPER
+swapattachment SWEEPER
+snow 10
+pick lane_2
+snapshot tests/test_11_actual.txt
+exit

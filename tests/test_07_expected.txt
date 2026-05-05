@@ -1,0 +1,34 @@
+[SNAPSHOT OF ROUND 6]
+
+@global
+ROUND_ID 6
+CURRENT_PLAYER player_1 ROLE bus
+NEXT_PLAYER player_1 ROLE bus
+
+@players
+PLAYER player_1 ROLE bus SCORE 506
+
+@positions
+POSITION player_1 ROAD road_1 LANE lane_1 STATE crashed
+
+@lanes
+LANE lane_1 ROAD road_1 TYPE outdoor STATE crashed AVAILABLE false
+LANE lane_2 ROAD road_1 TYPE outdoor STATE snowy AVAILABLE true
+LANE lane_3 ROAD road_1 TYPE tunnel STATE dry AVAILABLE true
+LANE lane_4 ROAD road_1 TYPE outdoor STATE snowy AVAILABLE true
+
+@attachments
+
+@cars
+CAR ROAD road_1 LANE lane_4 STATE snowy
+CAR ROAD road_1 LANE lane_1 STATE crashed
+CAR ROAD road_1 LANE lane_3 STATE dry
+CAR ROAD road_1 LANE lane_1 STATE crashed
+CAR ROAD road_1 LANE lane_4 STATE snowy
+CAR ROAD road_1 LANE lane_4 STATE snowy
+CAR ROAD road_1 LANE lane_4 STATE snowy
+CAR ROAD road_1 LANE lane_3 STATE dry
+CAR ROAD road_1 LANE lane_2 STATE snowy
+CAR ROAD road_1 LANE lane_3 STATE dry
+
+[END SNAPSHOT]
