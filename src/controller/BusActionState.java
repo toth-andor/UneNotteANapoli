@@ -40,6 +40,10 @@ public class BusActionState extends GameState {
                     controller.endOfTurn();
                 }
 
+                if(currentBus.getCurrentDestination().equals(currentBus.getCurrentLane().getRoad())) {
+                    currentBus.addIncome(1);
+                }
+
                 Player nextPlayer = controller.getPlayers().nextPlayer();
                 yield switch (nextPlayer.getType()) {
                     case PlayerType.PCleaner pCleaner -> {
