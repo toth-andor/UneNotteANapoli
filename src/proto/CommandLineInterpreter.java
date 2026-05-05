@@ -148,7 +148,7 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
                 if (_args.length == 2) {
                     Lane crashLane = controller.getMapModel().getLaneByName(_args[1]);
                     if (crashLane instanceof OutdoorLane outdoorLane) {
-                        outdoorLane.setState(new CrashedState(controller.getRoundNumber() + Vehicle.IMMOBILE_TIME));
+                        outdoorLane.setState(new CrashedState(controller.getRoundNumber() + 3));
                     }
                 }
                 break;
