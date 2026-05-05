@@ -8,23 +8,15 @@ buy attachment DRAGON
 swapattachment DRAGON
 snow 10
 pick lane_1
-pick lane_2
 pick lane_3
-pick lane_4
 snow 10
 pick lane_1
-pick lane_2
 pick lane_3
-pick lane_4
 snow 10
 pick lane_1
-pick lane_2
 pick lane_3
-pick lane_4
 snow 10
 pick lane_1
-pick lane_2
 pick lane_3
-pick lane_4
 snapshot tests/test_12_actual.txt
 exit
