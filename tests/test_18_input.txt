@@ -12,22 +12,5 @@ pick lane_1
 pick lane_1
 pick lane_1
 pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
-pick lane_1
 snapshot tests/test_18_actual.txt
 exit
