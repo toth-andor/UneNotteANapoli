@@ -195,6 +195,12 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
             case "randomon":
                 message = new Message.RandomOn();
                 break;
+
+            case "snow":
+                if (_args.length == 2) {
+                    int amount = Integer.parseInt(_args[1]);
+                    controller.getMapModel().snow(amount);
+                }
         }
 
 
