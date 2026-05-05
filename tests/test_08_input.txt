@@ -1,0 +1,13 @@
+randomoff 39
+addjunction 3
+addroad junction_1 junction_2
+addroad junction_2 junction_3
+addroad junction_3 junction_1
+savemap
+addplayer cleaner player_1
+start
+buy attachment SALT_VOMITTER
+swapattachment SALT_VOMITTER
+refillattachment
+snapshot tests/test_08_actual.txt
+exit
