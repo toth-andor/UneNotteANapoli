@@ -1,0 +1,85 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+package "Swing Framework" {
+    class JFrame
+    class JPanel
+    class Graphics
+}
+
+interface Observer {
+    +update(): void
+}
+
+interface Observable {
+    +addObserver(o: Observer): void
+    +notifyObservers(): void
+}
+
+abstract class View {
+    #x: int
+    #y: int
+    #width: int
+    #height: int
+    #color: Color
+    +{abstract} draw(g: Graphics): void
+    +{abstract} update(): void
+}
+
+class JunctionView {
+    +update(): void
+    +draw(g: Graphics): void
+}
+
+class LaneView {
+    +update(): void
+    +draw(g: Graphics): void
+}
+
+class VehicleView {
+    +update(): void
+    +draw(g: Graphics): void
+}
+
+class GamePanel {
+    -views: List<View>
+    #paintComponent(g: Graphics): void
+    +addView(v: View): void
+}
+
+class GameWindow {
+    -panel: GamePanel
+    -controller: IController
+    +initUI(): void
+    -dispatchMessage(msg: Message): void
+}
+
+' Öröklődés és megvalósítás
+View ..|> Observer
+JunctionView --|> View
+LaneView --|> View
+VehicleView --|> View
+
+GamePanel --|> JPanel
+GameWindow --|> JFrame
+GameWindow *-- GamePanel
+GamePanel o-- View
+
+' Kapcsolódás a modellhez
+abstract class Vehicle
+abstract class Lane
+class Junction
+class Cleaner
+
+Vehicle ..|> Observable
+Lane ..|> Observable
+Junction ..|> Observable
+Cleaner ..|> Observable
+
+Observable "1" o-- "n" Observer : notifies
+
+' Kapcsolódás a kontrollerhez
+interface IController
+GameWindow --> IController : produces & sends Messages via Event Handlers
+@enduml
