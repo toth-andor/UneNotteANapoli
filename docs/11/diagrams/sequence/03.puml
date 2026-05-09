@@ -1,0 +1,31 @@
+@startuml
+' SD-UI-03: Jármű sávváltása – VehicleView frissítése
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "ctrl : Controller" as Ctrl
+participant "v : Vehicle" as V
+participant "vv : VehicleView" as VV
+participant "gp : GamePanel" as GP
+
+Ctrl -> V : gotoLane(lane)
+activate V
+    V -> V : notifyObservers()
+    V -> VV : update()
+    activate VV
+        VV -> V : [aktuális sáv lekérdezése]
+        VV -> VV : x, y koordináták frissítése\na sáv pozíciója alapján
+        VV -> GP : repaint()
+    deactivate VV
+deactivate V
+
+GP -> GP : paintComponent(g)
+activate GP
+    loop minden regisztrált View
+        GP -> VV : draw(g)
+        activate VV
+            VV -> VV : g.fillRect(x, y, width, height)
+        deactivate VV
+    end
+deactivate GP
+@enduml

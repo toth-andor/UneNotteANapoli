@@ -1,0 +1,31 @@
+@startuml
+' SD-UI-04: Csomópont állapotváltozása – JunctionView frissítése
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "ctrl : Controller" as Ctrl
+participant "j : Junction" as J
+participant "jv : JunctionView" as JV
+participant "gp : GamePanel" as GP
+
+Ctrl -> J : [jármű belép a csomópontba]
+activate J
+    J -> J : notifyObservers()
+    J -> JV : update()
+    activate JV
+        JV -> J : [foglaltság / állapot lekérdezése]
+        JV -> JV : szín frissítése
+        JV -> GP : repaint()
+    deactivate JV
+deactivate J
+
+GP -> GP : paintComponent(g)
+activate GP
+    loop minden regisztrált View
+        GP -> JV : draw(g)
+        activate JV
+            JV -> JV : g.fillRect(x, y, width, height)
+        deactivate JV
+    end
+deactivate GP
+@enduml

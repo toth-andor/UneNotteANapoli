@@ -1,0 +1,53 @@
+@startuml
+' SD-UI-02: Felhasználói interakció – sáv kiválasztása
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor "Felhasználó" as User
+participant "gw : GameWindow\n(MouseListener)" as GW
+participant "ctrl : Controller" as Ctrl
+participant "l : Lane" as L
+participant "lv : LaneView" as LV
+participant "jv : JunctionView" as JV
+participant "vv : VehicleView" as VV
+participant "cv : CleanerView" as CV
+participant "gp : GamePanel" as GP
+
+User -> GW : mouseClicked(event)
+activate GW
+    GW -> GW : msg = new PickLane(l)
+    GW -> Ctrl : dispatchMessage(msg)
+    activate Ctrl
+        Ctrl -> L : [megfelelő modellművelet]
+        activate L
+            L -> L : notifyObservers()
+            L -> LV : update()
+            activate LV
+                LV -> L : [aktuális állapot lekérdezése]
+                LV -> LV : szín beállítása
+                LV -> GP : repaint()
+            deactivate LV
+        deactivate L
+    deactivate Ctrl
+deactivate GW
+
+GP -> GP : paintComponent(g)
+activate GP
+    GP -> JV : draw(g)
+    activate JV
+        JV -> JV : g.fillRect(x, y, width, height)
+    deactivate JV
+    GP -> LV : draw(g)
+    activate LV
+        LV -> LV : g.fillRect(x, y, width, height)
+    deactivate LV
+    GP -> VV : draw(g)
+    activate VV
+        VV -> VV : g.fillRect(x, y, width, height)
+    deactivate VV
+    GP -> CV : draw(g)
+    activate CV
+        CV -> CV : g.fillRect(x, y, width, height)
+    deactivate CV
+deactivate GP
+@enduml
