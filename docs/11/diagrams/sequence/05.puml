@@ -1,0 +1,31 @@
+@startuml
+' SD-UI-05: Takarítói egyenleg változása – CleanerView frissítése
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "ctrl : Controller" as Ctrl
+participant "c : Cleaner" as C
+participant "cv : CleanerView" as CV
+participant "gp : GamePanel" as GP
+
+Ctrl -> C : [takarítási jutalom jóváírása]
+activate C
+    C -> C : notifyObservers()
+    C -> CV : update()
+    activate CV
+        CV -> C : [egyenleg és felszerelés lekérdezése]
+        CV -> CV : szöveges adatok frissítése
+        CV -> GP : repaint()
+    deactivate CV
+deactivate C
+
+GP -> GP : paintComponent(g)
+activate GP
+    loop minden regisztrált View
+        GP -> CV : draw(g)
+        activate CV
+            CV -> CV : g.fillRect(x, y, width, height)
+        deactivate CV
+    end
+deactivate GP
+@enduml

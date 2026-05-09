@@ -1,0 +1,65 @@
+@startuml
+' SD-UI-01: Grafikus felület inicializációja
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+participant "main" as Main
+participant "gw : GameWindow" as GW
+participant "gp : GamePanel" as GP
+participant "j : Junction" as J
+participant "l : Lane" as L
+participant "v : Vehicle" as V
+participant "c : Cleaner" as C
+
+Main -> GW : new GameWindow(controller)
+activate GW
+    GW -> GW : initUI()
+
+    GW -> GP : new GamePanel()
+    activate GP
+    deactivate GP
+
+    create participant "jv : JunctionView" as JV
+    GW -> JV : new JunctionView(j)
+    GW -> J : addObserver(jv)
+    GW -> GP : addView(jv)
+
+    create participant "lv : LaneView" as LV
+    GW -> LV : new LaneView(l, jv1, jv2)
+    
+    GW -> L : addObserver(lv)
+    GW -> GP : addView(lv)
+
+    create participant "vv : VehicleView" as VV
+    GW -> VV : new VehicleView(v)
+    GW -> V : addObserver(vv)
+    GW -> GP : addView(vv)
+
+    create participant "cv : CleanerView" as CV
+    GW -> CV : new CleanerView(c)
+    GW -> C : addObserver(cv)
+    GW -> GP : addView(cv)
+
+    GW -> GP : repaint()
+deactivate GW
+
+GP -> GP : paintComponent(g)
+activate GP
+    GP -> JV : draw(g)
+    activate JV
+        JV -> JV : g.fillRect(x, y, width, height)
+    deactivate JV
+    GP -> LV : draw(g)
+    activate LV
+        LV -> LV : g.fillRect(x, y, width, height)
+    deactivate LV
+    GP -> VV : draw(g)
+    activate VV
+        VV -> VV : g.fillRect(x, y, width, height)
+    deactivate VV
+    GP -> CV : draw(g)
+    activate CV
+        CV -> CV : g.fillRect(x, y, width, height)
+    deactivate CV
+deactivate GP
+@enduml
