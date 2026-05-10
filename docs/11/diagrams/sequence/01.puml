@@ -22,6 +22,11 @@ activate GW
     create participant "jv : JunctionView" as JV
     GW -> JV : new JunctionView(j)
     GW -> J : addObserver(jv)
+    J -> J : notifyObservers()
+    J -> JV : update()
+    activate JV
+        JV -> JV : szín beállítása
+    deactivate JV
     GW -> GP : addView(jv)
 
     create participant "lv : LaneView" as LV

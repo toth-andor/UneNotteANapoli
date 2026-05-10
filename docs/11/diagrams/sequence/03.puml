@@ -8,12 +8,12 @@ participant "v : Vehicle" as V
 participant "vv : VehicleView" as VV
 participant "gp : GamePanel" as GP
 
-Ctrl -> V : gotoLane(lane)
+Ctrl -> V : gotoLane(lane, timestamp)
 activate V
     V -> V : notifyObservers()
     V -> VV : update()
     activate VV
-        VV -> V : [aktuális sáv lekérdezése]
+        VV -> V : getCurrentLane()
         VV -> VV : x, y koordináták frissítése\na sáv pozíciója alapján
         VV -> GP : repaint()
     deactivate VV

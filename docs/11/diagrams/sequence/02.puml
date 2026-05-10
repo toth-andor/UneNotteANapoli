@@ -6,28 +6,29 @@ skinparam sequenceMessageAlign center
 actor "Felhasználó" as User
 participant "gw : GameWindow\n(MouseListener)" as GW
 participant "ctrl : Controller" as Ctrl
-participant "l : Lane" as L
-participant "lv : LaneView" as LV
-participant "jv : JunctionView" as JV
+participant "v : Vehicle" as V
 participant "vv : VehicleView" as VV
+participant "jv : JunctionView" as JV
+participant "lv : LaneView" as LV
 participant "cv : CleanerView" as CV
 participant "gp : GamePanel" as GP
 
 User -> GW : mouseClicked(event)
 activate GW
     GW -> GW : msg = new PickLane(l)
-    GW -> Ctrl : dispatchMessage(msg)
+    GW -> GW : dispatchMessage(msg)
+    GW -> Ctrl : receive(msg)
     activate Ctrl
-        Ctrl -> L : [megfelelő modellművelet]
-        activate L
-            L -> L : notifyObservers()
-            L -> LV : update()
-            activate LV
-                LV -> L : [aktuális állapot lekérdezése]
-                LV -> LV : szín beállítása
-                LV -> GP : repaint()
-            deactivate LV
-        deactivate L
+        Ctrl -> V : gotoLane(lane, timestamp)
+        activate V
+            V -> V : notifyObservers()
+            V -> VV : update()
+            activate VV
+                VV -> V : getCurrentLane()
+                VV -> VV : x, y koordináták frissítése\na sáv pozíciója alapján
+                VV -> GP : repaint()
+            deactivate VV
+        deactivate V
     deactivate Ctrl
 deactivate GW
 

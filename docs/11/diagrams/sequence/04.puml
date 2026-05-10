@@ -1,31 +1,46 @@
 @startuml
-' SD-UI-04: Csomópont állapotváltozása – JunctionView frissítése
+' SD-UI-04: Sáv állapotváltozása – LaneView frissítése
 skinparam style strictuml
 skinparam sequenceMessageAlign center
 
-participant "ctrl : Controller" as Ctrl
-participant "j : Junction" as J
+participant "model" as Model
+participant "l : Lane" as L
+participant "lv : LaneView" as LV
 participant "jv : JunctionView" as JV
+participant "vv : VehicleView" as VV
+participant "cv : CleanerView" as CV
 participant "gp : GamePanel" as GP
 
-Ctrl -> J : [jármű belép a csomópontba]
-activate J
-    J -> J : notifyObservers()
-    J -> JV : update()
-    activate JV
-        JV -> J : [foglaltság / állapot lekérdezése]
-        JV -> JV : szín frissítése
-        JV -> GP : repaint()
-    deactivate JV
-deactivate J
+
+Model -> L : [állapotváltozást okozó esemény]
+activate L
+    L -> L : notifyObservers()
+    L -> LV : update()
+    activate LV
+        LV -> L : [aktuális állapot lekérdezése]
+        note right: száraz, havas, jeges stb.
+        LV -> LV : szín beállítása
+        LV -> GP : repaint()
+    deactivate LV
+deactivate L
 
 GP -> GP : paintComponent(g)
 activate GP
-    loop minden regisztrált View
-        GP -> JV : draw(g)
-        activate JV
-            JV -> JV : g.fillRect(x, y, width, height)
-        deactivate JV
-    end
+    GP -> JV : draw(g)
+    activate JV
+        JV -> JV : g.fillRect(x, y, width, height)
+    deactivate JV
+    GP -> LV : draw(g)
+    activate LV
+        LV -> LV : g.fillRect(x, y, width, height)
+    deactivate LV
+    GP -> VV : draw(g)
+    activate VV
+        VV -> VV : g.fillRect(x, y, width, height)
+    deactivate VV
+    GP -> CV : draw(g)
+    activate CV
+        CV -> CV : g.fillRect(x, y, width, height)
+    deactivate CV
 deactivate GP
 @enduml
