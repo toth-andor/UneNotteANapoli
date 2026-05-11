@@ -42,6 +42,12 @@ class VehicleView {
     +draw(g: Graphics): void
 }
 
+class CleanerView {
+    +update(): void
+    +draw(g: Graphics): void
+}
+
+
 class GamePanel {
     -views: List<View>
     #paintComponent(g: Graphics): void
@@ -60,6 +66,7 @@ View ..|> Observer
 JunctionView --|> View
 LaneView --|> View
 VehicleView --|> View
+CleanerView --|> View
 
 GamePanel --|> JPanel
 GameWindow --|> JFrame
