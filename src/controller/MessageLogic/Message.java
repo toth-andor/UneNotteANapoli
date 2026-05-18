@@ -1,5 +1,6 @@
-package controller;
+package controller.MessageLogic;
 
+import controller.AttachmentLogic.AttachmentType;
 import map.Lane;
 
 /**

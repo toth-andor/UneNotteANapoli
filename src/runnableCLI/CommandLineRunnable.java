@@ -1,7 +1,9 @@
 package runnableCLI;
 
 import java.util.List;
-import controller.*;
+
+import controller.ControllerLogic.Controller;
+import controller.ControllerLogic.IController;
 import controller.InterpreterLogic.CommandLineInterpreter;
 import controller.InterpreterLogic.ICommandLineInterpreter;
 import controller.PlayerLogic.Player;
