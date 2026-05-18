@@ -64,13 +64,68 @@ public class Controller implements IController {
 
     /**
      * Soronként feldolgozza a kapott konfigot, és minden sorhoz hív egy
-     * receive(msg)-t a megfelelő Message-dszel.
+     * receive(msg)-t a megfelelő Message-el.
      *
-     * @param cfg a konfigurációs fájl tartalma
+     * @param cfg a konfigurációs fájl elérési útvonala
      */
     @Override
     public void loadConfig(String cfg) {
-        // TODO: Implementálás a konfigurációs fájl feldolgozásának logikája
+        String[] lines = cfg.split("\\r?\\n");
+
+        for (String rawLine : lines) {
+            String line = rawLine.trim();
+            if (line.isEmpty()) continue;
+
+            String[] args = line.split(" ");
+            String command = args[0].toLowerCase();
+
+            Message message = null;
+
+            switch (command) {
+                case "randomoff" -> {
+                    if (args.length == 2) {
+                        try {
+                            message = new Message.RandomOff(Integer.parseInt(args[1]));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Hibás seed érték: " + args[1]);
+                        }
+                    }
+                }
+                case "randomon" -> message = new Message.RandomOn();
+
+                case "addjunction" -> {
+                    if (args.length == 2) {
+                        message = new Message.AddJunction(Integer.parseInt(args[1]));
+                    }
+                }
+                case "addroad" -> {
+                    if (args.length == 3) {
+                        message = new Message.AddRoad(args[1], args[2]);
+                    }
+                }
+                case "savemap" -> message = new Message.SaveMap();
+
+                case "carcount" -> {
+                    if (args.length == 2) {
+                        message = new Message.AddNPCCar(Integer.parseInt(args[1]));
+                    }
+                }
+                case "addplayer" -> {
+                    if (args.length == 3) {
+                        if (args[1].equalsIgnoreCase("cleaner")) {
+                            message = new Message.AddCleaner(args[2]);
+                        } else if (args[1].equalsIgnoreCase("bus")) {
+                            message = new Message.AddBusDriver(args[2]);
+                        }
+                    }
+                }
+                default -> System.out.println("Ismeretlen konfig parancs: " + command);
+            }
+
+            if (message != null) {
+                receive(message);
+            }
+        }
     }
 
     /**
