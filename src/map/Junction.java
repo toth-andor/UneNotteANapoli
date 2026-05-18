@@ -12,6 +12,18 @@ import java.util.List;
 public class Junction {
 
     /**
+     * A csomópontok pozíciója a [0, 1] intervallumon.
+     * A [0.5, 0.5] pont a képernyő közepe **/
+    private float posX;
+    private float posY;
+
+    public float getPosX() { return posX; }
+    public float getPosY() { return posY; }
+
+    public void setPosX(float posX) { this.posX = posX; }
+    public void setPosY(float posY) { this.posY = posY; }
+
+    /**
      * A csomópontban végződő utak listája.
      */
     private List<Road> roads;
