@@ -1,6 +1,6 @@
 package map;
 
-import Vehicle.Vehicle;
+import vehicle.Vehicle;
 import attachments.Attachment;
 import states.CrashedState;
 import states.DryState;

@@ -1,6 +1,6 @@
 @startuml
 skinparam style strictuml
-participant "v : Vehicle" as V
+participant "v : vehicle" as V
 participant "a : Attachment" as A
 participant "l : Lane" as L
 

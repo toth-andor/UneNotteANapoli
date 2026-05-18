@@ -2,8 +2,8 @@
 skinparam style strictuml
 
 participant "l : Lane" as L
-participant "v1 : Vehicle" as V1
-participant "v2 : Vehicle" as V2
+participant "v1 : vehicle" as V1
+participant "v2 : vehicle" as V2
 
 activate L
 V1 -> L: acceptVehicle(self)

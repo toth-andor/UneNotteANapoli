@@ -8,7 +8,7 @@ participant "gw : GameWindow" as GW
 participant "gp : GamePanel" as GP
 participant "j : Junction" as J
 participant "l : Lane" as L
-participant "v : Vehicle" as V
+participant "v : vehicle" as V
 participant "c : Cleaner" as C
 
 Main -> GW : new GameWindow(controller)

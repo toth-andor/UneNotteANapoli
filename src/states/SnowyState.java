@@ -1,6 +1,6 @@
 package states;
 
-import Vehicle.Vehicle;
+import vehicle.Vehicle;
 import map.OutdoorLane;
 
 /**

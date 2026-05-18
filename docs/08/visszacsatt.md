@@ -25,7 +25,7 @@
   - A modellben ettől függjünk, a controller pedig majd eldönti milyen implementációt rak mögé
   
 - Proto egy külön modul ami a model interfészeit használja. (solidban, most jön az I és a D)
-- A view felé lévő interfészeket is meg kell, nézni, hogy a proto ki tudja írni a dolgokat
+- A view felé lévő interfészeket is meg kell, nézni, hogy a runnableCLI ki tudja írni a dolgokat
 - Nálunk ezek nem külön interfészek, nemtom ez probléma-e
   - De mégis, Kell külön Controller Interfész megy View Interfész, az egyik megmont, a másik kérdez.
 - Bonyolult kódhoz írunk pszeudó-kódot, amúgy elég annyit mondani, hogy BFS vagy Dijstral

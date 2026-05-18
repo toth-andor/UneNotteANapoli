@@ -1,6 +1,6 @@
 package map;
 
-import Vehicle.Vehicle;
+import vehicle.Vehicle;
 import attachments.Attachment;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -74,12 +74,12 @@ GameWindow *-- GamePanel
 GamePanel o-- View
 
 ' Kapcsolódás a modellhez
-abstract class Vehicle
+abstract class vehicle
 abstract class Lane
 class Junction
 class Cleaner
 
-Vehicle ..|> Observable
+vehicle ..|> Observable
 Lane ..|> Observable
 Junction ..|> Observable
 Cleaner ..|> Observable

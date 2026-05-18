@@ -1,5 +1,10 @@
 package controller;
 
+import controller.MapLogic.IMapModel;
+import controller.PlayerLogic.NPCHandler;
+import controller.PlayerLogic.PlayerDirectory;
+import controller.StateLogic.GameState;
+
 /**
  * A Controller interfész, amely meghatározza a külső felületek
  * (View/Proto) számára elérhető metódusokat.

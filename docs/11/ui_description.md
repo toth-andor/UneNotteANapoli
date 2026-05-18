@@ -78,7 +78,7 @@ A megfigyelhető objektumok közös interfésze.
 
 Az alábbi osztályoknak kell implementálniuk az `Observable` interfészt, vagy tartalmazniuk az értesítési logikát:
 
-1.  **`Vehicle` (absztrakt osztály)**:
+1.  **`vehicle` (absztrakt osztály)**:
     - **Változás**: Értesítést küld, ha a jármű pozíciója megváltozik (`gotoLane`), ha ütközik (`crash`), vagy ha az állapota (pl. időzítő) módosul.
 2.  **`Lane` (absztrakt osztály)**:
     - **Változás**: Értesítést küld, ha a sávban lévő hó mennyisége változik, vagy ha a logikai állapota (pl. `SnowyState` -> `IcyState`) átfordul.

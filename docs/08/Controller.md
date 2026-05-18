@@ -136,11 +136,11 @@ Nincs.
 #### Attribútumok
 - `name`: A játékos egyedi azonosítója: - String
 - `score`: A játékos pontszáma vagy elkölthető egyenlege: # int
-- `vehicles`: Az irányított járművek listája: # ArrayList<Vehicle>
+- `vehicles`: Az irányított járművek listája: # ArrayList<vehicle>
 #### Metódusok
 - `int getScore()`: Pontszám lekérése: + (Public)
 - `void addScore(int val)`: Pontszám módosítása: + (Public)
-- `List<Vehicle> getVehicles()`: Járművek listázása: + (Public)
+- `List<vehicle> getVehicles()`: Járművek listázása: + (Public)
 
 ---
 
@@ -175,5 +175,5 @@ Object → TurnManager
 - `roundNumber`: Az aktuális kör száma: - int
 #### Metódusok
 - `Player getCurrentPlayer()`: Soron lévő játékos lekérése: + (Public)
-- `Vehicle getCurrentVehicle()`: Soron lévő jármű lekérése: + (Public)
+- `vehicle getCurrentVehicle()`: Soron lévő jármű lekérése: + (Public)
 - `void nextStep()`: A következő járműre vagy játékosra léptet: + (Public)
