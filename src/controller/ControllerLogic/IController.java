@@ -1,6 +1,7 @@
-package controller;
+package controller.ControllerLogic;
 
 import controller.MapLogic.IMapModel;
+import controller.MessageLogic.Message;
 import controller.PlayerLogic.NPCHandler;
 import controller.PlayerLogic.PlayerDirectory;
 import controller.StateLogic.GameState;

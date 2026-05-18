@@ -3,9 +3,9 @@ package controller.StateLogic;
 import vehicle.Cleaner;
 import vehicle.SnowPlow;
 import vehicle.Bus;
-import controller.Controller;
+import controller.ControllerLogic.Controller;
 import controller.MapLogic.IMapModel;
-import controller.Message;
+import controller.MessageLogic.Message;
 import controller.PlayerLogic.Player;
 import controller.PlayerLogic.PlayerType;
 

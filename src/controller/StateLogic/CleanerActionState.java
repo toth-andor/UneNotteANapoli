@@ -9,8 +9,8 @@ import attachments.SaltVommiter;
 import attachments.Sweeper;
 import attachments.VomitingHead;
 import attachments.StoneVommiter;
-import controller.Controller;
-import controller.Message;
+import controller.ControllerLogic.Controller;
+import controller.MessageLogic.Message;
 import controller.PlayerLogic.Player;
 import controller.PlayerLogic.PlayerType;
 

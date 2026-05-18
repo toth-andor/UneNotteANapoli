@@ -1,8 +1,8 @@
 package controller.StateLogic;
 
 import vehicle.Bus;
-import controller.Controller;
-import controller.Message;
+import controller.ControllerLogic.Controller;
+import controller.MessageLogic.Message;
 import controller.PlayerLogic.Player;
 import controller.PlayerLogic.PlayerType;
 

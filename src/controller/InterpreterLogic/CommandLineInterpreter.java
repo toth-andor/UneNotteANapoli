@@ -1,9 +1,9 @@
 package controller.InterpreterLogic;
 
-import controller.AttachmentType;
+import controller.AttachmentLogic.AttachmentType;
 import vehicle.Cleaner;
-import controller.IController;
-import controller.Message;
+import controller.ControllerLogic.IController;
+import controller.MessageLogic.Message;
 import controller.PlayerLogic.Player;
 import controller.PlayerLogic.PlayerDirectory;
 import controller.PlayerLogic.PlayerType;

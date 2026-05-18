@@ -1,7 +1,8 @@
-package controller;
+package controller.ControllerLogic;
 
 import java.util.List;
 
+import controller.MessageLogic.Message;
 import vehicle.Vehicle;
 import controller.MapLogic.IMapModel;
 import controller.MapLogic.MapModel;

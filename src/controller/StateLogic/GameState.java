@@ -1,7 +1,7 @@
 package controller.StateLogic;
 
-import controller.Controller;
-import controller.Message;
+import controller.ControllerLogic.Controller;
+import controller.MessageLogic.Message;
 
 /**
  * Az állapotgép állapotainak közös absztrakt ősosztálya.
