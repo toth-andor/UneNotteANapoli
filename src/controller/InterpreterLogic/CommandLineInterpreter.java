@@ -170,7 +170,13 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
 
             case "load":
                 if (_args.length == 2) {
-                    message = new Message.LoadGame(_args[1]);
+                    try {
+                        String cfg = new String(java.nio.file.Files.readAllBytes(
+                                java.nio.file.Paths.get(_args[1])));
+                        controller.loadConfig(cfg);
+                    } catch (IOException e) {
+                        System.out.println("Nem sikerült betölteni: " + e.getMessage());
+                    }
                 } else {
                     System.out.println("Helytelen formátum, helyes: load fájlnév");
                 }
