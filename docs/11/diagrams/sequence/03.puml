@@ -4,7 +4,7 @@ skinparam style strictuml
 skinparam sequenceMessageAlign center
 
 participant "ctrl : Controller" as Ctrl
-participant "v : Vehicle" as V
+participant "v : vehicle" as V
 participant "vv : VehicleView" as VV
 participant "gp : GamePanel" as GP
 

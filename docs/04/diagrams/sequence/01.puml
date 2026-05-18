@@ -1,6 +1,6 @@
 @startuml
 actor "Autó / Busz Vezető" as A
-participant "v: Vehicle" as V
+participant "v: vehicle" as V
 participant "l: OutdoorLane" as L
 participant "s: LaneState" as S
 

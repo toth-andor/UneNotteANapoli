@@ -1,7 +1,7 @@
 @startuml class-diagram
 
 
-abstract Vehicle {
+abstract vehicle {
   # currentLane: Lane
   # isImmobilized: bool
   # immobilizationTime: int
@@ -70,7 +70,7 @@ class Lane {
   - icingCounter: int
   - isAvalable: bool
   - isIcy: bool
-  + acceptVehicle(v: Vehicle)
+  + acceptVehicle(v: vehicle)
   + snowFall()
   
 }
@@ -91,10 +91,10 @@ Road "4"*--o "1" Lane
 
 
 
-PlayerVehicle --|> Vehicle
+PlayerVehicle --|> vehicle
 Bus ..|> PlayerVehicle 
 SnowPlow ..|> PlayerVehicle
-Car ..|> Vehicle
+Car ..|> vehicle
 
 Dragon --|> Attachment
 Sweeper --|> Attachment
@@ -111,9 +111,9 @@ MapModel *-- Road
 MapModel *-- Junction
 
 Game "1"*-- MapModel
-Game *-- Vehicle
+Game *-- vehicle
 
-Vehicle "1" o--o Lane
+vehicle "1" o--o Lane
 
 Bus "2" o-- Junction
 Car "2" o-- Junction

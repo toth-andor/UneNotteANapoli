@@ -51,19 +51,19 @@ A `snapshot` parancs a bemeneti fájlban megadott elérési útra írja ki az ak
 
 ---
 
-## Tesztek futtatásának támogatása – TestRunner
+## Tesztek futtatásának támogatása – test.TestRunner
 
-A tesztek futtatásához egy `TestRunner` Java osztály készül. Ez a program:
+A tesztek futtatásához egy `test.TestRunner` Java osztály készül. Ez a program:
 - elindítja a játékot alprogramként (`ProcessBuilder`),
 - a megadott bemeneti fájlt átirányítja a játék standard bemenetére,
 - megvárja a futás végét,
 - összehasonlítja a generált kimenetet az elvárttal,
 - kiírja az eredményt.
 
-### TestRunner – pszeudókód
+### test.TestRunner – pszeudókód
 
 ```
-osztály TestRunner:
+osztály test.TestRunner:
 
     metódus runTest(testName: String) -> boolean:
         inputPath  ← "tests/" + testName + "_input.txt"
@@ -126,16 +126,16 @@ osztály TestRunner:
                 kiír "    TÉNYLEGES: " + act
 ```
 
-### TestRunner futtatása
+### test.TestRunner futtatása
 
 Egy adott teszt futtatása:
 ```
-java -cp game.jar TestRunner test_01
+java -cp game.jar test.TestRunner test_01
 ```
 
 Az összes teszt futtatása:
 ```
-java -cp game.jar TestRunner --all
+java -cp game.jar test.TestRunner --all
 ```
 
 ---

@@ -1,7 +1,7 @@
-[SNAPSHOT OF ROUND 16]
+[SNAPSHOT OF ROUND 8]
 
 @global
-ROUND_ID 16
+ROUND_ID 8
 CURRENT_PLAYER player_1 ROLE cleaner
 NEXT_PLAYER player_1 ROLE cleaner
 
@@ -9,7 +9,7 @@ NEXT_PLAYER player_1 ROLE cleaner
 PLAYER player_1 ROLE cleaner SCORE 990
 
 @positions
-POSITION player_1 ROAD road_1 LANE lane_4 STATE dry
+POSITION player_1 ROAD road_1 LANE lane_3 STATE dry
 
 @lanes
 LANE lane_1 ROAD road_1 TYPE outdoor STATE snowy AVAILABLE false

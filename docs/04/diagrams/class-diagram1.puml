@@ -1,5 +1,5 @@
 @startuml class-diagram
-abstract Vehicle {
+abstract vehicle {
   # timeOutStart: int
   + gotoLane(l: Lane, timestamp: int): bool
 }
@@ -24,15 +24,15 @@ class Road {
 }
 
 interface ILane {
-  + pushVehicle(v: Vehicle, timestamp: int)
-  + popVehicle(v: Vehicle)
+  + pushVehicle(v: vehicle, timestamp: int)
+  + popVehicle(v: vehicle)
   + snowFall(snow: int)
   + cleanWithHead(head: Attachment)
 }
 
 abstract Lane {
-  + pushVehicle(v: Vehicle, timestamp: int)
-  + popVehicle(v: Vehicle)
+  + pushVehicle(v: vehicle, timestamp: int)
+  + popVehicle(v: vehicle)
   {abstract} + snowFall(snow: int)
   {abstract} + cleanWithHead(head: Attachment)
 }
@@ -55,7 +55,7 @@ class TunnelLane {
 abstract LaneState {
   {abstract} + handleSnow(lane: OutdoorLane, amount: int): LaneState
   {abstract} + handleCleaning(lane: OutdoorLane, head: Attachment): LaneState
-  {abstract} + handleTraffic(lane: OutdoorLane, v: Vehicle)
+  {abstract} + handleTraffic(lane: OutdoorLane, v: vehicle)
 }
 
 class DryState
@@ -107,13 +107,13 @@ Lane "n" --> "1" Junction : destination
 
 Road "4" *-- "1" Lane
 Road "2" o--o Junction
-Vehicle  o-- ILane : currentLane
+vehicle  o-- ILane : currentLane
 Commuter "1" o-- "1" Road : destination1
 Commuter "1" o-- "1" Road : destination2
-Vehicle ..|> IControllable
-SnowPlow --|> Vehicle
+vehicle ..|> IControllable
+SnowPlow --|> vehicle
 SnowPlow ..|> ISnowPlow
-Commuter --|> Vehicle
+Commuter --|> vehicle
 Commuter ..|> IRouteHandler
 Bus --|> Commuter
 Bus ..|> IScoreOwner

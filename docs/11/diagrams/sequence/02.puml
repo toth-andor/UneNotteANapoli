@@ -6,7 +6,7 @@ skinparam sequenceMessageAlign center
 actor "Felhasználó" as User
 participant "gw : GameWindow\n(MouseListener)" as GW
 participant "ctrl : Controller" as Ctrl
-participant "v : Vehicle" as V
+participant "v : vehicle" as V
 participant "vv : VehicleView" as VV
 participant "jv : JunctionView" as JV
 participant "lv : LaneView" as LV

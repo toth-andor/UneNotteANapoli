@@ -1,10 +1,10 @@
 @startuml
 actor "Autó / Busz Vezető" as T
 actor "Idő / Rendszer" as E
-participant "v_new: Vehicle" as V
+participant "v_new: vehicle" as V
 participant "l: OutdoorLane" as L
 participant "s: IcyState" as S
-participant "v_old: Vehicle" as VO
+participant "v_old: vehicle" as VO
 
 ' --- hóesős szakasz ---
 group Havazás (külön folyamat)

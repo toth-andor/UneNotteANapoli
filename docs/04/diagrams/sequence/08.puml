@@ -2,7 +2,7 @@
 
 @startuml
 actor "Vezető" as T
-participant "v: Vehicle" as V
+participant "v: vehicle" as V
 participant "j: Junction" as J
 participant "nextL: Lane" as L
 

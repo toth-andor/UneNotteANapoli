@@ -6,7 +6,7 @@ CURRENT_PLAYER player_1 ROLE bus
 NEXT_PLAYER player_1 ROLE bus
 
 @players
-PLAYER player_1 ROLE bus SCORE 500
+PLAYER player_1 ROLE bus SCORE 501
 
 @positions
 POSITION player_1 ROAD road_2 LANE lane_8 STATE snowy

@@ -2,7 +2,7 @@
 skinparam style strictuml
 skinparam sequenceMessageAlign center
 
-participant "v : Vehicle" as V
+participant "v : vehicle" as V
 participant "lane : OutdoorLane" as L
 participant "state : SnowyState" as ST
 

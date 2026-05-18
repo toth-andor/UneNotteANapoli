@@ -72,8 +72,8 @@ package "attachments" {
 
 package "map" {
   interface ILane {
-    +pushVehicle(v: Vehicle, timestamp: int): boolean
-    +popVehicle(v: Vehicle): void
+    +pushVehicle(v: vehicle, timestamp: int): boolean
+    +popVehicle(v: vehicle): void
     +snowFall(snow: int): void
     +cleanWithHead(head: Attachment): void
   }
@@ -83,16 +83,16 @@ package "map" {
     #source: Junction
     #destination: Junction
     -road: Road
-    -vehicles: List<Vehicle>
+    -vehicles: List<vehicle>
     +Lane()
     +setStateWasChanged(stateWasChanged: boolean): void
     +getStateWasChanged(): boolean
-    +pushVehicle(v: Vehicle, timestamp: int): boolean
-    +getVehicles(): List<Vehicle>
-    +popVehicle(v: Vehicle): void
+    +pushVehicle(v: vehicle, timestamp: int): boolean
+    +getVehicles(): List<vehicle>
+    +popVehicle(v: vehicle): void
     +{abstract} snowFall(snow: int): void
     +{abstract} cleanWithHead(head: Attachment): void
-    +{abstract} handleTraffic(v: Vehicle, timestamp: int): void
+    +{abstract} handleTraffic(v: vehicle, timestamp: int): void
     +{abstract} cleanWithDragon(): void
     +{abstract} cleanWithSaltVomitter(timestamp: int): void
     +{abstract} cleanWithSweeper(): void
@@ -106,10 +106,10 @@ package "map" {
   }
 
   class TunnelLane {
-    +pushVehicle(v: Vehicle, timestamp: int): boolean
+    +pushVehicle(v: vehicle, timestamp: int): boolean
     +snowFall(snow: int): void
     +cleanWithHead(head: Attachment): void
-    +handleTraffic(v: Vehicle, timestamp: int): void
+    +handleTraffic(v: vehicle, timestamp: int): void
     +cleanWithDragon(): void
     +cleanWithSaltVomitter(timestamp: int): void
     +cleanWithSweeper(): void
@@ -127,11 +127,11 @@ package "map" {
     +OutdoorLane(initialState: LaneState)
     +isNavigable(): boolean
     +getSnowAmount(): int
-    +pushVehicle(v: Vehicle, timestamp: int): boolean
-    +crash(v1: Vehicle, v2: Vehicle, timestamp: int): void
+    +pushVehicle(v: vehicle, timestamp: int): boolean
+    +crash(v1: vehicle, v2: vehicle, timestamp: int): void
     +snowFall(snow: int): void
     +cleanWithHead(head: Attachment): void
-    +handleTraffic(v: Vehicle, timestamp: int): void
+    +handleTraffic(v: vehicle, timestamp: int): void
     +getCurrentState(): LaneState
     +setState(s: LaneState): void
     +cleanWithDragon(): void
@@ -180,7 +180,7 @@ package "states" {
   abstract class LaneState {
     {static} SALT_DURATION: int = 5
     +{abstract} handleSnow(lane: OutdoorLane, amount: int): LaneState
-    +{abstract} handleTraffic(v: Vehicle): LaneState
+    +{abstract} handleTraffic(v: vehicle): LaneState
     +cleanWithSaltVomitter(timestamp: int): LaneState
     +tick(timestamp: int): LaneState
     +{abstract} cleanWithSweeper(): LaneState
@@ -191,7 +191,7 @@ package "states" {
   class DryState {
     {static} -SNOW_THRESHOLD: int = 5
     +handleSnow(lane: OutdoorLane, amount: int): LaneState
-    +handleTraffic(v: Vehicle): LaneState
+    +handleTraffic(v: vehicle): LaneState
     +cleanWithSweeper(): LaneState
     +cleanWithIceBreaker(): LaneState
     +cleanWithVomittingHead(): LaneState
@@ -201,7 +201,7 @@ package "states" {
     -vehicleCount: int = 0
     {static} -ICY_THRESHOLD: int = 5
     +handleSnow(lane: OutdoorLane, amount: int): LaneState
-    +handleTraffic(v: Vehicle): LaneState
+    +handleTraffic(v: vehicle): LaneState
     +cleanWithSweeper(): LaneState
     +cleanWithIceBreaker(): LaneState
     +cleanWithVomittingHead(): LaneState
@@ -209,7 +209,7 @@ package "states" {
 
   class IcyState {
     +handleSnow(lane: OutdoorLane, amount: int): LaneState
-    +handleTraffic(v: Vehicle): LaneState
+    +handleTraffic(v: vehicle): LaneState
     +cleanWithSweeper(): LaneState
     +cleanWithIceBreaker(): LaneState
     +cleanWithVomittingHead(): LaneState
@@ -219,7 +219,7 @@ package "states" {
     -expiresAt: int
     +SaltedState(expiresAt: int)
     +handleSnow(lane: OutdoorLane, amount: int): LaneState
-    +handleTraffic(v: Vehicle): LaneState
+    +handleTraffic(v: vehicle): LaneState
     +cleanWithSweeper(): LaneState
     +cleanWithIceBreaker(): LaneState
     +cleanWithVomittingHead(): LaneState
@@ -231,7 +231,7 @@ package "states" {
     +CrashedState(expiresAt: int)
     +tick(timestamp: int): LaneState
     +handleSnow(lane: OutdoorLane, amount: int): LaneState
-    +handleTraffic(v: Vehicle): LaneState
+    +handleTraffic(v: vehicle): LaneState
     +cleanWithSaltVomitter(timestamp: int): LaneState
     +cleanWithSweeper(): LaneState
     +cleanWithIceBreaker(): LaneState
@@ -245,7 +245,7 @@ package "states" {
   CrashedState --|> LaneState
 }
 
-package "Vehicle" {
+package "vehicle" {
   interface IControllable {
     +gotoLane(l: Lane, timestamp: int): boolean
     +crash(timestamp: int): void
@@ -266,10 +266,10 @@ package "Vehicle" {
     +refillAttachment(): void
   }
 
-  abstract class Vehicle {
+  abstract class vehicle {
     {static} +IMMOBILE_TIME: int = 20
     #timeOutStart: int
-    +Vehicle(currentLane: Lane)
+    +vehicle(currentLane: Lane)
     +gotoLane(l: Lane, timestamp: int): boolean
     +crash(timestamp: int): void
     +{abstract} interactWithLane(l: Lane, timestamp: int): void
@@ -317,13 +317,13 @@ package "Vehicle" {
     +getScore(): int
   }
 
-  Vehicle ..|> IControllable
-  Commuter --|> Vehicle
+  vehicle ..|> IControllable
+  Commuter --|> vehicle
   Commuter ..|> IRouteHandler
   Car --|> Commuter
   Bus --|> Commuter
   Bus ..|> IScoreOwner
-  SnowPlow --|> Vehicle
+  SnowPlow --|> vehicle
   SnowPlow ..|> ISnowPlow
   Cleaner ..|> IScoreOwner
 
@@ -333,7 +333,7 @@ package "Vehicle" {
   SnowPlow "1" o-- "1..*" Attachment : owned_tools
   SnowPlow "1" o-- "1" Attachment : active_tool
 
-  Vehicle "1" o-- "1" ILane : currentLane
+  vehicle "1" o-- "1" ILane : currentLane
   Commuter "1" o-- "1" Road : destination1
   Commuter "1" o-- "1" Road : destination2
 }

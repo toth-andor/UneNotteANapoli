@@ -1,7 +1,7 @@
 @startuml
 skinparam style strictuml
 participant "g : Game" as G
-participant "v : Vehicle" as V
+participant "v : vehicle" as V
 participant "l : Lane" as L
 
 G -> G : gameTick()
