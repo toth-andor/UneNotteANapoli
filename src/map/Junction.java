@@ -57,8 +57,4 @@ public class Junction {
     public List<Road> getRoads() {
         return roads;
     }
-
-//    public Road getRoadThatStartsWithThisJunction() {
-//
-//    }
 }
