@@ -162,7 +162,7 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
 
             case "save":
                 if (_args.length == 2) {
-                    message = new Message.SaveGame(_args[1]);
+                    writeConfig(_args[1]);
                 } else {
                     System.out.println("Helytelen formátum, helyes: save fájlnév");
                 }
@@ -363,6 +363,39 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
             return ol.isNavigable() && !(ol.getCurrentState() instanceof CrashedState);
         }
         return true;
+    }
+
+    private void writeConfig(String path) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(path))) {
+
+            // Randomizáció állapota
+            if (controller.getRng().isSeedSet()) {
+                out.println("randomoff " + controller.getRng().getSeed());
+            }
+
+            // Térkép: csomópontok és utak
+            out.println("addjunction " + controller.getMapModel().getJunctionCount());
+            for (Road road : controller.getMapModel().getRoads()) {
+                out.println("addroad " + road.getEnd1().getName() + " " + road.getEnd2().getName());
+            }
+            out.println("savemap");
+
+            // NPC autók száma
+            out.println("carcount " + controller.getNpcHandler().getCarCount());
+
+            // Játékosok
+            for (Player p : controller.getPlayers().getPlayers()) {
+                String role = switch (p.getType()) {
+                    case PlayerType.PCleaner c -> "cleaner";
+                    case PlayerType.PBusDriver b -> "bus";
+                };
+                out.println("addplayer " + role + " " + p.getName());
+            }
+
+            System.out.println("Konfig mentve: " + path);
+        } catch (IOException e) {
+            System.out.println("Mentési hiba: " + e.getMessage());
+        }
     }
 }
 

@@ -4,6 +4,7 @@ import controller.MapLogic.IMapModel;
 import controller.MessageLogic.Message;
 import controller.PlayerLogic.NPCHandler;
 import controller.PlayerLogic.PlayerDirectory;
+import controller.RandomizerLogic.Randomizer;
 import controller.StateLogic.GameState;
 
 /**
@@ -50,4 +51,6 @@ public interface IController {
      * @return az aktuális kör sorszáma
      */
     int getRoundNumber();
+
+    Randomizer getRng();
 }
