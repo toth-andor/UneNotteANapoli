@@ -1,5 +1,8 @@
 package map;
 
+import view.ObserverLogic.Observable;
+import view.ObserverLogic.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +12,9 @@ import java.util.List;
  * megmutatja a céljuk felé vezető következő sávot. Ütközés nem fordulhat elő benne,
  * csak áthaladás. Számon tartja a benne végződő utakat.
  */
-public class Junction {
+public class Junction implements Observable {
+
+    private final List<Observer> observers = new ArrayList<>();
 
     /**
      * A csomópontok pozíciója a [0, 1] intervallumon.
@@ -33,6 +38,19 @@ public class Junction {
      */
     private String name;
 
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer o : observers) {
+            o.update();
+        }
+    }
+
+
     public Junction(String name) {
         this.roads = new ArrayList<>();
         this.name = name;
@@ -49,6 +67,7 @@ public class Junction {
      */
     public void addRoad(Road road) {
         roads.add(road);
+        notifyObservers();
     }
 
     /**

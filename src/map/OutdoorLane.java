@@ -119,6 +119,7 @@ public class OutdoorLane extends Lane {
             snowAmount += snow;
         }
         setState(currentState.handleSnow(this, snow));
+        notifyObservers();
     }
 
     /**
@@ -157,6 +158,7 @@ public class OutdoorLane extends Lane {
      */
     public void setState(LaneState s) {
         this.currentState = s;
+        notifyObservers();
     }
 
     /**
@@ -278,5 +280,6 @@ public class OutdoorLane extends Lane {
     @Override
     public void tick(int timestamp) {
         setState(currentState.tick(timestamp));
+        notifyObservers();
     }
 }

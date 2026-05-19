@@ -68,5 +68,6 @@ public class Bus extends Commuter implements IScoreOwner {
         balance += TURN_AROUND_BONUS;
     }
 
-    
+    @Override
+    public void interactWithLane(Lane l) { }
 }
