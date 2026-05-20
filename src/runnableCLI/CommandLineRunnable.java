@@ -54,7 +54,7 @@ public class CommandLineRunnable {
      * majd átadja a vezérlést a parsernek a következő parancs beolvasásához.
      * A tick minden körben növekszik és a Vehicle.gotoLane timestamp paramétereként szolgál.
      */
-    private void run() {
+    public void run() {
         int tick = 0;
         while (true) {
             displayCurrentState();
@@ -291,8 +291,8 @@ public class CommandLineRunnable {
 
     private Vehicle vehicleOf(Player p) {
         return switch (p.getType()) {
-            case PlayerType.PCleaner c -> c.cleaner().getSnowPlows().get(0);
-            case PlayerType.PBusDriver b -> b.bus();
+            case PlayerType.PCleaner c -> (Vehicle) c.cleaner().getSnowPlows().get(0);
+            case PlayerType.PBusDriver b -> (Vehicle) b.bus();
         };
     }
 
