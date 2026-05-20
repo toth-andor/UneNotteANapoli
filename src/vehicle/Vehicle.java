@@ -42,6 +42,7 @@ public abstract class Vehicle {
         this.currentLane = currentLane;
         this.timeOutStart = -1; // -1 jelzi, hogy nincs időzítés aktív
         this.name = name;
+        currentLane.pushVehicle(this, 0);
     }
 
     /**
