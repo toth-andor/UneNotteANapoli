@@ -1,7 +1,7 @@
-import controller.Controller;
-import proto.CLIProto;
-import proto.CommandLineInterpreter;
-import proto.ICommandLineInterpreter;
+import controller.ControllerLogic.Controller;
+import controller.InterpreterLogic.CommandLineInterpreter;
+import controller.InterpreterLogic.ICommandLineInterpreter;
+import runnableCLI.CommandLineRunnable;
 import view.GameWindow;
 
 import javax.swing.SwingUtilities;
@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Controller controller = new Controller();
         ICommandLineInterpreter interpreter = new CommandLineInterpreter(controller);
-        CLIProto cli = new CLIProto(interpreter, controller);
+        CommandLineRunnable cli = new CommandLineRunnable(interpreter, controller);
 
         // GUI az EDT-n – a Controller közös, a CLI és a View ugyanazt az állapotot olvassák
         SwingUtilities.invokeLater(() -> {

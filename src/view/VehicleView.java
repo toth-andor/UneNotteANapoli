@@ -1,10 +1,10 @@
 package view;
 
-import Vehicle.Bus;
-import Vehicle.Car;
-import Vehicle.Commuter;
-import Vehicle.SnowPlow;
-import Vehicle.Vehicle;
+import vehicle.Bus;
+import vehicle.Car;
+import vehicle.Commuter;
+import vehicle.SnowPlow;
+import vehicle.Vehicle;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
