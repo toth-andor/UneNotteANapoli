@@ -2,7 +2,7 @@ import controller.ControllerLogic.Controller;
 import controller.InterpreterLogic.CommandLineInterpreter;
 import controller.InterpreterLogic.ICommandLineInterpreter;
 import runnableCLI.CommandLineRunnable;
-import view.GameWindow;
+import view.DisplayLogic.GameWindow;
 
 import javax.swing.SwingUtilities;
 

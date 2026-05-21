@@ -55,6 +55,17 @@ public class MapModel implements IMapModel {
             j.setPosY(posY);
             junctions.add(j);
             junctionsByName.put(name, j);
+        }
+        assignCircularPositions();
+    }
+
+    private void assignCircularPositions() {
+        int n = junctions.size();
+        for (int i = 0; i < n; i++) {
+            double angle = 2 * Math.PI * i / n - Math.PI / 2;
+            junctions.get(i).setPosX((float) (0.5 + 0.4 * Math.cos(angle)));
+            junctions.get(i).setPosY((float) (0.5 + 0.4 * Math.sin(angle)));
+        }
     }
 
     public void addRoad(String j1, String j2) {
