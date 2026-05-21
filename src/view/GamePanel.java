@@ -1,10 +1,10 @@
 package view;
 
-import controller.IController;
+import controller.ControllerLogic.IController;
 import map.Junction;
 import map.Lane;
 import map.Road;
-import Vehicle.Vehicle;
+import vehicle.Vehicle;
 
 import java.util.ArrayList;
 

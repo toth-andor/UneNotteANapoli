@@ -1,7 +1,7 @@
 package view;
 
-import controller.IController;
-import controller.SetupState;
+import controller.ControllerLogic.IController;
+import controller.StateLogic.SetupState;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
