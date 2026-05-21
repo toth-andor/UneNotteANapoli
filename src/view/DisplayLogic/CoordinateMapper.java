@@ -1,4 +1,4 @@
-package view;
+package view.DisplayLogic;
 
 import map.Junction;
 
