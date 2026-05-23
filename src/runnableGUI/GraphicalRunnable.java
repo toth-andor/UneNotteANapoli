@@ -5,6 +5,7 @@ import controller.InterpreterLogic.CommandLineInterpreter;
 import controller.InterpreterLogic.ICommandLineInterpreter;
 import runnableCLI.CommandLineRunnable;
 import view.DisplayLogic.GameWindow;
+import view.DisplayLogic.StartDialog;
 
 import javax.swing.SwingUtilities;
 
@@ -16,8 +17,13 @@ public class GraphicalRunnable {
         CommandLineRunnable cli = new CommandLineRunnable(interpreter, controller);
 
         SwingUtilities.invokeLater(() -> {
-            GameWindow window = new GameWindow(controller);
-            window.setVisible(true);
+            StartDialog dialog = new StartDialog(controller);
+            dialog.setVisible(true);
+
+            if (dialog.isLoaded()) {
+                GameWindow window = new GameWindow(controller);
+                window.setVisible(true);
+            }
         });
 
         cli.run();
