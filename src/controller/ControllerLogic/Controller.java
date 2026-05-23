@@ -139,7 +139,7 @@ public class Controller implements IController {
             road.tick(getRoundNumber());
         }
         if (npcHandler != null) {
-            npcHandler.moveNPCs();
+            npcHandler.moveNPCs(mapModel, getRoundNumber());
         }
     }
 
