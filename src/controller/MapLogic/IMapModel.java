@@ -15,7 +15,7 @@ public interface IMapModel {
     int getJunctionCount();
     int getRoadCount();
 
-    void addJunction(int count);
+    void addJunction(float posX, float posY);
     void addRoad(String j1, String j2);
 
     boolean isFinalized();

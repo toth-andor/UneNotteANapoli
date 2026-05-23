@@ -94,8 +94,8 @@ public class Controller implements IController {
                 case "randomon" -> message = new Message.RandomOn();
 
                 case "addjunction" -> {
-                    if (args.length == 2) {
-                        message = new Message.AddJunction(Integer.parseInt(args[1]));
+                    if (args.length == 3) {
+                        message = new Message.AddJunction(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
                     }
                 }
                 case "addroad" -> {

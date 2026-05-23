@@ -18,7 +18,7 @@ public sealed interface Message {
     record AddNPCCar(int count) implements Message {}
 
     /** Meghatározott számú csomópont hozzáadása a térképhez **/
-    record AddJunction(int count) implements Message {}
+    record AddJunction(float posX, float posY) implements Message {}
 
     /** Út hozzáadása két létező csomópont azonosítója között **/
     record AddRoad(String j1, String j2) implements Message {}

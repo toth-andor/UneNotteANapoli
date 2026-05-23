@@ -41,7 +41,7 @@ public class SetupState extends GameState {
                 yield this;
             }
             case Message.AddJunction addJunctionsMsg -> {
-                mm.addJunction(addJunctionsMsg.count());
+                mm.addJunction(addJunctionsMsg.posX(), addJunctionsMsg.posY());
                 yield this;
             }
             case Message.AddNPCCar addNPCCarMsg -> {
