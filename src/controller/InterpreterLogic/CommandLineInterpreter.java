@@ -73,9 +73,9 @@ public class CommandLineInterpreter implements ICommandLineInterpreter {
             break;
 
             case "addjunction":
-                if (_args.length == 2){
-                    message = new Message.AddJunction(Integer.parseInt(_args[1]));
-                } else System.out.println("Hibás bemenet, helyes használat: addjunction count\n");
+                if (_args.length == 3){
+                    message = new Message.AddJunction(Float.parseFloat(_args[1]), Float.parseFloat(_args[2]));
+                } else System.out.println("Hibás bemenet, helyes használat: addjunction posX posY\n");
             break;
 
             case "addroad":

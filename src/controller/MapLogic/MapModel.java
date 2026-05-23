@@ -48,13 +48,13 @@ public class MapModel implements IMapModel {
         this.finalized = finalized;
     }
 
-    public void addJunction(int count) {
-        for (int i = 0; i < count; i++) {
+    public void addJunction(float posX, float posY) {
             String name = "junction_" + nextJunctionID++;
             Junction j = new Junction(name);
+            j.setPosX(posX);
+            j.setPosY(posY);
             junctions.add(j);
             junctionsByName.put(name, j);
-        }
     }
 
     public void addRoad(String j1, String j2) {
