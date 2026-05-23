@@ -132,61 +132,71 @@ public class MapModel implements IMapModel {
     }
 
     @Override
-    public List<Road> findShortesPath(Junction startJunction, Junction endJunction) {
-        if (startJunction == null || endJunction == null) return null;
-        if (startJunction.equals(endJunction)) return new ArrayList<>();
+    public Lane findShortestPath(Junction src, Road dst) {
+        if (src == null || dst == null) return null;
 
+        Junction target1 = dst.getEnd1();
+        Junction target2 = dst.getEnd2();
+
+        // Ha src már az egyik végpontja a cél útnak, keressünk egy olyan sávot rajta, ami src-ből indul
+        if (src.equals(target1) || src.equals(target2)) {
+            for (Lane lane : dst.getLanes()) {
+                if (lane.getSource().equals(src)) {
+                    return lane;
+                }
+            }
+        }
+
+        // BFS a legrövidebb út megtalálásához bármelyik cél-csomóponthoz (target1 vagy target2)
         Map<Junction, Junction> parent = new HashMap<>();
         Map<Junction, Road> parentRoad = new HashMap<>();
         Set<Junction> visited = new HashSet<>();
         Queue<Junction> queue = new LinkedList<>();
 
-        queue.add(startJunction);
-        visited.add(startJunction);
+        queue.add(src);
+        visited.add(src);
 
-        boolean found = false;
+        Junction foundTarget = null;
 
-        while (!queue.isEmpty() && !found) {
+        while (!queue.isEmpty()) {
             Junction current = queue.poll();
 
-            for (Road road : model) {
+            if (current.equals(target1) || current.equals(target2)) {
+                foundTarget = current;
+                break;
+            }
 
-                Junction neighbor = null;
+            for (Road road : current.getRoads()) {
+                Junction neighbor = (road.getEnd1().equals(current)) ? road.getEnd2() : road.getEnd1();
 
-                if (road.getEnd1().equals(current)) {
-                    neighbor = road.getEnd2();
-                } else if (road.getEnd2().equals(current)) {
-                    neighbor = road.getEnd1();
-                }
-
-                if (neighbor != null && !visited.contains(neighbor)) {
+                if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     parent.put(neighbor, current);
                     parentRoad.put(neighbor, road);
                     queue.add(neighbor);
-
-                    if (neighbor.equals(endJunction)) {
-                        found = true;
-                        break;
-                    }
                 }
             }
         }
 
-        if (!parent.containsKey(endJunction)) {
-            return null;
+        if (foundTarget == null) return null;
+
+        // Visszakövetés az első útig, ami src-ből indul
+        Junction curr = foundTarget;
+        Road firstRoad = parentRoad.get(curr);
+        
+        while (parent.get(curr) != null && !parent.get(curr).equals(src)) {
+            curr = parent.get(curr);
+            firstRoad = parentRoad.get(curr);
+        }
+        
+        // Visszatérünk az első olyan sávval ezen az úton, ami src-ből indul
+        for (Lane lane : firstRoad.getLanes()) {
+            if (lane.getSource().equals(src)) {
+                return lane;
+            }
         }
 
-        List<Road> path = new ArrayList<>();
-        Junction current = endJunction;
-
-        while (!current.equals(startJunction)) {
-            Road road = parentRoad.get(current);
-            path.add(0, road);
-            current = parent.get(current);
-        }
-
-        return path;
+        return null;
     }
 
 
