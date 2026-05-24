@@ -6,6 +6,9 @@ import controller.PlayerLogic.NPCHandler;
 import controller.PlayerLogic.PlayerDirectory;
 import controller.RandomizerLogic.Randomizer;
 import controller.StateLogic.GameState;
+import map.Lane;
+import vehicle.Vehicle;
+import java.util.List;
 
 /**
  * A Controller interfész, amely meghatározza a külső felületek
@@ -53,4 +56,14 @@ public interface IController {
     int getRoundNumber();
 
     Randomizer getRng();
+
+    /**
+     * @return az éppen mozgatandó jármű, vagy null ha nem játékfázis
+     */
+    Vehicle getCurrentVehicle();
+
+    /**
+     * @return a jelenlegi jármű által elérhető sávok listája
+     */
+    List<Lane> getSelectableLanes();
 }

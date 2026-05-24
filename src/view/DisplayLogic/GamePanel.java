@@ -9,7 +9,14 @@ import view.ComponentViews.JunctionView;
 import view.ComponentViews.LaneView;
 import view.ComponentViews.VehicleView;
 
+import controller.MessageLogic.Message;
+import vehicle.Vehicle;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -38,9 +45,6 @@ public class GamePanel extends JPanel {
     /** A képernyőfrissítés időköze milliszekundumban. */
     private static final int REPAINT_INTERVAL_MS = 50;
 
-    /** Az egyes sávindexekhez tartozó merőleges eltolás pixelben az út középvonalától. */
-    private static final int[] LANE_OFFSETS = {-9, -3, 3, 9};
-
     private final IController controller;
     private final CoordinateMapper mapper = new CoordinateMapper();
 
@@ -53,6 +57,12 @@ public class GamePanel extends JPanel {
         this.controller = controller;
         setBackground(new Color(25, 25, 25));
         new Timer(REPAINT_INTERVAL_MS, e -> repaint()).start();
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleLaneClick(e.getX(), e.getY());
+            }
+        });
     }
 
     /**
@@ -85,6 +95,8 @@ public class GamePanel extends JPanel {
      * @param g2 a rajzoláshoz használt {@link Graphics2D} kontextus
      */
     private void drawRoads(Graphics2D g2) {
+        Set<Lane> selectable = new HashSet<>(controller.getSelectableLanes());
+        Vehicle active = controller.getCurrentVehicle();
         for (Road road : new ArrayList<>(controller.getMapModel().getRoads())) {
             Point roadEnd1 = mapper.get(road.getEnd1());
             Point roadEnd2 = mapper.get(road.getEnd2());
@@ -93,8 +105,8 @@ public class GamePanel extends JPanel {
                 Lane lane = lanes.get(i);
                 Point src = mapper.get(lane.getSource());
                 Point dst = mapper.get(lane.getDestination());
-                LaneView.draw(g2, lane, i, src, dst, roadEnd1, roadEnd2);
-                drawVehiclesOnLane(g2, lane, src, dst, i, roadEnd1, roadEnd2);
+                LaneView.draw(g2, lane, i, src, dst, roadEnd1, roadEnd2, selectable.contains(lane));
+                drawVehiclesOnLane(g2, lane, src, dst, i, roadEnd1, roadEnd2, active);
             }
         }
     }
@@ -115,7 +127,7 @@ public class GamePanel extends JPanel {
      */
     private void drawVehiclesOnLane(Graphics2D g2, Lane lane,
                                     Point src, Point dst, int index,
-                                    Point roadEnd1, Point roadEnd2) {
+                                    Point roadEnd1, Point roadEnd2, Vehicle active) {
         List<Vehicle> vehicles = new ArrayList<>(lane.getVehicles());
         if (vehicles.isEmpty()) return;
 
@@ -126,7 +138,7 @@ public class GamePanel extends JPanel {
 
         double nx = -rdy / rlen;
         double ny =  rdx / rlen;
-        int offset = LANE_OFFSETS[index % LANE_OFFSETS.length];
+        int offset = LaneView.OFFSETS[index % LaneView.OFFSETS.length];
 
         int x1 = (int) (src.x + nx * offset);
         int y1 = (int) (src.y + ny * offset);
@@ -138,8 +150,48 @@ public class GamePanel extends JPanel {
             double t = (i + 1.0) / (n + 1);
             int vx = (int) (x1 + t * (x2 - x1));
             int vy = (int) (y1 + t * (y2 - y1));
-            VehicleView.draw(g2, vehicles.get(i), vx, vy);
+            VehicleView.draw(g2, vehicles.get(i), vx, vy, vehicles.get(i) == active);
         }
+    }
+
+    private void handleLaneClick(int px, int py) {
+        List<Lane> selectable = new ArrayList<>(controller.getSelectableLanes());
+        if (selectable.isEmpty()) return;
+        Lane clicked = laneAt(px, py);
+        if (clicked != null && selectable.contains(clicked)) {
+            controller.receive(new Message.PickLane(clicked));
+        }
+    }
+
+    private Lane laneAt(int px, int py) {
+        List<Junction> junctions = new ArrayList<>(controller.getMapModel().getJunctions());
+        mapper.compute(junctions, getWidth(), getHeight());
+
+        Lane best = null;
+        double bestDist = 15.0;
+        for (Road road : new ArrayList<>(controller.getMapModel().getRoads())) {
+            Point re1 = mapper.get(road.getEnd1());
+            Point re2 = mapper.get(road.getEnd2());
+            List<Lane> lanes = new ArrayList<>(road.getLanes());
+            for (int i = 0; i < lanes.size(); i++) {
+                Lane lane = lanes.get(i);
+                int[] ep = LaneView.computeEndpoints(i,
+                        mapper.get(lane.getSource()), mapper.get(lane.getDestination()),
+                        re1, re2);
+                if (ep == null) continue;
+                double d = distToSegment(px, py, ep[0], ep[1], ep[2], ep[3]);
+                if (d < bestDist) { bestDist = d; best = lane; }
+            }
+        }
+        return best;
+    }
+
+    private static double distToSegment(int px, int py, int x1, int y1, int x2, int y2) {
+        double dx = x2 - x1, dy = y2 - y1;
+        double len2 = dx * dx + dy * dy;
+        if (len2 == 0) return Math.hypot(px - x1, py - y1);
+        double t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2));
+        return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
     }
 
     /**

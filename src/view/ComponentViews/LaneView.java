@@ -29,41 +29,44 @@ import java.awt.Point;
 public class LaneView {
 
     /** Az egyes sávindexekhez tartozó merőleges eltolás pixelben az út középvonalától. */
-    private static final int[] OFFSETS = {-9, -3, 3, 9};
+    public static final int[] OFFSETS = {-9, -3, 3, 9};
 
     /**
-     * Kirajzolja a megadott sávot.
-     * A vonal színe a sáv aktuális állapotát tükrözi (pl. havas, jeges, balesetes).
-     *
-     * @param g2       a rajzoláshoz használt {@link Graphics2D} kontextus
-     * @param lane     a kirajzolandó sáv
-     * @param index    a sáv indexe az útján belül (0–3); ez határozza meg a párhuzamos eltolást
-     * @param src      a sáv forráscsomópontjának képernyő-koordinátája
-     * @param dst      a sáv célcsomópontjának képernyő-koordinátája
-     * @param roadEnd1 az út {@code end1} csomópontjának koordinátája (kanonikus irány referenciája)
-     * @param roadEnd2 az út {@code end2} csomópontjának koordinátája (kanonikus irány referenciája)
+     * Kiszámolja az eltolt sávvonal két végpontját.
+     * Visszatér: {x1, y1, x2, y2}, vagy null ha az irányvektor nulla.
      */
-    public static void draw(Graphics2D g2, Lane lane, int index,
-                            Point src, Point dst,
-                            Point roadEnd1, Point roadEnd2) {
+    public static int[] computeEndpoints(int index, Point src, Point dst,
+                                          Point roadEnd1, Point roadEnd2) {
         double rdx = roadEnd2.x - roadEnd1.x;
         double rdy = roadEnd2.y - roadEnd1.y;
         double rlen = Math.sqrt(rdx * rdx + rdy * rdy);
-        if (rlen == 0) return;
-
+        if (rlen == 0) return null;
         double nx = -rdy / rlen;
         double ny =  rdx / rlen;
         int offset = OFFSETS[index % OFFSETS.length];
+        return new int[]{
+            (int) (src.x + nx * offset), (int) (src.y + ny * offset),
+            (int) (dst.x + nx * offset), (int) (dst.y + ny * offset)
+        };
+    }
 
-        int x1 = (int) (src.x + nx * offset);
-        int y1 = (int) (src.y + ny * offset);
-        int x2 = (int) (dst.x + nx * offset);
-        int y2 = (int) (dst.y + ny * offset);
+    public static void draw(Graphics2D g2, Lane lane, int index,
+                            Point src, Point dst,
+                            Point roadEnd1, Point roadEnd2, boolean highlighted) {
+        int[] ep = computeEndpoints(index, src, dst, roadEnd1, roadEnd2);
+        if (ep == null) return;
+        int x1 = ep[0], y1 = ep[1], x2 = ep[2], y2 = ep[3];
 
         double dx = dst.x - src.x;
         double dy = dst.y - src.y;
         double len = Math.sqrt(dx * dx + dy * dy);
         if (len == 0) return;
+
+        if (highlighted) {
+            g2.setColor(new Color(255, 220, 0, 160));
+            g2.setStroke(new BasicStroke(9, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2.drawLine(x1, y1, x2, y2);
+        }
 
         Color color = colorOf(lane);
         g2.setColor(color);

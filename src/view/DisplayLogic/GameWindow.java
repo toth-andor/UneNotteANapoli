@@ -1,9 +1,19 @@
 package view.DisplayLogic;
 
+import controller.AttachmentLogic.AttachmentType;
 import controller.ControllerLogic.IController;
+import controller.MessageLogic.Message;
+import controller.PlayerLogic.Player;
+import controller.PlayerLogic.PlayerType;
+import controller.StateLogic.BusActionState;
+import controller.StateLogic.CleanerActionState;
+import controller.StateLogic.GameState;
 import controller.StateLogic.SetupState;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,32 +21,26 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.List;
 
-/**
- * A játék főablaka. {@link BorderLayout} elrendezést használ:
- * középen a {@link GamePanel} rajzfelület helyezkedik el, jobb oldalon
- * egy fenntartott vezérlőpanel, ahol a jövőbeli gombok kapnak helyet.
- *
- * <p>A jobb oldali panel alján egy jelmagyarázat mutatja a sávállapotok
- * és járműtípusok színkódjait.</p>
- *
- * <p>Az ablak fejléce 250 ms-enként frissül, és az aktuális játékállapotot
- * (beállítás vagy hányadik kör) jeleníti meg.</p>
- */
 public class GameWindow extends JFrame {
 
     private final IController controller;
 
-    /**
-     * Létrehoz és inicializál egy új {@code GameWindow} példányt.
-     * Az ablak elhelyezése a képernyő közepén történik.
-     *
-     * @param controller a megjelenítendő modellt és játékállapotot tartalmazó kontroller
-     */
+    private JLabel roundLabel;
+    private JLabel currentPlayerLabel;
+    private JLabel typeLabel;
+    private JLabel scoreLabel;
+    private JLabel nextPlayerLabel;
+    private JPanel actionPanel;
+
+    private Class<?> lastStateClass = null;
+
     public GameWindow(IController controller) {
         this.controller = controller;
 
@@ -51,37 +55,156 @@ public class GameWindow extends JFrame {
         pack();
         setLocationRelativeTo(null);
 
-        new Timer(250, e -> updateTitle()).start();
+        new Timer(250, e -> updateSidePanel()).start();
     }
 
-    /**
-     * Felépíti a jobb oldali vezérlőpanelt.
-     * A panel közepén egy placeholder szöveg jelzi a jövőbeli gomboknak fenntartott helyet,
-     * alján a sávállapotok és járműtípusok jelmagyarázata látható.
-     *
-     * @return a kész vezérlőpanel
-     */
     private JPanel buildSidePanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setPreferredSize(new Dimension(190, 0));
         panel.setBackground(new Color(40, 40, 40));
 
-        JLabel placeholder = new JLabel(
-            "<html><center><b>Vezérlők</b><br><font color='#888'>(hamarosan)</font></center></html>",
-            SwingConstants.CENTER);
-        placeholder.setForeground(new Color(160, 160, 160));
-        panel.add(placeholder, BorderLayout.CENTER);
-        panel.add(buildLegend(), BorderLayout.SOUTH);
+        panel.add(buildInfoPanel(), BorderLayout.NORTH);
 
+        actionPanel = new JPanel();
+        actionPanel.setBackground(new Color(40, 40, 40));
+        panel.add(actionPanel, BorderLayout.CENTER);
+
+        panel.add(buildLegend(), BorderLayout.SOUTH);
         return panel;
     }
 
-    /**
-     * Felépíti a jelmagyarázat panelt, amely tartalmazza a sávállapotok
-     * és a járműtípusok színkódjait.
-     *
-     * @return a kész jelmagyarázat panel
-     */
+    private JPanel buildInfoPanel() {
+        JPanel info = new JPanel();
+        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
+        info.setBackground(new Color(40, 40, 40));
+        info.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+        roundLabel        = makeLabel("", Font.BOLD,  13);
+        currentPlayerLabel = makeLabel("", Font.BOLD,  12);
+        typeLabel         = makeLabel("", Font.PLAIN, 11);
+        scoreLabel        = makeLabel("", Font.PLAIN, 11);
+        nextPlayerLabel   = makeLabel("", Font.ITALIC, 11);
+
+        info.add(roundLabel);
+        info.add(Box.createVerticalStrut(4));
+        info.add(currentPlayerLabel);
+        info.add(typeLabel);
+        info.add(scoreLabel);
+        info.add(Box.createVerticalStrut(4));
+        info.add(nextPlayerLabel);
+        return info;
+    }
+
+    private JLabel makeLabel(String text, int style, int size) {
+        JLabel l = new JLabel(text);
+        l.setForeground(new Color(200, 200, 200));
+        l.setFont(new Font("SansSerif", style, size));
+        return l;
+    }
+
+    private void updateSidePanel() {
+        GameState state = controller.getGameState();
+        updateInfoLabels(state);
+        if (state.getClass() != lastStateClass) {
+            lastStateClass = state.getClass();
+            rebuildActionButtons(state);
+        }
+        String titleState = state instanceof SetupState
+            ? "Beállítás"
+            : controller.getRoundNumber() + ". kör";
+        setTitle("Une Notte a Napoli  –  " + titleState);
+    }
+
+    private void updateInfoLabels(GameState state) {
+        if (state instanceof SetupState) {
+            roundLabel.setText("Beállítás");
+            currentPlayerLabel.setText("Játékosok: " + controller.getPlayers().getPlayers().size());
+            typeLabel.setText("");
+            scoreLabel.setText("");
+            nextPlayerLabel.setText("");
+            return;
+        }
+
+        roundLabel.setText(controller.getRoundNumber() + ". kör");
+
+        if (controller.getPlayers().isEmpty()) return;
+
+        Player cp = controller.getPlayers().getCurrentPlayer();
+        currentPlayerLabel.setText(cp.getName());
+
+        String typeName = switch (cp.getType()) {
+            case PlayerType.PCleaner  ignored -> "Takarító";
+            case PlayerType.PBusDriver ignored -> "Buszvezető";
+        };
+        typeLabel.setText("Típus: " + typeName);
+
+        int score = switch (cp.getType()) {
+            case PlayerType.PCleaner  p -> p.cleaner().getScore();
+            case PlayerType.PBusDriver p -> p.bus().getScore();
+        };
+        scoreLabel.setText("Egyenleg: " + score + " Ft");
+
+        List<Player> players = controller.getPlayers().getPlayers();
+        int nextIdx = (controller.getPlayers().getCurrentPlayerIndex() + 1) % players.size();
+        nextPlayerLabel.setText("Köv.: " + players.get(nextIdx).getName());
+    }
+
+    private void rebuildActionButtons(GameState state) {
+        actionPanel.removeAll();
+        actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.Y_AXIS));
+        actionPanel.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+
+        if (state instanceof CleanerActionState s) {
+            JLabel header = makeLabel("Hókotró " + (s.getCurrentSnowPlowIdx() + 1)
+                + "/" + s.getCleaner().getSnowPlows().size(), Font.BOLD, 11);
+            header.setAlignmentX(Component.CENTER_ALIGNMENT);
+            actionPanel.add(header);
+            actionPanel.add(Box.createVerticalStrut(6));
+
+            addButton("Hókotró vásárlása",  () -> controller.receive(new Message.BuySnowPlow()));
+            addButton("Seprő fej",          () -> controller.receive(new Message.BuyAttachment(AttachmentType.SWEEPER)));
+            addButton("Hányófej",           () -> controller.receive(new Message.BuyAttachment(AttachmentType.VOMITING_HEAD)));
+            addButton("Zúzalékszóró",       () -> controller.receive(new Message.BuyAttachment(AttachmentType.STONE_VOMITTER)));
+            addButton("Sószóró",            () -> controller.receive(new Message.BuyAttachment(AttachmentType.SALT_VOMITTER)));
+            addButton("Jégtörő",            () -> controller.receive(new Message.BuyAttachment(AttachmentType.ICE_BREAKER)));
+            addButton("Sárkány",            () -> controller.receive(new Message.BuyAttachment(AttachmentType.DRAGON)));
+            actionPanel.add(Box.createVerticalStrut(6));
+            addButton("Utántöltés",         () -> controller.receive(new Message.RefillAttachment()));
+
+            actionPanel.add(Box.createVerticalStrut(10));
+            JLabel hint = makeLabel("<html><center>Kattints egy sávra<br>a mozgáshoz</center></html>", Font.ITALIC, 10);
+            hint.setAlignmentX(Component.CENTER_ALIGNMENT);
+            actionPanel.add(hint);
+
+        } else if (state instanceof BusActionState) {
+            JLabel hint = makeLabel("<html><center>Kattints egy sávra<br>a mozgáshoz</center></html>", Font.ITALIC, 11);
+            hint.setAlignmentX(Component.CENTER_ALIGNMENT);
+            actionPanel.add(hint);
+
+        } else {
+            JLabel hint = makeLabel("<html><center>Beállítás<br>folyamatban</center></html>", Font.PLAIN, 11);
+            hint.setForeground(new Color(140, 140, 140));
+            hint.setAlignmentX(Component.CENTER_ALIGNMENT);
+            actionPanel.add(hint);
+        }
+
+        actionPanel.revalidate();
+        actionPanel.repaint();
+    }
+
+    private void addButton(String text, Runnable action) {
+        JButton btn = new JButton(text);
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btn.setMaximumSize(new Dimension(170, 26));
+        btn.setBackground(new Color(60, 60, 80));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.addActionListener(e -> action.run());
+        actionPanel.add(btn);
+        actionPanel.add(Box.createVerticalStrut(3));
+    }
+
     private JPanel buildLegend() {
         JPanel legend = new JPanel(new GridLayout(0, 1, 1, 1));
         legend.setBackground(new Color(35, 35, 35));
@@ -120,13 +243,6 @@ public class GameWindow extends JFrame {
         return combined;
     }
 
-    /**
-     * Hozzáad egy színkódos sort a megadott panelhez.
-     *
-     * @param panel a célpanel
-     * @param color a sor bal oldalán megjelenő színminta
-     * @param text  a színminta mellé írt felirat
-     */
     private void addRow(JPanel panel, Color color, String text) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 1));
         row.setBackground(new Color(35, 35, 35));
@@ -143,16 +259,5 @@ public class GameWindow extends JFrame {
         row.add(box);
         row.add(label);
         panel.add(row);
-    }
-
-    /**
-     * Frissíti az ablak fejlécét az aktuális játékállapot alapján.
-     * Beállítás fázisban "Beállítás", játék közben az aktuális körszám jelenik meg.
-     */
-    private void updateTitle() {
-        String state = controller.getGameState() instanceof SetupState
-            ? "Beállítás"
-            : controller.getRoundNumber() + ". kör";
-        setTitle("Une Notte a Napoli  –  " + state);
     }
 }
