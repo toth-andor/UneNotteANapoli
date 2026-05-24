@@ -7,5 +7,4 @@ addroad junction_2 junction_3
 addroad junction_3 junction_1
 savemap
 carcount 10
-addplayer bus player_1
-addplayer cleaner player_2
+
