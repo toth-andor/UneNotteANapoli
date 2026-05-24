@@ -14,9 +14,11 @@ import controller.StateLogic.BusActionState;
 import controller.StateLogic.CleanerActionState;
 import controller.StateLogic.GameState;
 import controller.StateLogic.SetupState;
+import map.Junction;
 import map.Lane;
 import map.OutdoorLane;
 import map.Road;
+import vehicle.SnowPlow;
 import states.IcyState;
 
 /**
@@ -187,7 +189,7 @@ public class Controller implements IController {
             case BusActionState s -> s.getCurrentBus();
             case CleanerActionState s -> {
                 int idx = s.getCurrentSnowPlowIdx();
-                List<vehicle.SnowPlow> plows = s.getCleaner().getSnowPlows();
+                List<SnowPlow> plows = s.getCleaner().getSnowPlows();
                 yield idx < plows.size() ? plows.get(idx) : null;
             }
             default -> null;
@@ -198,7 +200,7 @@ public class Controller implements IController {
     public List<Lane> getSelectableLanes() {
         Vehicle v = getCurrentVehicle();
         if (v == null || v.getCurrentLane() == null) return List.of();
-        map.Junction dest = v.getCurrentLane().getDestination();
+        Junction dest = v.getCurrentLane().getDestination();
         if (dest == null) return List.of();
         List<Lane> result = new ArrayList<>();
         for (Road road : mapModel.getRoads()) {
