@@ -2,6 +2,9 @@ package map;
 
 import vehicle.Vehicle;
 import attachments.Attachment;
+import view.ObserverLogic.Observable;
+import view.ObserverLogic.Observer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,8 +14,19 @@ import java.util.List;
  * A sávok állapotát és a rajta közlekedő járműveket tartja számon.
  * Nem példányosítható — leszármazottjai az OutdoorLane és a TunnelLane.
  */
-public abstract class Lane implements ILane {
+public abstract class Lane implements ILane, Observable {
 
+    private List<Observer> observers = new ArrayList<>();
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+    @Override
+    public void notifyObservers() {
+        for (Observer o : observers) {
+            o.update();
+        }
+    }
     private String direction;
 
     public String getDirection() {
@@ -33,7 +47,10 @@ public abstract class Lane implements ILane {
      * @param stateWasChanged true, ha az állapot megváltozott
      */
     public void setStateWasChanged(boolean stateWasChanged) {
+
         this.stateWasChanged = stateWasChanged;
+        if(stateWasChanged)
+            notifyObservers();
     }
 
     /**
@@ -77,7 +94,6 @@ public abstract class Lane implements ILane {
     public Lane() {
         this.vehicles = new ArrayList<>();
     }
-
     /**
      * A paraméterként átadott jármű befogadásáért felel, regisztrálja a sávon.
      * Alosztályokban felüldefiniálható, hogy a sáv állapotával is interakcióba lépjen.
@@ -89,6 +105,7 @@ public abstract class Lane implements ILane {
     @Override
     public boolean pushVehicle(Vehicle v, int timestamp) {
         vehicles.add(v);
+        notifyObservers();
         return true;
     }
 
@@ -107,6 +124,7 @@ public abstract class Lane implements ILane {
     @Override
     public void popVehicle(Vehicle v) {
         vehicles.remove(v);
+        notifyObservers();
     }
 
     /**
