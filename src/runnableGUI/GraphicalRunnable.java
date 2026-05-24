@@ -13,8 +13,8 @@ public class GraphicalRunnable {
 
     public static void main(String[] args) {
         Controller controller = new Controller();
-        ICommandLineInterpreter interpreter = new CommandLineInterpreter(controller);
-        CommandLineRunnable cli = new CommandLineRunnable(interpreter, controller);
+        //ICommandLineInterpreter interpreter = new CommandLineInterpreter(controller);
+        //CommandLineRunnable cli = new CommandLineRunnable(interpreter, controller);
 
         SwingUtilities.invokeLater(() -> {
             StartDialog dialog = new StartDialog(controller);
@@ -26,7 +26,7 @@ public class GraphicalRunnable {
             }
         });
 
-        cli.run();
+        //cli.run();
     }
 
 }

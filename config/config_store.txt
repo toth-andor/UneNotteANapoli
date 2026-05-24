@@ -1,5 +1,7 @@
 randomoff 39
-addjunction 3
+addjunction 0.3 0.5
+addjunction 0.8 0.2
+addjunction 0.7 0.6
 addroad junction_1 junction_2
 addroad junction_2 junction_3
 addroad junction_3 junction_1
