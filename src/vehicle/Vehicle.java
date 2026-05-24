@@ -3,13 +3,20 @@ package vehicle;
 import map.Lane;
 import map.OutdoorLane;
 import states.SnowyState;
+import view.ObserverLogic.Observable;
+import view.ObserverLogic.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Az összes játékbeli jármű közös ősét reprezentálja.
  * Tárolja az aktuális sávot és az esetleges mozgásképtelenség kezdetét.
  * Maga az osztály nem példányosítható.
  */
-public abstract class Vehicle {
+public abstract class Vehicle implements Observable {
+
+    private List<Observer> observers = new ArrayList<>();
 
     private String name;
 
@@ -45,6 +52,15 @@ public abstract class Vehicle {
         currentLane.pushVehicle(this, 0);
     }
 
+    @Override
+    public void addObserver(Observer ob){
+        observers.add(ob);
+    }
+    @Override
+    public void notifyObservers(){
+        for(Observer ob : observers)
+            ob.update();
+    }
     /**
      * Ha nem rég balesetezett a jármű, akkor egyből visszatér hamis értékkel
      * Megpróbálja befogadtatni a járművet a megadott sávval.
@@ -69,6 +85,8 @@ public abstract class Vehicle {
             currentLane.popVehicle(this);
             currentLane = l;
             interactWithLane(l, timestamp);
+
+            notifyObservers();
         }
         return result;
     }
@@ -87,6 +105,8 @@ public abstract class Vehicle {
      */
     public void crash(int timestamp) {
         timeOutStart = timestamp;
+
+        notifyObservers();
     }
 
     /**

@@ -1,8 +1,11 @@
 package vehicle;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import map.Lane;
+import view.ObserverLogic.Observable;
+import view.ObserverLogic.Observer;
 
 /**
  * Egy takarító játékost reprezentál.
@@ -10,8 +13,19 @@ import map.Lane;
  * álló pénzösszeget, amelyből fejek vásárlása, fogyóanyag-utántöltés és új hókotró vásárlása
  * finanszírozható. Pontszámát a megtisztított útszakaszok után kapott bevétel adja.
  */
-public class Cleaner implements IScoreOwner {
+public class Cleaner implements IScoreOwner, Observable {
+    private List<Observer> observers = new ArrayList<>();
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
 
+    @Override
+    public void notifyObservers() {
+        for (Observer o : observers) {
+            o.update();
+        }
+    }
     /**
      * A takarító rendelkezésére álló pénzösszeg.
      */
@@ -28,6 +42,7 @@ public class Cleaner implements IScoreOwner {
 
         balance -= 100;
         new SnowPlow(this, lane, null); //TODO resolve name
+        notifyObservers();
         return balance;
     }
 
@@ -54,6 +69,7 @@ public class Cleaner implements IScoreOwner {
      */
     public void addIncome(int amount) {
         balance += amount;
+        notifyObservers();
     }
 
     /**
@@ -64,6 +80,7 @@ public class Cleaner implements IScoreOwner {
      */
     public void setScore(int score) {
         balance = score;
+        notifyObservers();
     }
 
     /**
