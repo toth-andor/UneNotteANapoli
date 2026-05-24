@@ -1,5 +1,6 @@
 package controller.ControllerLogic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controller.MessageLogic.Message;
@@ -9,6 +10,8 @@ import controller.MapLogic.MapModel;
 import controller.PlayerLogic.NPCHandler;
 import controller.PlayerLogic.PlayerDirectory;
 import controller.RandomizerLogic.Randomizer;
+import controller.StateLogic.BusActionState;
+import controller.StateLogic.CleanerActionState;
 import controller.StateLogic.GameState;
 import controller.StateLogic.SetupState;
 import map.Lane;
@@ -176,6 +179,34 @@ public class Controller implements IController {
 
     public Randomizer getRng() {
         return rng;
+    }
+
+    @Override
+    public Vehicle getCurrentVehicle() {
+        return switch (gameState) {
+            case BusActionState s -> s.getCurrentBus();
+            case CleanerActionState s -> {
+                int idx = s.getCurrentSnowPlowIdx();
+                List<vehicle.SnowPlow> plows = s.getCleaner().getSnowPlows();
+                yield idx < plows.size() ? plows.get(idx) : null;
+            }
+            default -> null;
+        };
+    }
+
+    @Override
+    public List<Lane> getSelectableLanes() {
+        Vehicle v = getCurrentVehicle();
+        if (v == null || v.getCurrentLane() == null) return List.of();
+        map.Junction dest = v.getCurrentLane().getDestination();
+        if (dest == null) return List.of();
+        List<Lane> result = new ArrayList<>();
+        for (Road road : mapModel.getRoads()) {
+            for (Lane lane : road.getLanes()) {
+                if (lane.getSource() == dest) result.add(lane);
+            }
+        }
+        return result;
     }
 
     public void moveVehicleToLane(Vehicle vehicle, Lane lane) {

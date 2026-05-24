@@ -26,7 +26,12 @@ public class VehicleView {
      * @param x       a jármű középpontjának x-koordinátája
      * @param y       a jármű középpontjának y-koordinátája
      */
-    public static void draw(Graphics2D g2, Vehicle vehicle, int x, int y) {
+    public static void draw(Graphics2D g2, Vehicle vehicle, int x, int y, boolean isActive) {
+        if (isActive) {
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(2));
+            g2.drawOval(x - 9, y - 9, 18, 18);
+        }
         Color fill = colorOf(vehicle);
         g2.setColor(fill);
         g2.fillOval(x - 6, y - 6, 12, 12);
