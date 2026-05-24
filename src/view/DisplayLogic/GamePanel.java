@@ -1,6 +1,7 @@
 package view.DisplayLogic;
 
 import controller.ControllerLogic.IController;
+import controller.MessageLogic.Message;
 import map.Junction;
 import map.Lane;
 import map.Road;
@@ -8,9 +9,6 @@ import vehicle.Vehicle;
 import view.ComponentViews.JunctionView;
 import view.ComponentViews.LaneView;
 import view.ComponentViews.VehicleView;
-
-import controller.MessageLogic.Message;
-import vehicle.Vehicle;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -131,19 +129,9 @@ public class GamePanel extends JPanel {
         List<Vehicle> vehicles = new ArrayList<>(lane.getVehicles());
         if (vehicles.isEmpty()) return;
 
-        double rdx = roadEnd2.x - roadEnd1.x;
-        double rdy = roadEnd2.y - roadEnd1.y;
-        double rlen = Math.sqrt(rdx * rdx + rdy * rdy);
-        if (rlen == 0) return;
-
-        double nx = -rdy / rlen;
-        double ny =  rdx / rlen;
-        int offset = LaneView.OFFSETS[index % LaneView.OFFSETS.length];
-
-        int x1 = (int) (src.x + nx * offset);
-        int y1 = (int) (src.y + ny * offset);
-        int x2 = (int) (dst.x + nx * offset);
-        int y2 = (int) (dst.y + ny * offset);
+        int[] ep = LaneView.computeEndpoints(index, src, dst, roadEnd1, roadEnd2);
+        if (ep == null) return;
+        int x1 = ep[0], y1 = ep[1], x2 = ep[2], y2 = ep[3];
 
         int n = vehicles.size();
         for (int i = 0; i < n; i++) {
