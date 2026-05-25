@@ -28,9 +28,12 @@ public class VehicleView {
      */
     public static void draw(Graphics2D g2, Vehicle vehicle, int x, int y, boolean isActive) {
         if (isActive) {
-            g2.setColor(Color.WHITE);
-            g2.setStroke(new BasicStroke(2));
-            g2.drawOval(x - 9, y - 9, 18, 18);
+            Color glow  = new Color(255, 50, 200, 80);
+            g2.setColor(glow);
+            g2.fillOval(x - 14, y - 14, 28, 28);
+            Color glow2 = new Color(255, 50, 200, 40);
+            g2.setColor(glow2);
+            g2.fillOval(x - 20, y - 20, 40, 40);
         }
         Color fill = colorOf(vehicle);
         g2.setColor(fill);
