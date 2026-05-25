@@ -1,5 +1,6 @@
 package attachments;
 
+import controller.AttachmentLogic.AttachmentType;
 import map.Lane;
 
 /**
@@ -41,5 +42,9 @@ public class VomitingHead extends Attachment {
      */
     public int refill(int budget) {
         return budget;
+    }
+    @Override
+    public controller.AttachmentLogic.AttachmentType getType() {
+        return AttachmentType.VOMITING_HEAD;
     }
 }

@@ -52,4 +52,6 @@ public abstract class Attachment implements IAttachment {
      * @return a felhasználás utáni maradék budget
      */
     public abstract int refill(int budget);
+    public abstract controller.AttachmentLogic.AttachmentType getType();
+
 }

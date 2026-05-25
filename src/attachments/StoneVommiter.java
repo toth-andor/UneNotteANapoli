@@ -1,5 +1,6 @@
 package attachments;
 
+import controller.AttachmentLogic.AttachmentType;
 import map.Lane;
 
 /**
@@ -57,5 +58,9 @@ public class StoneVommiter extends Attachment {
         int result = budget - priceOfFuel;
         fuelLevel = FULL_TANK;
         return result;
+    }
+    @Override
+    public controller.AttachmentLogic.AttachmentType getType() {
+        return AttachmentType.STONE_VOMITTER;
     }
 }
