@@ -65,10 +65,3 @@ addroad junction_9 junction_13
 savemap
 
 carcount 35
-
-addplayer cleaner Kovacs_Ur
-addplayer cleaner Nagy_Asszony
-addplayer cleaner Robot_1
-addplayer bus BKV_001
-addplayer bus BKV_002
-addplayer bus Volan_Express
