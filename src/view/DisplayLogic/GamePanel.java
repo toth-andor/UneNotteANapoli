@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -189,8 +190,11 @@ public class GamePanel extends JPanel {
      * @param junctions a kirajzolandó csomópontok listája
      */
     private void drawJunctions(Graphics2D g2, List<Junction> junctions) {
+        Set<Junction> selectable = controller.getSelectableLanes().stream()
+                .map(Lane::getSource)
+                .collect(Collectors.toSet());
         for (Junction j : junctions) {
-            JunctionView.draw(g2, j, mapper.get(j));
+            JunctionView.draw(g2, j, mapper.get(j), selectable.contains(j));
         }
     }
 
