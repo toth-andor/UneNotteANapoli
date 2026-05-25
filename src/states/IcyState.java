@@ -6,7 +6,7 @@ import map.OutdoorLane;
 /**
  * A LaneState leszármazottja, a jeges sávállapotot reprezentálja.
  * A sáv felszíne jeges, a járművek megcsúsznak és balesetet szenvednek.
- * Jégtörő vagy hányófej hatására DryState-be vált; seprű nem tudja eltávolítani a jeget.
+ * Jégtörő hatásásra snovyba, hányófej nem csinál semmit; seprű nem tudja eltávolítani a jeget.
  */
 public class IcyState extends LaneState {
 
@@ -60,7 +60,7 @@ public class IcyState extends LaneState {
      */
     @Override
     public LaneState cleanWithVomittingHead() {
-        DryState dry = new DryState();
-        return dry;
+
+        return this;
     }
 }
