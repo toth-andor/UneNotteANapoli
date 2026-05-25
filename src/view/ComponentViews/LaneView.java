@@ -52,7 +52,8 @@ public class LaneView {
 
     public static void draw(Graphics2D g2, Lane lane, int index,
                             Point src, Point dst,
-                            Point roadEnd1, Point roadEnd2, boolean highlighted) {
+                            Point roadEnd1, Point roadEnd2,
+                            boolean highlighted, boolean destination) {
         int[] ep = computeEndpoints(index, src, dst, roadEnd1, roadEnd2);
         if (ep == null) return;
         int x1 = ep[0], y1 = ep[1], x2 = ep[2], y2 = ep[3];
@@ -62,7 +63,11 @@ public class LaneView {
         double len = Math.sqrt(dx * dx + dy * dy);
         if (len == 0) return;
 
-        if (highlighted) {
+        if (destination) {
+            g2.setColor(new Color(0, 200, 80, 160));
+            g2.setStroke(new BasicStroke(9, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2.drawLine(x1, y1, x2, y2);
+        } else if (highlighted) {
             g2.setColor(new Color(255, 220, 0, 160));
             g2.setStroke(new BasicStroke(9, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             g2.drawLine(x1, y1, x2, y2);

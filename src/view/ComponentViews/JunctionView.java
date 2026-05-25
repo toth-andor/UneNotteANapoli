@@ -19,9 +19,9 @@ import java.awt.Point;
 public class JunctionView {
 
     private static final int RADIUS = 15;
-    private static final Color FILL            = new Color(55, 55, 55);
-    private static final Color BORDER          = new Color(180, 180, 180);
-    private static final Color FILL_HIGHLIGHT  = new Color(255, 50, 200);
+    private static final Color FILL             = new Color(55, 55, 55);
+    private static final Color BORDER           = new Color(180, 180, 180);
+    private static final Color FILL_HIGHLIGHT   = new Color(255, 50, 200);
     private static final Color BORDER_HIGHLIGHT = new Color(255, 150, 220);
 
     /**
@@ -30,18 +30,22 @@ public class JunctionView {
      * @param g2          a rajzoláshoz használt {@link Graphics2D} kontextus
      * @param junction    a kirajzolandó csomópont
      * @param position    a csomópont középpontjának képernyő-koordinátája
-     * @param highlighted ha {@code true}, sárga kiemelő színnel rajzolja
+     * @param highlighted ha {@code true}, kiemelő színnel rajzolja (választható junction)
      */
     public static void draw(Graphics2D g2, Junction junction, Point position, boolean highlighted) {
         int x = position.x - RADIUS;
         int y = position.y - RADIUS;
         int d = RADIUS * 2;
 
-        g2.setColor(highlighted ? FILL_HIGHLIGHT : FILL);
+        Color fill   = highlighted ? FILL_HIGHLIGHT   : FILL;
+        Color border = highlighted ? BORDER_HIGHLIGHT : BORDER;
+        int stroke   = highlighted ? 3 : 2;
+
+        g2.setColor(fill);
         g2.fillOval(x, y, d, d);
 
-        g2.setColor(highlighted ? BORDER_HIGHLIGHT : BORDER);
-        g2.setStroke(new BasicStroke(highlighted ? 3 : 2));
+        g2.setColor(border);
+        g2.setStroke(new BasicStroke(stroke));
         g2.drawOval(x, y, d, d);
 
         g2.setColor(Color.WHITE);
