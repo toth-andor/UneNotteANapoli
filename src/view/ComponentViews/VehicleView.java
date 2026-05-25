@@ -34,6 +34,15 @@ public class VehicleView {
             Color glow2 = new Color(255, 50, 200, 40);
             g2.setColor(glow2);
             g2.fillOval(x - 20, y - 20, 40, 40);
+
+           
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(2));
+            g2.drawOval(x - 10, y - 10, 20, 20);
+
+            g2.setColor(new Color(255, 50, 200, 220));
+            g2.setStroke(new BasicStroke(1));
+            g2.drawOval(x - 15, y - 15, 30, 30);
         }
         Color fill = colorOf(vehicle);
         g2.setColor(fill);
