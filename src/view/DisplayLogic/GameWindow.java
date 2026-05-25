@@ -236,10 +236,24 @@ public class GameWindow extends JFrame {
         addRow(vehicleLegend, new Color(255, 140,   0), "Busz (Bus)");
         addRow(vehicleLegend, new Color(80,  160, 255), "Autó (Car)");
 
-        JPanel combined = new JPanel(new GridLayout(2, 1));
+        JPanel highlightLegend = new JPanel(new GridLayout(0, 1, 1, 1));
+        highlightLegend.setBackground(new Color(35, 35, 35));
+        highlightLegend.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(new Color(90, 90, 90)),
+            "Kiemelések",
+            0, 0,
+            new Font("SansSerif", Font.BOLD, 10),
+            new Color(170, 170, 170)));
+
+        addRow(highlightLegend, new Color(255,  50, 200), "Indulási csomópont");
+        addRow(highlightLegend, new Color(255, 220,   0), "Választható sávok");
+        addRow(highlightLegend, new Color(  0, 200,  80), "Busz célállomása");
+
+        JPanel combined = new JPanel(new GridLayout(3, 1));
         combined.setBackground(new Color(35, 35, 35));
         combined.add(legend);
         combined.add(vehicleLegend);
+        combined.add(highlightLegend);
         return combined;
     }
 
