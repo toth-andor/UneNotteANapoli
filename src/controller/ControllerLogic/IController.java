@@ -66,4 +66,9 @@ public interface IController {
      * @return a jelenlegi jármű által elérhető sávok listája
      */
     List<Lane> getSelectableLanes();
+
+    /**
+     * @return az aktuális busz célállomásának sávjai, vagy üres lista ha nem buszvezető az aktív játékos
+     */
+    List<Lane> getDestinationLanes();
 }

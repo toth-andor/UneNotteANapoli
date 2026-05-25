@@ -18,6 +18,7 @@ import map.Junction;
 import map.Lane;
 import map.OutdoorLane;
 import map.Road;
+import vehicle.Bus;
 import vehicle.SnowPlow;
 import states.IcyState;
 
@@ -209,6 +210,15 @@ public class Controller implements IController {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Lane> getDestinationLanes() {
+        Vehicle v = getCurrentVehicle();
+        if (!(v instanceof Bus bus)) return List.of();
+        Road dest = bus.getCurrentDestination();
+        if (dest == null) return List.of();
+        return dest.getLanes();
     }
 
     public void moveVehicleToLane(Vehicle vehicle, Lane lane) {

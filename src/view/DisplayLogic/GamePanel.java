@@ -95,6 +95,7 @@ public class GamePanel extends JPanel {
      */
     private void drawRoads(Graphics2D g2) {
         Set<Lane> selectable = new HashSet<>(controller.getSelectableLanes());
+        Set<Lane> destination = new HashSet<>(controller.getDestinationLanes());
         Vehicle active = controller.getCurrentVehicle();
         for (Road road : new ArrayList<>(controller.getMapModel().getRoads())) {
             Point roadEnd1 = mapper.get(road.getEnd1());
@@ -104,7 +105,8 @@ public class GamePanel extends JPanel {
                 Lane lane = lanes.get(i);
                 Point src = mapper.get(lane.getSource());
                 Point dst = mapper.get(lane.getDestination());
-                LaneView.draw(g2, lane, i, src, dst, roadEnd1, roadEnd2, selectable.contains(lane));
+                LaneView.draw(g2, lane, i, src, dst, roadEnd1, roadEnd2,
+                        selectable.contains(lane), destination.contains(lane));
                 drawVehiclesOnLane(g2, lane, src, dst, i, roadEnd1, roadEnd2, active);
             }
         }
