@@ -35,4 +35,6 @@ public interface IAttachment {
      * @return a felhasználás utáni maradék budget
      */
     int refill(int budget);
+
+    controller.AttachmentLogic.AttachmentType getType();
 }

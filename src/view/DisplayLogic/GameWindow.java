@@ -1,5 +1,6 @@
 package view.DisplayLogic;
 
+import attachments.Attachment;
 import controller.AttachmentLogic.AttachmentType;
 import controller.ControllerLogic.IController;
 import controller.MessageLogic.Message;
@@ -9,7 +10,7 @@ import controller.StateLogic.BusActionState;
 import controller.StateLogic.CleanerActionState;
 import controller.StateLogic.GameState;
 import controller.StateLogic.SetupState;
-
+import vehicle.SnowPlow;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -149,41 +150,89 @@ public class GameWindow extends JFrame {
         nextPlayerLabel.setText("Köv.: " + players.get(nextIdx).getName());
     }
 
+    private String getAttachmentName(AttachmentType type) {
+        return switch (type) {
+            case SWEEPER -> "Seprő fej";
+            case VOMITING_HEAD -> "Hányófej";
+            case STONE_VOMITTER -> "Zúzalékszóró";
+            case SALT_VOMITTER -> "Sószóró";
+            case ICE_BREAKER -> "Jégtörő";
+            case DRAGON -> "Sárkány";
+            default -> "Ismeretlen fej";
+        };
+    }
+
+    private void addDisabledButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btn.setMaximumSize(new Dimension(170, 26));
+        btn.setBackground(new Color(40, 40, 50));
+        btn.setForeground(new Color(100, 100, 100));
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setEnabled(false);
+        actionPanel.add(btn);
+        actionPanel.add(Box.createVerticalStrut(3));
+    }
+    private int getAttachmentPrice(AttachmentType type) {
+        return switch (type) {
+            case SWEEPER -> 1;
+            case VOMITING_HEAD -> 0;
+            case STONE_VOMITTER -> 5;
+            case SALT_VOMITTER -> 5;
+            case ICE_BREAKER -> 3;
+            case DRAGON -> 10;
+            default -> 0;
+        };
+    }
     private void rebuildActionButtons(GameState state) {
         actionPanel.removeAll();
         actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.Y_AXIS));
         actionPanel.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
 
         if (state instanceof CleanerActionState s) {
+            SnowPlow currentPlow = s.getCleaner().getSnowPlows().get(s.getCurrentSnowPlowIdx());
+
             JLabel header = makeLabel("Hókotró " + (s.getCurrentSnowPlowIdx() + 1)
-                + "/" + s.getCleaner().getSnowPlows().size(), Font.BOLD, 11);
+                    + "/" + s.getCleaner().getSnowPlows().size(), Font.BOLD, 11);
             header.setAlignmentX(Component.CENTER_ALIGNMENT);
             actionPanel.add(header);
             actionPanel.add(Box.createVerticalStrut(6));
 
-            addButton("Hókotró vásárlása",  () -> controller.receive(new Message.BuySnowPlow()));
-            addButton("Seprő fej",          () -> controller.receive(new Message.BuyAttachment(AttachmentType.SWEEPER)));
-            addButton("Hányófej",           () -> controller.receive(new Message.BuyAttachment(AttachmentType.VOMITING_HEAD)));
-            addButton("Zúzalékszóró",       () -> controller.receive(new Message.BuyAttachment(AttachmentType.STONE_VOMITTER)));
-            addButton("Sószóró",            () -> controller.receive(new Message.BuyAttachment(AttachmentType.SALT_VOMITTER)));
-            addButton("Jégtörő",            () -> controller.receive(new Message.BuyAttachment(AttachmentType.ICE_BREAKER)));
-            addButton("Sárkány",            () -> controller.receive(new Message.BuyAttachment(AttachmentType.DRAGON)));
+            addButton("Hókotró vásárlása", () -> controller.receive(new Message.BuySnowPlow()));
+
+            for (AttachmentType type : AttachmentType.values()) {
+                boolean ownsHead = currentPlow.getOwnedTools().stream()
+                        .anyMatch(tool -> tool.getType() == type);
+
+                boolean isEquipped = currentPlow.getCurrentTool() != null &&
+                        currentPlow.getCurrentTool().getType() == type;
+
+                int price = getAttachmentPrice(type); // Segédmetódusból kérjük az árat
+
+                String buttonText = getAttachmentName(type);
+
+                if (isEquipped) {
+                    buttonText += " (Felszerelve)";
+                    addDisabledButton(buttonText);
+                } else if (ownsHead) {
+                    buttonText += " (Felszerelés)";
+                    addButton(buttonText, () -> controller.receive(new Message.SwapAttachment(type))); // SwapAttachment!
+                } else {
+                    buttonText += " - " + price + " Ft";
+                    addButton(buttonText, () -> controller.receive(new Message.BuyAttachment(type)));
+                }
+            }
+
             actionPanel.add(Box.createVerticalStrut(6));
-            addButton("Utántöltés",         () -> controller.receive(new Message.RefillAttachment()));
+
+            Attachment current = currentPlow.getCurrentTool();
+            if (current != null && (current.getType() == AttachmentType.SALT_VOMITTER || current.getType() == AttachmentType.STONE_VOMITTER || current.getType() == AttachmentType.DRAGON)) {
+                addButton("Utántöltés (1 Ft)", () -> controller.receive(new Message.RefillAttachment()));
+            }
 
             actionPanel.add(Box.createVerticalStrut(10));
             JLabel hint = makeLabel("<html><center>Kattints egy sávra<br>a mozgáshoz</center></html>", Font.ITALIC, 10);
-            hint.setAlignmentX(Component.CENTER_ALIGNMENT);
-            actionPanel.add(hint);
-
-        } else if (state instanceof BusActionState) {
-            JLabel hint = makeLabel("<html><center>Kattints egy sávra<br>a mozgáshoz</center></html>", Font.ITALIC, 11);
-            hint.setAlignmentX(Component.CENTER_ALIGNMENT);
-            actionPanel.add(hint);
-
-        } else {
-            JLabel hint = makeLabel("<html><center>Beállítás<br>folyamatban</center></html>", Font.PLAIN, 11);
-            hint.setForeground(new Color(140, 140, 140));
             hint.setAlignmentX(Component.CENTER_ALIGNMENT);
             actionPanel.add(hint);
         }
@@ -200,7 +249,10 @@ public class GameWindow extends JFrame {
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
-        btn.addActionListener(e -> action.run());
+        btn.addActionListener(e -> {
+            action.run();
+            rebuildActionButtons(controller.getGameState());
+        });
         actionPanel.add(btn);
         actionPanel.add(Box.createVerticalStrut(3));
     }

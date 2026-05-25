@@ -1,5 +1,6 @@
 package attachments;
 
+import controller.AttachmentLogic.AttachmentType;
 import map.Lane;
 
 /**
@@ -39,5 +40,9 @@ public class IceBreaker extends Attachment {
      */
     public int refill(int budget) {
         return budget;
+    }
+    @Override
+    public controller.AttachmentLogic.AttachmentType getType() {
+        return AttachmentType.ICE_BREAKER;
     }
 }

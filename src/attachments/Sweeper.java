@@ -1,5 +1,6 @@
 package attachments;
 
+import controller.AttachmentLogic.AttachmentType;
 import map.Lane;
 
 /**
@@ -42,5 +43,9 @@ public class Sweeper extends Attachment {
      */
     public int refill(int budget) {
         return budget;
+    }
+    @Override
+    public controller.AttachmentLogic.AttachmentType getType() {
+        return AttachmentType.SWEEPER;
     }
 }
