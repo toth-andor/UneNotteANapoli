@@ -1,0 +1,74 @@
+randomoff 123
+
+addjunction 0.5 0.5
+
+addjunction 0.35 0.35
+addjunction 0.65 0.35
+addjunction 0.65 0.65
+addjunction 0.35 0.65
+
+addjunction 0.1 0.1
+addjunction 0.5 0.05
+addjunction 0.9 0.1
+addjunction 0.95 0.5
+addjunction 0.9 0.9
+addjunction 0.5 0.95
+addjunction 0.1 0.9
+addjunction 0.05 0.5
+
+addjunction 0.2 0.3
+addjunction 0.8 0.7
+addjunction 0.2 0.7
+addjunction 0.8 0.3
+addjunction 0.5 0.25
+addjunction 0.5 0.75
+
+addroad junction_1 junction_2
+addroad junction_1 junction_3
+addroad junction_1 junction_4
+addroad junction_1 junction_5
+addroad junction_1 junction_18
+addroad junction_1 junction_19
+
+addroad junction_2 junction_3
+addroad junction_3 junction_4
+addroad junction_4 junction_5
+addroad junction_5 junction_2
+
+addroad junction_6 junction_7
+addroad junction_7 junction_8
+addroad junction_8 junction_9
+addroad junction_9 junction_10
+addroad junction_10 junction_11
+addroad junction_11 junction_12
+addroad junction_12 junction_13
+addroad junction_13 junction_6
+
+addroad junction_2 junction_6
+addroad junction_3 junction_8
+addroad junction_4 junction_10
+addroad junction_5 junction_12
+addroad junction_7 junction_18
+addroad junction_11 junction_19
+
+addroad junction_14 junction_6
+addroad junction_14 junction_2
+addroad junction_15 junction_10
+addroad junction_15 junction_4
+addroad junction_16 junction_12
+addroad junction_16 junction_5
+addroad junction_17 junction_8
+addroad junction_17 junction_3
+
+addroad junction_9 junction_13
+
+savemap
+
+carcount 35
+
+addplayer cleaner Kovacs_Ur
+addplayer cleaner Nagy_Asszony
+addplayer cleaner Robot_1
+addplayer bus BKV_001
+addplayer bus BKV_002
+addplayer bus Volan_Express
