@@ -46,6 +46,7 @@ public class BusActionState extends GameState {
 
                 if(currentBus.getCurrentDestination().equals(currentBus.getCurrentLane().getRoad())) {
                     currentBus.addIncome(1);
+                    currentBus.turnAround();
                 }
 
                 Player nextPlayer = controller.getPlayers().nextPlayer();
