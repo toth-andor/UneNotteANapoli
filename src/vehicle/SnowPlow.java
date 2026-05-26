@@ -1,8 +1,9 @@
     package vehicle;
 
     import attachments.Attachment;
+import attachments.Sweeper;
 
-    import java.util.ArrayList;
+import java.util.ArrayList;
 
     import attachments.VomitingHead;
     import map.Lane;
@@ -49,7 +50,7 @@
             super(currentLane, name);
             this.owner = owner;
             this.ownedTools = new ArrayList<>();
-            VomitingHead v = new VomitingHead();
+            Attachment v = new Sweeper();
             this.ownedTools.add(v);
             this.currentTool = v;
             owner.registerSnowPlow(this);
@@ -121,4 +122,3 @@
             return currentTool;
         }
     }
-
