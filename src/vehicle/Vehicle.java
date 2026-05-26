@@ -21,9 +21,10 @@ public abstract class Vehicle implements Observable {
     private String name;
 
     /**
-     * Idő ameddig a jármű mozgásképessé válik egy baleset következtében.
+     * Idő ameddig a jármű mozgásképtelenné válik egy baleset következtében.
      */
-    public static final int IMMOBILE_TIME = 20;
+    public static final int IMMOBILE_TIME = 3;
+
 
     /**
      * Az ütközés bekövetkezésének időpillanata; ebből számítható,
@@ -89,6 +90,10 @@ public abstract class Vehicle implements Observable {
             notifyObservers();
         }
         return result;
+    }
+
+    public boolean isImmobile(int timestamp) {
+        return timeOutStart != -1 && timestamp - timeOutStart < IMMOBILE_TIME;
     }
 
     /**

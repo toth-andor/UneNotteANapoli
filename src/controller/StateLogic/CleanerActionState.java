@@ -21,6 +21,12 @@ public class CleanerActionState extends GameState {
     public CleanerActionState(Controller controller, Cleaner cleaner) {
         super(controller);
         this.cleaner = cleaner;
+        this.currentSnowPlowIdx = 0;
+        // Skip immobile snowplows at start
+        while (currentSnowPlowIdx < cleaner.getSnowPlows().size() && 
+               cleaner.getSnowPlows().get(currentSnowPlowIdx).isImmobile(controller.getRoundNumber())) {
+            currentSnowPlowIdx++;
+        }
     }
 
     public int getCurrentSnowPlowIdx() {
@@ -54,8 +60,15 @@ public class CleanerActionState extends GameState {
             }
 
             case Message.PickLane pickLaneMsg -> {
-                cleaner.getSnowPlows().get(currentSnowPlowIdx).gotoLane(pickLaneMsg.lane(), 0);
-                if (++currentSnowPlowIdx < cleaner.getSnowPlows().size())
+                controller.moveVehicleToLane(cleaner.getSnowPlows().get(currentSnowPlowIdx), pickLaneMsg.lane());
+                
+                // Find next mobile snowplow
+                do {
+                    currentSnowPlowIdx++;
+                } while (currentSnowPlowIdx < cleaner.getSnowPlows().size() && 
+                         cleaner.getSnowPlows().get(currentSnowPlowIdx).isImmobile(controller.getRoundNumber()));
+
+                if (currentSnowPlowIdx < cleaner.getSnowPlows().size())
                     yield this;
                 else {
                     if (controller.getPlayers().isLastPlayer()) {
@@ -65,7 +78,6 @@ public class CleanerActionState extends GameState {
                     yield switch (nextPlayer.getType()) {
                         case PlayerType.PCleaner pCleaner -> new CleanerActionState(controller, pCleaner.cleaner());
                         case PlayerType.PBusDriver pBusDriver -> new BusActionState(controller, pBusDriver.bus());
-                        default -> this;
                     };
                 }
             }

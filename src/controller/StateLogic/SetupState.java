@@ -18,6 +18,18 @@ public class SetupState extends GameState {
     static int nextBusID = 1;
     static int nextPlowID = 1;
 
+    private boolean isPlayerImmobile(Player player) {
+        if (player.getType() instanceof PlayerType.PCleaner c) {
+            for (vehicle.SnowPlow sp : c.cleaner().getSnowPlows()) {
+                if (!sp.isImmobile(controller.getRoundNumber())) return false;
+            }
+            return !c.cleaner().getSnowPlows().isEmpty();
+        } else if (player.getType() instanceof PlayerType.PBusDriver b) {
+            return b.bus().isImmobile(controller.getRoundNumber());
+        }
+        return false;
+    }
+
     public SetupState(Controller controller) {
         super(controller);
     }
@@ -69,17 +81,15 @@ public class SetupState extends GameState {
                     yield this; // Nincsenek játékosok
                 }
 
-                // Első játékos lekérése
-                Player firstPlayer = controller.getPlayers().getCurrentPlayer();
+                // Első aktív játékos megkeresése (ha az első immobilis)
+                Player currentPlayer = controller.getPlayers().getCurrentPlayer();
+                if (isPlayerImmobile(currentPlayer)) {
+                    currentPlayer = controller.getPlayers().nextPlayer();
+                }
 
-                yield switch (firstPlayer.getType()) {
-                    case PlayerType.PCleaner pCleaner -> {
-                        yield new CleanerActionState(controller, pCleaner.cleaner());
-                    }
-                    case PlayerType.PBusDriver pBusDriver -> {
-                        yield new BusActionState(controller, pBusDriver.bus());
-                    }
-                    default -> this;
+                yield switch (currentPlayer.getType()) {
+                    case PlayerType.PCleaner pCleaner -> new CleanerActionState(controller, pCleaner.cleaner());
+                    case PlayerType.PBusDriver pBusDriver -> new BusActionState(controller, pBusDriver.bus());
                 };
             }
             case Message.RandomOn randomOnMsg -> {

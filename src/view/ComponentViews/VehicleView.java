@@ -26,7 +26,7 @@ public class VehicleView {
      * @param x       a jármű középpontjának x-koordinátája
      * @param y       a jármű középpontjának y-koordinátája
      */
-    public static void draw(Graphics2D g2, Vehicle vehicle, int x, int y, boolean isActive) {
+    public static void draw(Graphics2D g2, Vehicle vehicle, int x, int y, boolean isActive, int timestamp) {
         if (isActive) {
             Color glow  = new Color(255, 50, 200, 80);
             g2.setColor(glow);
@@ -44,6 +44,14 @@ public class VehicleView {
             g2.setStroke(new BasicStroke(1));
             g2.drawOval(x - 15, y - 15, 30, 30);
         }
+
+        boolean immobile = vehicle.isImmobile(timestamp);
+        if (immobile) {
+            g2.setColor(new Color(255, 0, 0, 150));
+            g2.setStroke(new BasicStroke(3));
+            g2.drawOval(x - 10, y - 10, 20, 20);
+        }
+
         Color fill = colorOf(vehicle);
         g2.setColor(fill);
         g2.fillOval(x - 6, y - 6, 12, 12);

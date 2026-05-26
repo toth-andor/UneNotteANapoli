@@ -141,7 +141,7 @@ public class GamePanel extends JPanel {
             double t = (i + 1.0) / (n + 1);
             int vx = (int) (x1 + t * (x2 - x1));
             int vy = (int) (y1 + t * (y2 - y1));
-            VehicleView.draw(g2, vehicles.get(i), vx, vy, vehicles.get(i) == active);
+            VehicleView.draw(g2, vehicles.get(i), vx, vy, vehicles.get(i) == active, controller.getRoundNumber());
         }
     }
 

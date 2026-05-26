@@ -41,10 +41,9 @@ public class NPCHandler {
      * Mozgatja az összes NPC autót a legrövidebb úton a céljuk felé.
      * Ha egy autó eléri a célját, megfordul.
      *
-     * @param mapModel a térkép modellje az útvonalkereséshez
-     * @param timestamp az aktuális időpont
+     * @param controller a vezérlő az állapothoz és mozgáskezeléshez
      */
-    public void moveNPCs(IMapModel mapModel, int timestamp) {
+    public void moveNPCs(controller.ControllerLogic.IController controller) {
         for (Car car : npcCars) {
             // Ha az autó a cél útján van, megfordul
             if (car.getCurrentLane().getRoad().equals(car.getCurrentDestination())) {
@@ -58,10 +57,10 @@ public class NPCHandler {
             Road targetRoad = car.getCurrentDestination();
 
             // Megkeressük a következő sávot a legrövidebb úton
-            Lane nextLane = mapModel.findShortestPath(currentJunction, targetRoad);
+            Lane nextLane = controller.getMapModel().findShortestPath(currentJunction, targetRoad);
 
             if (nextLane != null) {
-                car.gotoLane(nextLane, timestamp);
+                controller.moveVehicleToLane(car, nextLane);
             }
         }
     }

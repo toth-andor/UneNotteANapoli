@@ -25,11 +25,30 @@ public class PlayerDirectory {
     }
 
     public Player nextPlayer() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-        if (currentPlayerIndex == 0) {
-            roundNumber++;
-        }
+        int originalIndex = currentPlayerIndex;
+        do {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            if (currentPlayerIndex == 0) {
+                roundNumber++;
+            }
+            if (!isPlayerImmobile(players.get(currentPlayerIndex))) {
+                return players.get(currentPlayerIndex);
+            }
+        } while (currentPlayerIndex != originalIndex);
+        
         return players.get(currentPlayerIndex);
+    }
+
+    private boolean isPlayerImmobile(Player player) {
+        if (player.getType() instanceof PlayerType.PCleaner c) {
+            for (vehicle.SnowPlow sp : c.cleaner().getSnowPlows()) {
+                if (!sp.isImmobile(roundNumber)) return false;
+            }
+            return !c.cleaner().getSnowPlows().isEmpty();
+        } else if (player.getType() instanceof PlayerType.PBusDriver b) {
+            return b.bus().isImmobile(roundNumber);
+        }
+        return false;
     }
 
     public List<Player> getPlayers() {

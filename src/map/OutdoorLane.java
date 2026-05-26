@@ -221,7 +221,7 @@ public class OutdoorLane extends Lane {
         setState(currentState.cleanWithIceBreaker());
         if(previousState.getClass() != currentState.getClass()) {
             setStateWasChanged(true);
-        }  
+        }
     }
 
     /**

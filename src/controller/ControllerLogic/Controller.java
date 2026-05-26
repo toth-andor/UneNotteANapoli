@@ -30,7 +30,7 @@ import states.IcyState;
  */
 public class Controller implements IController {
 
-    private static final int ICE_CRASH_CHANCE = 10;
+    private static final int ICE_CRASH_CHANCE = 30;
 
     /** A játéktérkép (gráf) és a modell állapotának összefogója */
     private IMapModel mapModel;
@@ -145,7 +145,7 @@ public class Controller implements IController {
             road.tick(getRoundNumber());
         }
         if (npcHandler != null) {
-            npcHandler.moveNPCs(mapModel, getRoundNumber());
+            npcHandler.moveNPCs(this);
         }
     }
 
@@ -221,16 +221,16 @@ public class Controller implements IController {
         return dest.getLanes();
     }
 
+    @Override
     public void moveVehicleToLane(Vehicle vehicle, Lane lane) {
-        vehicle.gotoLane(lane, 0);
+        vehicle.gotoLane(lane, getRoundNumber());
         if (lane instanceof OutdoorLane) {
             OutdoorLane outdoorLane = (OutdoorLane) lane;
             if (outdoorLane.getCurrentState() instanceof IcyState) {
                 List<Vehicle> vehicles = lane.getVehicles();
                 for (Vehicle v : vehicles) {
-                    if (rng.randomize(1, 100) < ICE_CRASH_CHANCE) {
-                        v.crash(getRoundNumber());
-                        vehicle.crash(getRoundNumber());
+                    if (v != vehicle && rng.randomize(1, 100) < ICE_CRASH_CHANCE) {
+                        outdoorLane.crash(v, vehicle, getRoundNumber());
                         return;
                     }
                 }

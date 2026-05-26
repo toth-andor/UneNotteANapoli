@@ -71,4 +71,12 @@ public interface IController {
      * @return az aktuális busz célállomásának sávjai, vagy üres lista ha nem buszvezető az aktív játékos
      */
     List<Lane> getDestinationLanes();
+
+    /**
+     * Jármű mozgatása egy sávra, kezelve az esetleges ütközéseket.
+     *
+     * @param vehicle a mozgatandó jármű
+     * @param lane a célsáv
+     */
+    void moveVehicleToLane(Vehicle vehicle, Lane lane);
 }

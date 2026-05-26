@@ -77,7 +77,7 @@ public abstract class Commuter extends Vehicle implements IRouteHandler {
      * @param timestamp az ütközés időpontja
      */
     public void crash(int timestamp) {
-        timeOutStart = timestamp;
+        super.crash(timestamp);
     }
     
 }

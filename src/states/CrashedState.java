@@ -51,15 +51,13 @@ public class CrashedState extends LaneState {
     }
 
     /**
-     * A balesetes sávra érkező jármű kénytelen elhagyni a sávot.
+     * A balesetes sávra érkező jármű nem tud behajtani (pushVehicle false-t ad).
+     * Ha mégis ide kerülne a vezérlés, nem változtatunk az állapoton.
      *
      * @param v az áthaladó jármű
      * @return this
      */
     public LaneState handleTraffic(Vehicle v) {
-
-        // TODO JAVITANI KELL
-        v.gotoLane(null, 0); // baleset blokkolja a forgalmat, jármű megáll 
         return this;
     }
 

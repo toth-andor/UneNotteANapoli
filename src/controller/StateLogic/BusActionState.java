@@ -38,7 +38,7 @@ public class BusActionState extends GameState {
     public GameState process(Message msg) {
         return switch (msg) {
             case Message.PickLane pickLaneMsg -> {
-                currentBus.gotoLane(pickLaneMsg.lane(), controller.getRoundNumber());
+                controller.moveVehicleToLane(currentBus, pickLaneMsg.lane());
 
                 if (controller.getPlayers().isLastPlayer()) {
                     controller.endOfTurn();
